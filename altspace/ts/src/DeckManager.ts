@@ -109,8 +109,10 @@ export const TO_NONE = -1;
 
 /**
  * The outcome of checking a round's deal. `checked`: every card on the table is the deal's; `unverifiable`: the deal
- * was the referee's alone (no other contributor), so the cards may be its choice; `mismatch`: something does not
- * match (a forged hand, a contributor list other than the seated players, a seed that is not the committed one).
+ * was the referee's alone (no other contributor), so the cards may be its choice, or this page cannot check it (the
+ * runtime's `checkDeal` says `solo` or `unknown`: a contributor left before this page saw its part); `mismatch`:
+ * something does not match (a forged hand, a contributor list other than the seated players, a seed that is not the
+ * committed one: `checkDeal` says `failed`).
  */
 export type DealStatus = "checked" | "unverifiable" | "mismatch";
 export interface Verification {
@@ -494,8 +496,10 @@ export class DeckManager extends Behaviour {
     if (!this.dealRevealed || this.dealLabel === "" || this.checked === this.dealLabel) return;
     const state = this.Secrets.dealState(this.dealLabel);
     if (state !== "revealed" && state !== "invalid") return; // not here yet
+    const verified = this.Verify();
+    if (!verified) return; // a contribution this page has not received yet: checked again on the next update
     this.checked = this.dealLabel;
-    this.verified = this.Verify();
+    this.verified = verified;
     if (this.verified.status === "mismatch") this.Debug.LogError(`round ${this.round}: the dealt cards do not match the revealed deal: ${this.verified.reason}`);
     else if (this.verified.status === "unverifiable") this.Debug.LogWarning(`round ${this.round}: the deal cannot be checked: ${this.verified.reason}`);
   }
@@ -514,6 +518,7 @@ export class DeckManager extends Behaviour {
       if (v.status === "unverifiable") {
         if (/only player/.test(v.reason)) return "Deal NOT checkable: the dealer's page was the only player";
         if (/left before/.test(v.reason)) return "Deal NOT checkable here: a contributor left before this page came";
+        if (/cannot check/.test(v.reason)) return "Deal NOT checkable here: this page came after the deal was revealed";
         return "Deal NOT checkable: the dealer's page dealt from its own seed alone";
       }
       return `DEAL CHECK FAILED: ${v.reason}`;
@@ -540,9 +545,10 @@ export class DeckManager extends Behaviour {
   /**
    * Checks the revealed deal of the current segment: the contributor list is the seated players (a list of nobody but
    * the referee is its own choice: not checkable), the seed is the committed one, the logged draws are the deal's,
-   * and every hand on the table holds exactly the cards the deal gave it.
+   * and every hand on the table holds exactly the cards the deal gave it. Null while the runtime's check is pending
+   * (a contribution has not reached this page yet).
    */
-  Verify(): Verification {
+  Verify(): Verification | null {
     if (!this.dealRevealed) return Mismatch("no deal revealed");
     const label = this.dealLabel;
     const listed = this.Secrets.dealContributors(label);
@@ -560,21 +566,30 @@ export class DeckManager extends Behaviour {
     const want = expected.slice().sort().join(",");
     const got = [...new Set(listed)].sort().join(",");
     if (want !== got) return Mismatch("the deal's contributors are not the players seated in the round");
-    // A contributor who left before this page first saw the deal took its contribution with it: this page computes
-    // the deal with that part absent, which is not the deal that was dealt. Such a page cannot check the round.
-    const present = new Set(this.Networking.GetPlayers().map((p) => p.sid));
-    const sawSeated = this.seatedAt.get(label) ?? [];
-    const missed = listed.filter((sid) => !present.has(sid) && !sawSeated.includes(sid));
-    const result = this.Replay(label, expected);
-    if (result.status === "mismatch" && missed.length > 0) {
-      return Unverifiable("a player who contributed to this deal left before this page arrived: its part is not known here");
-    }
-    return result;
+    return this.Replay(label, expected);
   }
 
-  private Replay(label: string, expected: string[]): Verification {
-    const draw = this.Secrets.verifyDeal(label, expected);
-    if (!draw) return Mismatch("the referee's seed does not match its commitment, or a contribution is missing");
+  /**
+   * The runtime's check of the deal (`checkDeal`), then the replay. `unknown` and `solo` are "not checkable" here,
+   * never a failed check: a contributor who left before this page saw its part took that part with it.
+   */
+  private Replay(label: string, expected: string[]): Verification | null {
+    const check = this.Secrets.checkDeal(label, expected);
+    switch (check.state) {
+      case "pending":
+        return null;
+      case "solo":
+        return Unverifiable("the dealer's page dealt from its own seed alone");
+      case "unknown":
+        return Unverifiable(
+          /left before/.test(check.why)
+            ? "a player who contributed to this deal left before this page arrived: its part is not known here"
+            : `this page cannot check the deal: ${check.why}`,
+        );
+      case "failed":
+        return Mismatch(`the runtime's check of the deal failed: ${check.why}`);
+    }
+    const draw = check.draw;
     const log = ReplaySegment(draw, this.segmentDecks, this.baseCards, this.drawLog);
     if (!log.ok) return log;
     const ctrl = this.BlackjackController;
