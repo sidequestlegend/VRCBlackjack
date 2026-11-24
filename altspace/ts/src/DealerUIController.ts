@@ -143,7 +143,9 @@ export class DealerUIController extends Behaviour {
       }
       this.SetActive(slot, true);
       if (card === HIDDEN) {
-        // The hole card: the back only, and no face is ever sent for it.
+        // The hole card: the back only, and no face is ever sent for it (the face is blanked, so a slot used for a
+        // face-up card last round does not keep that face underneath).
+        this.SlotRenderers[k]?.SetFloat("_CardIndex", -1);
         if (!instant) audio.PlayDrawCard();
         continue;
       }

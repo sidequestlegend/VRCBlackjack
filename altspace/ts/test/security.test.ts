@@ -76,7 +76,8 @@ test("the hole card is unreadable to every client, the referee's page included, 
     assert.ok(d.holeHash.length > 0, "the hole card is committed to");
     assert.equal(deck(w, c).drawLog[hole.k], HIDDEN);
     assert.equal(deck(w, c).dealRevealed, false);
-    assert.equal(c.graph(SLUG).floats.has("d0/_CardIndex"), false, `${c.name}'s page never sent the hole card's face`);
+    const sent = c.graph(SLUG).floats.get("d0/_CardIndex");
+    assert.ok(sent === undefined || sent === "-1", `${c.name}'s page never sent the hole card's face (the slot's face is blank: ${sent})`);
   }
   // The room's whole state, as anyone can read it, holds the commitment and not the card.
   const everything = JSON.stringify(w.room.stateSnapshot()) + JSON.stringify(w.clients.map((c) => w.room.userStateOf(c.sid)));

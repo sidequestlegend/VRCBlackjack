@@ -221,7 +221,7 @@ test("a late joiner mid-hand sees the cards and totals as they are, and cannot t
   // The dealer: the hole card's back and the up card's face.
   assert.equal(dealerUI(w, dan).Showing(0), HIDDEN);
   assert.equal(g.active.get("d0"), true);
-  assert.equal(g.floats.has("d0/_CardIndex"), false, "no face is ever sent for the hole card");
+  assert.ok([undefined, "-1"].includes(g.floats.get("d0/_CardIndex")), "no face is ever sent for the hole card (its face is blank)");
   assert.equal(g.floats.get("d1/_CardIndex"), String(dealer(w, dan).cards[1]));
   assert.equal(dealerUI(w, dan).Showing(2), SLOT_OFF);
 
