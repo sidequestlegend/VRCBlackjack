@@ -1,9 +1,10 @@
 # Blackjack: port notes
 
-Written 2026-11-24 from a read of the upstream sources, prefab YAML and asset files; the status section below was
-added the same day, when the rules were ported to TypeScript and tested in Node. Nothing has been built or opened
-in Unity. Statements marked **(reading)** are conclusions from reading code that
-was not executed. Where something could not be determined, it says so.
+Written 2026-11-24 from a read of the upstream sources, prefab YAML and asset files. The two status sections below
+were added later: the rules port to TypeScript, tested in Node (2026-11-24), then the Unity kit and the editor rungs 2
+to 4 (2026-11-24 and 25, evidence in `altspace/TESTS.md`). Nothing has run in the Altspace app or on a Quest.
+Statements marked **(reading)** are conclusions from reading code that was not executed. Where something could not be
+determined, it says so.
 
 Paths are relative to the fork root `C:\workspace\AltspaceGames\blackjack\` at upstream commit `83f05db`.
 Short names used below:
@@ -18,10 +19,100 @@ Contents: Status of the port · 1 Upstream at a glance · 2 Feature checklist ·
 5 Object model · 6 Assets · 7 Translation map · 8 Snippet design · 9 Test plan · 10 Changed, left out,
 risks and questions.
 
+## Status: the Unity kit and the editor rungs (2026-11-24 and 25)
+
+Rungs 0 to 4 pass in the Unity editor; `altspace/TESTS.md` has the evidence and how to run each again.
+
+| Rung | Result |
+|---|---|
+| 0/1 static and Node | `npm test`: typecheck and lint clean, 33 of 33 (15 golden-vector tests on upstream's compiled C#, 18 scenarios) |
+| 2 `PortKit/Kit/Check` | 0 disallowed graph nodes; 867 bindings resolve (hash `b3d4ca74...`); Android 7,122 KiB and Windows 8,790 KiB, both PASS, notices inside |
+| 3 Play mode, one player | 21 of 21, 0 console errors: seat, bet, deal, hit, stand, the flip, result, chips and the credits panel, through the desktop player's mouse on the exported bundles |
+| 4 two Local Multiplayer players | 35 of 35, twice in a row, 0 console errors: both seated, a full round, the hole card unreadable on both pages before the flip, a guest reload mid-hand in round 2 (same table, same digest, hole card unreadable on the reloaded page too), digests and views equal at the end |
+
+Artifacts: `PortKit/Kit/Take Photos` and `PortKit/Kit/Export Artifacts` wrote `altspace/dist/` (not committed): both
+bundles, `pk-blackjack.js`, `blackjack.jpg`, `blackjack.snippet.html` and `manifest.json` (both checks PASS). The
+Play-mode runs loaded these same files, identified by their sha1 (TESTS.md).
+
+### Kit as built (`Assets/Kit/Editor/BlackjackKitBuilder.cs`)
+
+- **Source:** one table of upstream's `Blackjack.prefab` (with its seven `Player 0.prefab` seats) and the chip
+  controller of `Blackjack System.prefab`, copied as upstream's custom inspector did. The importer config is
+  `upstream_import.json`; no upstream C# is compiled (stand-in scripts are stripped: 267).
+- **Removed:** the per-seat debug panels (L1), the particle popups (L2) and the overhead camera and its screen (K9,
+  F56), 22 objects in all; the trigger volumes (C10: range is head distance). The touch boxes became click boxes (L5).
+- **Cards (C5):** a slot at each of the 165 card positions (7 seats x 2 hands x 11, plus 11 for the dealer). Each slot
+  has upstream's `Card Zoom In` animator over two new quads, and its face is chosen per renderer by the material float
+  `_CardIndex` (0 to 51; -1 is the back, for the hole card) from an atlas made from Kenney's CC0 Boardgame Pack. The
+  shader is new (`Assets/Kit/Shaders/BlackjackCard.shader`). The faces read correctly after one fix in rung 3: they
+  had been mirrored.
+- **Clicks (F65):** every one of the 115 buttons is a click box on the UI layer (layer 5); uGUI raycasters and
+  persistent calls are stripped. The dealer-height slider is two buttons (C12, F49). A credits panel on the dealer
+  canvas the players read opens and closes for the viewer.
+- **Materials and textures (C15, C22):** six table materials remade as URP Lit, with URP's own keyword setup.
+  Textures are 512 to 2048 px (ASTC 6x6 on Android); metallic, smoothness and occlusion are packed into one mask per
+  material. The felt has the "BLACKJACK PAYS 2 TO 1" line (K2) and the CentauriCore logo painted out, both in the
+  albedo and, after rung 3, in the smoothness map too.
+- **Fonts (K1):** 176 texts moved from the unlicensed Arcane Nine, Roman Gradient and Riesling to Cinzel, Cinzel
+  Decorative and Limelight (OFL), plus Liberation Sans.
+- **Sounds (K8):** upstream's 97 clips are not shipped. 31 Kenney CC0 sounds (Casino Audio, Interface Sounds) are
+  on the table's audio source.
+- **Q14:** seat 0's dealer panel was given its missing height constraint. **Q19:** the two missing "your turn"
+  sprites became upstream's `UI/Circle.png`.
+- **Bindings:** `ts/bindings.json` is real (hash `b3d4ca74e481132f555e2917343de28c3ec5a686`): 1,872 objects, 867
+  bound (115 clickable), 546 refs, 115 behaviours, 44 events. 445 upstream fields the port does not read are left out,
+  as are the deck's 52 card-prefab references (cards are slots now). The keys and behaviour ids are the ones the
+  Node tests use, and the tests pass on this file.
+- **Relay graph:** the kit's standard ops only. It has 519 units, 207 control and 518 value connections, and 49
+  members, all on the SDK's allow list.
+
+**Click boxes over uGUI buttons (R2), measured.** The kit was built both ways. With the 41 seat and table buttons as
+uGUI `uiButton` events, the relay graph has 1,011 units (248 control, 928 value connections, 41 relayed events) and
+546,558 bytes. With click boxes it has 519 units and 289,524 bytes. Click boxes were chosen: the graph is half the
+size, and no relayed event runs through every instance's graph on each press. Spike S6's finding that uGUI is
+clickable only from the side it is read from, and needs a GraphicRaycaster, also no longer applies.
+
+Art replacements, with sources and licences, are in `THIRD-PARTY-NOTICES.md` ("Third-party material shipped with
+the kit"), with each licence file kept beside the asset: the card atlas (Kenney Boardgame Pack v2, CC0),
+the three fonts (Google Fonts, OFL 1.1) and 31 sounds (22 from Kenney Casino Audio, 9 from Interface Sounds, CC0). The notices said 24 Casino Audio files; there are 22. `THIRD-PARTY-NOTICES.md` is corrected, but the copy inside the current bundles (`Assets/Kit/THIRD-PARTY-NOTICES.md`, from `tools/make_notices.py`) still says 24 until the next kit build.
+
+### Left out in the kit, beyond 10.2
+
+| # | Left out | Reason |
+|---|---|---|
+| L10 | Upstream's card model and atlas (`Meshes/DeckOfCards/`) | no credit or licence anywhere in the repo; replaced (above) |
+| L11 | Upstream's 97 audio clips | sample-library origin not verifiable (K8); replaced by Kenney CC0 sounds, fewer and different |
+| L12 | Arcane Nine, Roman Gradient, Riesling | no licence (K1); replaced by OFL fonts |
+| L13 | The overhead dealer screen (F56) | K9: an extra camera pass per table per frame; the dealer's cards and total are on the table and its canvas |
+
+### Play mode against the test plan (9.3, 9.4)
+
+What ran in Play mode: 9.3 items 1 to 5 and 8 (a reload mid-round, done with two players in rung 4), and 10 (rung 2).
+For 9.4: item 1 (with digests at the checkpoints after round 1, after the reload and at the end of round 2, rather
+than after every action), item 2 (on both pages, and on the reloaded page) and item 3. Not run in Play mode: 9.3
+items 6 (split), 7 (manual mode) and 9 (two instances), and 9.4 items 4 (referee change), 5 (presses in one tick) and
+6 (timers side by side). Each of these is covered in Node only.
+
+One finding from rung 4, about the game rather than the test: during turns, the referee moves the synced poll time
+(`nextCheckAt`) on every 2 s, because upstream polls `GameActiveRefresh` every 2 s and a new referee must keep that
+cadence. That is one state write every 2 s per table during turns. It is within the room budget (test 32), but it
+means a whole-state digest is only comparable within one 2-second epoch.
+
+### Still unverified
+
+- **Everything in the app and on a Quest (rung 5).** That covers laser clicks on the click boxes, `_CardIndex` faces
+  and the card shader on Quest (R1), frame time (R3), relay traffic at a round's start (R4), and the Android bundle
+  loading at all (it passed the bundle check only).
+- **The card zoom (F28) and the sounds (F68):** both ran in Play mode with 0 console errors, but no probe asserted
+  them (the probe cannot read an animator's state or whether a source is playing), and nobody listened.
+- **Only in Node, never in Play mode:** split, manual dealing and the dealer's panel, the height buttons (F49), Reset
+  Table, the turn timer running out, range, the owner's settings, two tables in one page, a referee or table-owner
+  change, more than two players, a withheld deal contribution.
+
 ## Status: the TypeScript rules port (2026-11-24)
 
-The rules run in Node on the fake room; nothing has been built or run in Unity yet. Everything below this section
-is the analysis it was built from, with section 10's questions now answered (10.4).
+The rules run in Node on the fake room. The section above covers the Unity side. Everything below this section is
+the analysis the port was built from, with section 10's questions now answered (10.4).
 
 ### What exists
 
@@ -90,7 +181,7 @@ Status: **tested** = asserted by a Node test (scenario or golden vector); **port
 asserted on its own; **kit** = the TypeScript side is done, the effect needs the Unity kit; **left out** = as
 section 10.2 says.
 
-**78 items: 51 tested, 20 ported, 5 kit, 2 left out.**
+**78 items: 51 tested, 20 ported, 3 play, 1 kit, 3 left out.** (**play**: ran in Play mode in the Unity editor, rungs 3 and 4; "play, ran" = it ran, but no probe asserted it. Many **tested** items also ran in Play mode: TESTS.md. Not an item of section 2: the credits panel the port adds for the licence opened and closed in Play mode, rung 3.)
 
 | # | Status | Evidence or note |
 |---|---|---|
@@ -121,7 +212,7 @@ section 10.2 says.
 | F25 | tested | Start Game: owner, a seat, no round |
 | F26 | ported | round start clears the table, shuffle sound |
 | F27 | tested | vectors V8; schedule run against the shared clock |
-| F28 | kit | NotHidden trigger and one draw sound per card are sent; the zoom is the kit's |
+| F28 | play, ran | each dealt slot gets the NotHidden trigger through the relay (rungs 3 and 4, 0 console errors); faces asserted by probe, the zoom animation not |
 | F29 | ported | at most 11 cards per hand |
 | F30 | ported | counts per round, from the cards on the table |
 | F31 | tested | vectors V2 and the seed replay |
@@ -142,14 +233,14 @@ section 10.2 says.
 | F46 | tested | dealer's per-seat panel: count text, marks |
 | F47 | tested | dealer's Hit Me and Stand |
 | F48 | ported | deal and dealer's play are automatic in both modes |
-| F49 | kit | two buttons drive the Height parameter (C12); the buttons are the kit's |
+| F49 | kit | two click boxes drive the Height parameter (C12); built, not run in Play mode |
 | F50 | ported | marks cleared on stand and at start |
 | F51 | ported | 2 s poll from n+2 s |
 | F52 | tested | vectors V9; flip at the shared time |
 | F53 | tested | vectors V9 (soft 17 stands) |
 | F54 | ported | dealer plays when all bust; Bust banner |
 | F55 | ported | dealer's total after the round |
-| F56 | kit | overhead camera screen (K9) |
+| F56 | left out | overhead camera and screen removed in the kit (K9, L13) |
 | F57 | tested | settlement |
 | F58 | tested | split hand settled separately (Q5 fixed) |
 | F59 | tested | 1 to 1 (vectors V6) |
@@ -158,10 +249,10 @@ section 10.2 says.
 | F62 | ported | cards stay until the next start or a reset |
 | F63 | tested | 30 s timer by shared deadline |
 | F64 | tested | helper totals |
-| F65 | kit | clicks on layer-5 boxes; the boxes and spike S6 are the kit's |
+| F65 | play | every press in rungs 3 and 4 was a real mouse click on a layer-5 click box (Join, +10, +5, Start Game, HIT, STAND, Credits) |
 | F66 | left out | touch buttons (L5) |
 | F67 | ported | Press trigger on a click |
-| F68 | kit | sounds fire from state; the clips go on audio sources in the kit |
+| F68 | play, ran | sounds fire from state through the relay audio op onto Kenney CC0 clips (rungs 3 and 4, 0 console errors); not probed, nobody listened |
 | F69 | tested | range by head distance |
 | F70 | tested | walking out releases the seat |
 | F71 | ported | fixed sound source (C10) |
@@ -233,8 +324,8 @@ therefore begun from the Controller's tick, never from a command.
 
 ### Tests (`npm test`: typecheck, lint, then the Node tests)
 
-32 tests, all passing; the scenario files were also run six times in a row (draws differ every run) without a
-failure.
+33 tests, all passing (re-run 2026-11-25); the scenario files were also run six times in a row (draws differ every
+run) without a failure.
 
 - `test/golden.test.ts` (15): vectors V1 to V9 from upstream's compiled C# (2,610 scoring sequences, 1,664 probe
   cases, 120 split cases, 1,170 settlement cases, 30 chip runs, 7 schedules, 100 dealer plays); hand-derived soft,
@@ -243,11 +334,11 @@ failure.
   one new-round sound per round); a split; a player leaving mid-hand; a late joiner mid-hand (cards, faces, totals,
   the hole card's back, no seat mid-round, the result banner); the referee leaving mid-hand (round finishes, hole
   card redrawn, segment 2 replays); the referee who is also table owner leaving (reset).
-- `test/security.test.ts` (5): the hole card unreadable before the flip (every state write, user-state write and
+- `test/security.test.ts` (6): the hole card unreadable before the flip (every state write, user-state write and
   one-shot recorded; neither the seed nor either opening goes out; every client, the referee's page included, holds
   -1 and sends no face; the flip matches the commitment); a bystander's clicks, commands and network events change
   nothing; two tables in one room stay apart and share one chip balance; settings are the owner's, between rounds;
-  allow-change.
+  allow-change; a seated player whose runtime withholds its deal contribution cannot hang the table.
 - `test/table.test.ts` (6): the table owner leaving; Reset Table freeing every seat, LEAVE GAME, the 2 s rejoin; the
   30 s timer; manual dealing; the room budget (one group, 5 space leaves; with seven players the largest leaf was 1,557 bytes
   and the busiest second saw 3 state writes, against 16,384 bytes and 20 a second); walking out of range.
@@ -257,10 +348,9 @@ licence banner first.
 
 ### Not done yet
 
-The Unity side: the importer config, `BlackjackKitBuilder.cs` (card slots with a `_CardIndex` material float, the
-layer-5 boxes for the 20 table buttons and the dealer panels, the height buttons, the repainted felt, fonts,
-textures), the real `bindings.json`, bundles, rungs 2 to 4, and the spikes this design leans on (S6 clicks, R1
-card faces, R7 clips).
+Done since: the Unity side and rungs 2 to 4 (see "Status: the Unity kit and the editor rungs" above). In the editor,
+this game's own Play-mode runs settled S6 (clicks on layer-5 boxes) and R1 (faces by `_CardIndex`, read back by
+probe). R7 (clip one-shots overlapping) is not settled: the audio op ran without errors, but nobody listened.
 
 ## 0. What the analysis found, in short
 
