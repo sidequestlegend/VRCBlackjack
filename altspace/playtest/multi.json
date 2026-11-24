@@ -1,0 +1,10 @@
+{
+  "name": "blackjack-multi",
+  "timeout": 600,
+  "players": 2,
+  "elements": [
+    "<script>window.__bjPlan = \"multi\";</script>",
+    "<script src=\"{SERVER}/web/playtest/blackjack-playtest.js\"></script>",
+    "<bs-snippet name=\"blackjack\" title=\"Blackjack Table\" script=\"{SERVER}/web/pk-blackjack.js\" position=\"0 0 3\" rotation=\"0 180 0\" chips=\"true\" windows=\"{SERVER}/kits/windows/blackjack\" android=\"{SERVER}/kits/android/blackjack\"></bs-snippet>"
+  ]
+}

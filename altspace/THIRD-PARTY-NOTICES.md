@@ -1,4 +1,4 @@
-# Third-party notices: blackjack for Altspace (DRAFT)
+# Third-party notices: blackjack for Altspace
 
 **Draft, 2026-11-24.** Written with the TypeScript rules port. The asset part (what the kit builder re-encodes,
 replaces or leaves out) is filled in when the kit is built; until then this covers the code. Nothing has been
@@ -67,7 +67,7 @@ The UdonSharp (C#) game code was translated to TypeScript on the portkit runtime
 
 | Port file | From upstream | Changed |
 |---|---|---|
-| `src/DeckManager.ts` | `Scripts/DeckManager.cs`, plus `GetUnusedCardIndex` from `PlayerDeck.cs:199-261` and `Dealer.cs:233-295` | counts follow from the cards in state; draws start from a committed seed; the two of clubs no longer has 999 copies |
+| `src/DeckManager.ts` | `Scripts/DeckManager.cs`, plus `GetUnusedCardIndex` from `PlayerDeck.cs:199-261` and `Dealer.cs:233-295` | counts follow from the cards in state; draws start from a dealt draw every seated player contributes to (portkit `beginDeal`); the two of clubs no longer has 999 copies |
 | `src/PlayerDeck.ts` | `Scripts/PlayerDeck.cs` | cards held in state; the 583 generated event handlers removed; totals scored from the hand's cards |
 | `src/Dealer.ts` | `Scripts/Dealer.cs` | the hole card hidden by commit and reveal; the dealer's play is a step on a shared clock; the 583 generated handlers removed |
 | `src/Player.ts` | `Scripts/Player.cs` | presses become commands checked by a referee; split aces scored correctly; split hands paid at the round's bet |
@@ -89,22 +89,53 @@ the "Status" section (Q1 to Q21, D1 to D10) and section 10 (C1 to C22, L1 to L9)
 
 ### Assets
 
-**To be completed when the kit is built.** Planned in `altspace/PORT.md` sections 6 and 10: textures resized and
-recompressed for Quest, masks repacked; materials and the card shader remade for URP; the felt's "BLACKJACK PAYS
-2 TO 1" repainted to match the 1 to 1 rules; prefabs rebuilt as one kit with card slots in place of instantiated
-cards; unused assets (three felts, 22 clips, two fonts and others) left out.
+Made by `altspace/Assets/Kit/Editor/BlackjackKitBuilder.cs` (new file) and `altspace/tools/make_art.py` (new file)
+from the fork's own files. The kit prefab `blackjack.prefab` is one table of upstream's `Prefabs/Internal DO NOT
+TOUCH/Blackjack.prefab` (with its seven `Player 0.prefab` seats) and the chip controller of `Prefabs/Blackjack
+System.prefab`, changed as follows:
+
+- **Felt** (`Meshes/Table/Textures/Surfaces/Green/..._Table_Surface_AlbedoTransparency.png`, FiyCsf): the line
+  "BLACKJACK PAYS 2 TO 1" painted out (every win pays 1 to 1, as upstream's code pays), and the CentauriCore logo and
+  handle painted out (the credit stays on the credits panel and here); reduced to 2048 px
+  (`Assets/Kit/Textures/FeltAlbedo.jpg`).
+- **Table textures**: reduced to 512 to 2048 px for Quest (ASTC 6x6 on Android); metallic, smoothness and occlusion
+  packed into one mask per material (`Assets/Kit/Textures/*_Mask.png`).
+- **Materials**: upstream's six Standard-shader table materials remade as URP Lit; the card material remade with a
+  new shader (`Assets/Kit/Shaders/BlackjackCard.shader`, written for the port).
+- **Cards**: upstream's card model and atlas (`Meshes/DeckOfCards/`) carry no credit or licence anywhere and their
+  origin could not be established, so they are **not shipped**: the kit draws cards with two generated quads
+  (`Assets/Kit/Meshes/`) and an atlas made from Kenney's Boardgame Pack v2 (below). The card prefabs' animator
+  controller (`Animations/Card Zoom In.controller`) and clips are upstream's.
+- **Fonts**: upstream's Arcane Nine, Roman Gradient and Riesling are **not shipped** (no licence); the texts use
+  Cinzel, Cinzel Decorative and Limelight (OFL, below) and Liberation Sans.
+- **Prefab**: the per-seat debug panels, the inactive particle popups, the overhead camera and its screen, and the
+  trigger volumes removed; a card slot at each of the 165 card positions instead of cards instantiated at run time;
+  every button given a click box; the dealer-height slider replaced by two buttons; seat 0's dealer panel given the
+  missing height constraint; the two missing "your turn" sprites replaced by upstream's `UI/Circle.png`; a credits
+  panel added; VRChat components and the scripts removed (the behaviour is in the script).
+- **Left out**: the blue, purple and red felts, `DeckOfCards.png`, the six Quest materials, unreferenced clips,
+  controllers and fonts, the inspector logo.
+
+## Third-party material shipped with the kit
+
+| Material | Author | Licence | Source | Replaces |
+|---|---|---|---|---|
+| Card faces and back (`Assets/Kit/Textures/CardAtlas.png`, made from `PNG/Cards/*.png`) | Kenney (www.kenney.nl), Boardgame Pack v2 | CC0 1.0 (the pack's `license.txt`, copied to `Assets/Kit/Textures/Kenney-Boardgame-Pack-License.txt`) | https://kenney.nl/assets/boardgame-pack (downloaded 2026-11-24) | `Meshes/DeckOfCards/DeckOfCardsMarked.png` and `DeckOfCards.fbx` (no credit) |
+| Cinzel (`Assets/Kit/Fonts/Cinzel.ttf`) | The Cinzel Project Authors (Natanael Gama) | SIL Open Font License 1.1 (`Cinzel-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/cinzel | Arcane Nine (labels) |
+| Cinzel Decorative Bold (`Assets/Kit/Fonts/CinzelDecorative-Bold.ttf`) | Natanael Gama, Reserved Font Name "Cinzel" | SIL OFL 1.1 (`CinzelDecorative-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/cinzeldecorative | Roman Gradient (Bust, Win, Draw, Lost) |
+| Limelight (`Assets/Kit/Fonts/Limelight-Regular.ttf`) | Sorkin Type Co, Reserved Font Name "Limelight" | SIL OFL 1.1 (`Limelight-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/limelight | Riesling (Hit Me, Stand, Split) |
+| Liberation Sans (TextMesh Pro's default asset) | Red Hat | SIL OFL 1.1 | TextMesh Pro essentials | upstream's copy of the same font |
+
+The font assets in the bundle hold static atlases baked from these fonts (a modified version under the OFL; the
+reserved names are not used for them).
 
 ## Not covered by the Apache licence
 
-Material in the upstream repository is not made Apache-2.0 by sitting in it. Open before any release (PORT.md
-section 6.6, questions K1 and K8):
-
-- Fonts **Arcane Nine** ("Typeface by Chequered Ink. 2021. All Rights Reserved"), **Roman Gradient** ("Copyright
-  (c) 2021 by Vladimir Nikolic. All rights reserved.") and **Riesling** ("(c) Bright Ideas"): to be replaced with
-  openly licensed fonts.
-- **Liberation Sans** (the TextMeshPro default asset): SIL Open Font License 1.1; its licence text must ship with it.
-- **Audio** (credited to Three Ribbon Studios) and the **card model and atlas** (no credit in the repo): origin of
-  the material not determined; decide before release.
+- **Audio** (credited upstream to Three Ribbon Studios): shipped under the repository's licence with that credit,
+  as the coordinator's decision K8 allows for the Private world; the origin of the samples could not be
+  determined from the repo. **Decide before release.**
+- **Table model** (Sentinel373) and **table textures** (FiyCsf): credited upstream, covered only by the repository's
+  licence and the credit.
 
 ## Apache License, Version 2.0 (copied from the fork's LICENSE)
 
