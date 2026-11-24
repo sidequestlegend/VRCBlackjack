@@ -1,0 +1,9146 @@
+{
+ "schema": 1,
+ "slug": "blackjack",
+ "hash": "",
+ "provisional": "PROVISIONAL: written by tools/provisional-bindings.ts from the object model in PORT.md section 5, not by the kit builder. Object paths are upstream's names; the kit builder will write the real file.",
+ "root": "Blackjack",
+ "bundles": {
+  "windows": "",
+  "android": ""
+ },
+ "objects": {
+  "controller": {
+   "path": "Game Controller",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "deck": {
+   "path": "Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "dealer": {
+   "path": "Dealer",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "dealerUI": {
+   "path": "Dealer/Dealer UI Controller",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "audioController": {
+   "path": "Audio Controller",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "audio": {
+   "path": "Audio Controller/Audio",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "chipAudio": {
+   "path": "Chip Controller/Audio",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "distance": {
+   "path": "Distance Optimizer",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "tableCanvas": {
+   "path": "Dealer/Dealer UI Controller/Dealer Table Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "autoCanvas": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "autoOwner": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "autoIdle": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Idle",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "manualCanvas": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "manualOwner": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Manual Dealer Canvas/Mask/Owner",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "manualNotOwner": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Manual Dealer Canvas/Mask/Not Owner",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "heightGroup": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Manual Dealer Canvas/Mask/Height Adjustment",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "heightAnim": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Height Adjustment",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "manualSettings": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "resetButton": {
+   "path": "Dealer/Dealer UI Controller/Reset Button",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "dealerCamera": {
+   "path": "Dealer Camera",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "dealerValuesCanvas": {
+   "path": "Dealer Camera/Dealer Card Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "dealerValues": {
+   "path": "Dealer Camera/Dealer Card Canvas/Dealer Values",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "helpersChanger": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Helpers",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "chipToggle": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Use Chips",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "deckChanger": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Deck Count",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "deckCount": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Deck Count/Count/Text",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "deckSubArrow": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Deck Count/Subtract/Arrow",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "helpersOnBtn": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Helpers/Use Helpers On",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "helpersOffBtn": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Helpers/Use Helpers Off",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "chipsOnBtn": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Use Chips/Use Chips On",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "chipsOffBtn": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Use Chips/Use Chips Off",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "deckAdd": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Deck Count/Add",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "deckSub": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Deck Count/Subtract",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "mhelpersChanger": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Helpers",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "mchipToggle": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Use Chips",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "mdeckChanger": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Deck Count",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "mdeckCount": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Deck Count/Count/Text",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "mdeckSubArrow": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Deck Count/Subtract/Arrow",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "mhelpersOnBtn": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Helpers/Use Helpers On",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "mhelpersOffBtn": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Helpers/Use Helpers Off",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "mchipsOnBtn": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Use Chips/Use Chips On",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "mchipsOffBtn": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Use Chips/Use Chips Off",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "mdeckAdd": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Deck Count/Add",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "mdeckSub": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Settings/Deck Count/Subtract",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "takeOwnership": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Idle/Take Ownership",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "takeOwnershipManual": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Manual Dealer Canvas/Mask/Not Owner/Take Ownership",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "startGame": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Start Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "startGameManual": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Manual Dealer Canvas/Mask/Owner/Start Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "swapToManual": {
+   "path": "Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Game Settings/Manual Play/Swap to Manual",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "swapToAuto": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Manual Dealer Canvas/Mask/Owner/Swap to AI Play",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "heightUp": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Manual Dealer Canvas/Mask/Height Adjustment/Up",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "heightDown": {
+   "path": "Dealer/Dealer UI Controller/Manual Canvas/Manual Dealer Canvas/Mask/Height Adjustment/Down",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "resetTable": {
+   "path": "Dealer/Dealer UI Controller/Reset Button/Take Ownership",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "resetChips": {
+   "path": "Dealer/Dealer UI Controller/Reset Button/Reset Chips",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "d0": {
+   "path": "Dealer/Card Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "d1": {
+   "path": "Dealer/Card Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "d2": {
+   "path": "Dealer/Card Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "d3": {
+   "path": "Dealer/Card Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "d4": {
+   "path": "Dealer/Card Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "d5": {
+   "path": "Dealer/Card Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "d6": {
+   "path": "Dealer/Card Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "d7": {
+   "path": "Dealer/Card Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "d8": {
+   "path": "Dealer/Card Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "d9": {
+   "path": "Dealer/Card Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "d10": {
+   "path": "Dealer/Card Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0": {
+   "path": "Players/Players/Player 0",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_nd": {
+   "path": "Players/Players/Player 0/Normal Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_sd": {
+   "path": "Players/Players/Player 0/Split Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_ui": {
+   "path": "Players/Players/Player 0/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_ic": {
+   "path": "Players/Players/Player 0/Interactable Controller",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_uiAnim": {
+   "path": "Players/Players/Player 0/Player UI/Player UI Canvas/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_ownerUI": {
+   "path": "Players/Players/Player 0/Player UI/Owner UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_notOwnerUI": {
+   "path": "Players/Players/Player 0/Player UI/Not Owner UI/Player Idle",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_nameObj": {
+   "path": "Players/Players/Player 0/Player UI/Not Owner UI/Player Name",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_nameText": {
+   "path": "Players/Players/Player 0/Player UI/Not Owner UI/Player Name/Text",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_normalHelper": {
+   "path": "Players/Players/Player 0/Player UI/Player UI Canvas/Player UI/Player/Normal Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_splitHelper": {
+   "path": "Players/Players/Player 0/Player UI/Player UI Canvas/Player UI/Player/Split Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_timer": {
+   "path": "Players/Players/Player 0/Player UI/Player UI Canvas/Player UI/Player/Timer",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_dealerCanvas": {
+   "path": "Players/Players/Player 0/Dealer Player UI Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_dealerMask": {
+   "path": "Players/Players/Player 0/Dealer Player UI Canvas/Mask",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_dealerName": {
+   "path": "Players/Players/Player 0/Dealer Player UI Canvas/Mask/PLAYER NAME",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_normalCount": {
+   "path": "Players/Players/Player 0/Dealer Player UI Canvas/Mask/Normal/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_splitCount": {
+   "path": "Players/Players/Player 0/Dealer Player UI Canvas/Mask/Split/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_dHitNormal": {
+   "path": "Players/Players/Player 0/Dealer Player UI Canvas/Mask/Normal/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_dHitSplit": {
+   "path": "Players/Players/Player 0/Dealer Player UI Canvas/Mask/Split/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_dStand": {
+   "path": "Players/Players/Player 0/Dealer Player UI Canvas/Mask/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_chips": {
+   "path": "Players/Players/Player 0/Chip Panel",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_currentBet": {
+   "path": "Players/Players/Player 0/Chip Panel/Current Bet",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_totalChips": {
+   "path": "Players/Players/Player 0/Chip Panel/Total Chips",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_vizJoin": {
+   "path": "Players/Players/Player 0/Player UI/Not Owner UI/Player Idle/JOIN",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_vizStand": {
+   "path": "Players/Players/Player 0/Player UI/Player UI Canvas/Player UI/Player/Buttons/STAND",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_vizSplit": {
+   "path": "Players/Players/Player 0/Player UI/Player UI Canvas/Player UI/Player/Buttons/SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_vizHitSplit": {
+   "path": "Players/Players/Player 0/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_vizHitNormal": {
+   "path": "Players/Players/Player 0/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT NORMAL",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_vizLeave": {
+   "path": "Players/Players/Player 0/Player UI/Owner UI/Player UI Canvas (1)/LEAVE",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_vizAdd10": {
+   "path": "Players/Players/Player 0/Chip Panel/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_vizAdd5": {
+   "path": "Players/Players/Player 0/Chip Panel/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_vizRemove10": {
+   "path": "Players/Players/Player 0/Chip Panel/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_vizRemove5": {
+   "path": "Players/Players/Player 0/Chip Panel/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_bJoin": {
+   "path": "Players/Players/Player 0/Interactable Controller/Join Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_bStand": {
+   "path": "Players/Players/Player 0/Interactable Controller/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_bSplit": {
+   "path": "Players/Players/Player 0/Interactable Controller/Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_bHitSplit": {
+   "path": "Players/Players/Player 0/Interactable Controller/Hit Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_bHitNormal": {
+   "path": "Players/Players/Player 0/Interactable Controller/Hit Normal",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_bLeave": {
+   "path": "Players/Players/Player 0/Interactable Controller/Leave Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_bAdd10": {
+   "path": "Players/Players/Player 0/Interactable Controller/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_bAdd5": {
+   "path": "Players/Players/Player 0/Interactable Controller/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_bRemove10": {
+   "path": "Players/Players/Player 0/Interactable Controller/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_bRemove5": {
+   "path": "Players/Players/Player 0/Interactable Controller/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p0_n0": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s0": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_n1": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s1": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_n2": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s2": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_n3": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s3": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_n4": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s4": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_n5": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s5": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_n6": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s6": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_n7": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s7": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_n8": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s8": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_n9": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s9": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_n10": {
+   "path": "Players/Players/Player 0/Card Position Animator/Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p0_s10": {
+   "path": "Players/Players/Player 0/Card Position Animator/Split Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1": {
+   "path": "Players/Players/Player 1",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_nd": {
+   "path": "Players/Players/Player 1/Normal Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_sd": {
+   "path": "Players/Players/Player 1/Split Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_ui": {
+   "path": "Players/Players/Player 1/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_ic": {
+   "path": "Players/Players/Player 1/Interactable Controller",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_uiAnim": {
+   "path": "Players/Players/Player 1/Player UI/Player UI Canvas/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_ownerUI": {
+   "path": "Players/Players/Player 1/Player UI/Owner UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_notOwnerUI": {
+   "path": "Players/Players/Player 1/Player UI/Not Owner UI/Player Idle",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_nameObj": {
+   "path": "Players/Players/Player 1/Player UI/Not Owner UI/Player Name",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_nameText": {
+   "path": "Players/Players/Player 1/Player UI/Not Owner UI/Player Name/Text",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_normalHelper": {
+   "path": "Players/Players/Player 1/Player UI/Player UI Canvas/Player UI/Player/Normal Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_splitHelper": {
+   "path": "Players/Players/Player 1/Player UI/Player UI Canvas/Player UI/Player/Split Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_timer": {
+   "path": "Players/Players/Player 1/Player UI/Player UI Canvas/Player UI/Player/Timer",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_dealerCanvas": {
+   "path": "Players/Players/Player 1/Dealer Player UI Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_dealerMask": {
+   "path": "Players/Players/Player 1/Dealer Player UI Canvas/Mask",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_dealerName": {
+   "path": "Players/Players/Player 1/Dealer Player UI Canvas/Mask/PLAYER NAME",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_normalCount": {
+   "path": "Players/Players/Player 1/Dealer Player UI Canvas/Mask/Normal/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_splitCount": {
+   "path": "Players/Players/Player 1/Dealer Player UI Canvas/Mask/Split/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_dHitNormal": {
+   "path": "Players/Players/Player 1/Dealer Player UI Canvas/Mask/Normal/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_dHitSplit": {
+   "path": "Players/Players/Player 1/Dealer Player UI Canvas/Mask/Split/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_dStand": {
+   "path": "Players/Players/Player 1/Dealer Player UI Canvas/Mask/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_chips": {
+   "path": "Players/Players/Player 1/Chip Panel",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_currentBet": {
+   "path": "Players/Players/Player 1/Chip Panel/Current Bet",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_totalChips": {
+   "path": "Players/Players/Player 1/Chip Panel/Total Chips",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_vizJoin": {
+   "path": "Players/Players/Player 1/Player UI/Not Owner UI/Player Idle/JOIN",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_vizStand": {
+   "path": "Players/Players/Player 1/Player UI/Player UI Canvas/Player UI/Player/Buttons/STAND",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_vizSplit": {
+   "path": "Players/Players/Player 1/Player UI/Player UI Canvas/Player UI/Player/Buttons/SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_vizHitSplit": {
+   "path": "Players/Players/Player 1/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_vizHitNormal": {
+   "path": "Players/Players/Player 1/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT NORMAL",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_vizLeave": {
+   "path": "Players/Players/Player 1/Player UI/Owner UI/Player UI Canvas (1)/LEAVE",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_vizAdd10": {
+   "path": "Players/Players/Player 1/Chip Panel/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_vizAdd5": {
+   "path": "Players/Players/Player 1/Chip Panel/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_vizRemove10": {
+   "path": "Players/Players/Player 1/Chip Panel/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_vizRemove5": {
+   "path": "Players/Players/Player 1/Chip Panel/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_bJoin": {
+   "path": "Players/Players/Player 1/Interactable Controller/Join Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_bStand": {
+   "path": "Players/Players/Player 1/Interactable Controller/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_bSplit": {
+   "path": "Players/Players/Player 1/Interactable Controller/Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_bHitSplit": {
+   "path": "Players/Players/Player 1/Interactable Controller/Hit Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_bHitNormal": {
+   "path": "Players/Players/Player 1/Interactable Controller/Hit Normal",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_bLeave": {
+   "path": "Players/Players/Player 1/Interactable Controller/Leave Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_bAdd10": {
+   "path": "Players/Players/Player 1/Interactable Controller/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_bAdd5": {
+   "path": "Players/Players/Player 1/Interactable Controller/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_bRemove10": {
+   "path": "Players/Players/Player 1/Interactable Controller/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_bRemove5": {
+   "path": "Players/Players/Player 1/Interactable Controller/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p1_n0": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s0": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_n1": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s1": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_n2": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s2": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_n3": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s3": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_n4": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s4": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_n5": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s5": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_n6": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s6": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_n7": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s7": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_n8": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s8": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_n9": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s9": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_n10": {
+   "path": "Players/Players/Player 1/Card Position Animator/Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p1_s10": {
+   "path": "Players/Players/Player 1/Card Position Animator/Split Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2": {
+   "path": "Players/Players/Player 2",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_nd": {
+   "path": "Players/Players/Player 2/Normal Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_sd": {
+   "path": "Players/Players/Player 2/Split Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_ui": {
+   "path": "Players/Players/Player 2/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_ic": {
+   "path": "Players/Players/Player 2/Interactable Controller",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_uiAnim": {
+   "path": "Players/Players/Player 2/Player UI/Player UI Canvas/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_ownerUI": {
+   "path": "Players/Players/Player 2/Player UI/Owner UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_notOwnerUI": {
+   "path": "Players/Players/Player 2/Player UI/Not Owner UI/Player Idle",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_nameObj": {
+   "path": "Players/Players/Player 2/Player UI/Not Owner UI/Player Name",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_nameText": {
+   "path": "Players/Players/Player 2/Player UI/Not Owner UI/Player Name/Text",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_normalHelper": {
+   "path": "Players/Players/Player 2/Player UI/Player UI Canvas/Player UI/Player/Normal Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_splitHelper": {
+   "path": "Players/Players/Player 2/Player UI/Player UI Canvas/Player UI/Player/Split Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_timer": {
+   "path": "Players/Players/Player 2/Player UI/Player UI Canvas/Player UI/Player/Timer",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_dealerCanvas": {
+   "path": "Players/Players/Player 2/Dealer Player UI Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_dealerMask": {
+   "path": "Players/Players/Player 2/Dealer Player UI Canvas/Mask",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_dealerName": {
+   "path": "Players/Players/Player 2/Dealer Player UI Canvas/Mask/PLAYER NAME",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_normalCount": {
+   "path": "Players/Players/Player 2/Dealer Player UI Canvas/Mask/Normal/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_splitCount": {
+   "path": "Players/Players/Player 2/Dealer Player UI Canvas/Mask/Split/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_dHitNormal": {
+   "path": "Players/Players/Player 2/Dealer Player UI Canvas/Mask/Normal/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_dHitSplit": {
+   "path": "Players/Players/Player 2/Dealer Player UI Canvas/Mask/Split/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_dStand": {
+   "path": "Players/Players/Player 2/Dealer Player UI Canvas/Mask/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_chips": {
+   "path": "Players/Players/Player 2/Chip Panel",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_currentBet": {
+   "path": "Players/Players/Player 2/Chip Panel/Current Bet",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_totalChips": {
+   "path": "Players/Players/Player 2/Chip Panel/Total Chips",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_vizJoin": {
+   "path": "Players/Players/Player 2/Player UI/Not Owner UI/Player Idle/JOIN",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_vizStand": {
+   "path": "Players/Players/Player 2/Player UI/Player UI Canvas/Player UI/Player/Buttons/STAND",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_vizSplit": {
+   "path": "Players/Players/Player 2/Player UI/Player UI Canvas/Player UI/Player/Buttons/SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_vizHitSplit": {
+   "path": "Players/Players/Player 2/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_vizHitNormal": {
+   "path": "Players/Players/Player 2/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT NORMAL",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_vizLeave": {
+   "path": "Players/Players/Player 2/Player UI/Owner UI/Player UI Canvas (1)/LEAVE",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_vizAdd10": {
+   "path": "Players/Players/Player 2/Chip Panel/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_vizAdd5": {
+   "path": "Players/Players/Player 2/Chip Panel/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_vizRemove10": {
+   "path": "Players/Players/Player 2/Chip Panel/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_vizRemove5": {
+   "path": "Players/Players/Player 2/Chip Panel/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_bJoin": {
+   "path": "Players/Players/Player 2/Interactable Controller/Join Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_bStand": {
+   "path": "Players/Players/Player 2/Interactable Controller/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_bSplit": {
+   "path": "Players/Players/Player 2/Interactable Controller/Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_bHitSplit": {
+   "path": "Players/Players/Player 2/Interactable Controller/Hit Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_bHitNormal": {
+   "path": "Players/Players/Player 2/Interactable Controller/Hit Normal",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_bLeave": {
+   "path": "Players/Players/Player 2/Interactable Controller/Leave Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_bAdd10": {
+   "path": "Players/Players/Player 2/Interactable Controller/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_bAdd5": {
+   "path": "Players/Players/Player 2/Interactable Controller/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_bRemove10": {
+   "path": "Players/Players/Player 2/Interactable Controller/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_bRemove5": {
+   "path": "Players/Players/Player 2/Interactable Controller/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p2_n0": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s0": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_n1": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s1": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_n2": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s2": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_n3": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s3": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_n4": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s4": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_n5": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s5": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_n6": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s6": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_n7": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s7": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_n8": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s8": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_n9": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s9": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_n10": {
+   "path": "Players/Players/Player 2/Card Position Animator/Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p2_s10": {
+   "path": "Players/Players/Player 2/Card Position Animator/Split Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3": {
+   "path": "Players/Players/Player 3",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_nd": {
+   "path": "Players/Players/Player 3/Normal Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_sd": {
+   "path": "Players/Players/Player 3/Split Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_ui": {
+   "path": "Players/Players/Player 3/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_ic": {
+   "path": "Players/Players/Player 3/Interactable Controller",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_uiAnim": {
+   "path": "Players/Players/Player 3/Player UI/Player UI Canvas/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_ownerUI": {
+   "path": "Players/Players/Player 3/Player UI/Owner UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_notOwnerUI": {
+   "path": "Players/Players/Player 3/Player UI/Not Owner UI/Player Idle",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_nameObj": {
+   "path": "Players/Players/Player 3/Player UI/Not Owner UI/Player Name",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_nameText": {
+   "path": "Players/Players/Player 3/Player UI/Not Owner UI/Player Name/Text",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_normalHelper": {
+   "path": "Players/Players/Player 3/Player UI/Player UI Canvas/Player UI/Player/Normal Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_splitHelper": {
+   "path": "Players/Players/Player 3/Player UI/Player UI Canvas/Player UI/Player/Split Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_timer": {
+   "path": "Players/Players/Player 3/Player UI/Player UI Canvas/Player UI/Player/Timer",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_dealerCanvas": {
+   "path": "Players/Players/Player 3/Dealer Player UI Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_dealerMask": {
+   "path": "Players/Players/Player 3/Dealer Player UI Canvas/Mask",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_dealerName": {
+   "path": "Players/Players/Player 3/Dealer Player UI Canvas/Mask/PLAYER NAME",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_normalCount": {
+   "path": "Players/Players/Player 3/Dealer Player UI Canvas/Mask/Normal/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_splitCount": {
+   "path": "Players/Players/Player 3/Dealer Player UI Canvas/Mask/Split/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_dHitNormal": {
+   "path": "Players/Players/Player 3/Dealer Player UI Canvas/Mask/Normal/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_dHitSplit": {
+   "path": "Players/Players/Player 3/Dealer Player UI Canvas/Mask/Split/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_dStand": {
+   "path": "Players/Players/Player 3/Dealer Player UI Canvas/Mask/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_chips": {
+   "path": "Players/Players/Player 3/Chip Panel",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_currentBet": {
+   "path": "Players/Players/Player 3/Chip Panel/Current Bet",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_totalChips": {
+   "path": "Players/Players/Player 3/Chip Panel/Total Chips",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_vizJoin": {
+   "path": "Players/Players/Player 3/Player UI/Not Owner UI/Player Idle/JOIN",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_vizStand": {
+   "path": "Players/Players/Player 3/Player UI/Player UI Canvas/Player UI/Player/Buttons/STAND",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_vizSplit": {
+   "path": "Players/Players/Player 3/Player UI/Player UI Canvas/Player UI/Player/Buttons/SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_vizHitSplit": {
+   "path": "Players/Players/Player 3/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_vizHitNormal": {
+   "path": "Players/Players/Player 3/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT NORMAL",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_vizLeave": {
+   "path": "Players/Players/Player 3/Player UI/Owner UI/Player UI Canvas (1)/LEAVE",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_vizAdd10": {
+   "path": "Players/Players/Player 3/Chip Panel/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_vizAdd5": {
+   "path": "Players/Players/Player 3/Chip Panel/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_vizRemove10": {
+   "path": "Players/Players/Player 3/Chip Panel/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_vizRemove5": {
+   "path": "Players/Players/Player 3/Chip Panel/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_bJoin": {
+   "path": "Players/Players/Player 3/Interactable Controller/Join Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_bStand": {
+   "path": "Players/Players/Player 3/Interactable Controller/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_bSplit": {
+   "path": "Players/Players/Player 3/Interactable Controller/Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_bHitSplit": {
+   "path": "Players/Players/Player 3/Interactable Controller/Hit Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_bHitNormal": {
+   "path": "Players/Players/Player 3/Interactable Controller/Hit Normal",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_bLeave": {
+   "path": "Players/Players/Player 3/Interactable Controller/Leave Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_bAdd10": {
+   "path": "Players/Players/Player 3/Interactable Controller/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_bAdd5": {
+   "path": "Players/Players/Player 3/Interactable Controller/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_bRemove10": {
+   "path": "Players/Players/Player 3/Interactable Controller/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_bRemove5": {
+   "path": "Players/Players/Player 3/Interactable Controller/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p3_n0": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s0": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_n1": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s1": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_n2": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s2": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_n3": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s3": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_n4": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s4": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_n5": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s5": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_n6": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s6": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_n7": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s7": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_n8": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s8": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_n9": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s9": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_n10": {
+   "path": "Players/Players/Player 3/Card Position Animator/Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p3_s10": {
+   "path": "Players/Players/Player 3/Card Position Animator/Split Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4": {
+   "path": "Players/Players/Player 4",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_nd": {
+   "path": "Players/Players/Player 4/Normal Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_sd": {
+   "path": "Players/Players/Player 4/Split Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_ui": {
+   "path": "Players/Players/Player 4/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_ic": {
+   "path": "Players/Players/Player 4/Interactable Controller",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_uiAnim": {
+   "path": "Players/Players/Player 4/Player UI/Player UI Canvas/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_ownerUI": {
+   "path": "Players/Players/Player 4/Player UI/Owner UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_notOwnerUI": {
+   "path": "Players/Players/Player 4/Player UI/Not Owner UI/Player Idle",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_nameObj": {
+   "path": "Players/Players/Player 4/Player UI/Not Owner UI/Player Name",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_nameText": {
+   "path": "Players/Players/Player 4/Player UI/Not Owner UI/Player Name/Text",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_normalHelper": {
+   "path": "Players/Players/Player 4/Player UI/Player UI Canvas/Player UI/Player/Normal Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_splitHelper": {
+   "path": "Players/Players/Player 4/Player UI/Player UI Canvas/Player UI/Player/Split Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_timer": {
+   "path": "Players/Players/Player 4/Player UI/Player UI Canvas/Player UI/Player/Timer",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_dealerCanvas": {
+   "path": "Players/Players/Player 4/Dealer Player UI Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_dealerMask": {
+   "path": "Players/Players/Player 4/Dealer Player UI Canvas/Mask",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_dealerName": {
+   "path": "Players/Players/Player 4/Dealer Player UI Canvas/Mask/PLAYER NAME",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_normalCount": {
+   "path": "Players/Players/Player 4/Dealer Player UI Canvas/Mask/Normal/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_splitCount": {
+   "path": "Players/Players/Player 4/Dealer Player UI Canvas/Mask/Split/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_dHitNormal": {
+   "path": "Players/Players/Player 4/Dealer Player UI Canvas/Mask/Normal/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_dHitSplit": {
+   "path": "Players/Players/Player 4/Dealer Player UI Canvas/Mask/Split/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_dStand": {
+   "path": "Players/Players/Player 4/Dealer Player UI Canvas/Mask/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_chips": {
+   "path": "Players/Players/Player 4/Chip Panel",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_currentBet": {
+   "path": "Players/Players/Player 4/Chip Panel/Current Bet",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_totalChips": {
+   "path": "Players/Players/Player 4/Chip Panel/Total Chips",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_vizJoin": {
+   "path": "Players/Players/Player 4/Player UI/Not Owner UI/Player Idle/JOIN",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_vizStand": {
+   "path": "Players/Players/Player 4/Player UI/Player UI Canvas/Player UI/Player/Buttons/STAND",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_vizSplit": {
+   "path": "Players/Players/Player 4/Player UI/Player UI Canvas/Player UI/Player/Buttons/SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_vizHitSplit": {
+   "path": "Players/Players/Player 4/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_vizHitNormal": {
+   "path": "Players/Players/Player 4/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT NORMAL",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_vizLeave": {
+   "path": "Players/Players/Player 4/Player UI/Owner UI/Player UI Canvas (1)/LEAVE",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_vizAdd10": {
+   "path": "Players/Players/Player 4/Chip Panel/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_vizAdd5": {
+   "path": "Players/Players/Player 4/Chip Panel/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_vizRemove10": {
+   "path": "Players/Players/Player 4/Chip Panel/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_vizRemove5": {
+   "path": "Players/Players/Player 4/Chip Panel/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_bJoin": {
+   "path": "Players/Players/Player 4/Interactable Controller/Join Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_bStand": {
+   "path": "Players/Players/Player 4/Interactable Controller/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_bSplit": {
+   "path": "Players/Players/Player 4/Interactable Controller/Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_bHitSplit": {
+   "path": "Players/Players/Player 4/Interactable Controller/Hit Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_bHitNormal": {
+   "path": "Players/Players/Player 4/Interactable Controller/Hit Normal",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_bLeave": {
+   "path": "Players/Players/Player 4/Interactable Controller/Leave Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_bAdd10": {
+   "path": "Players/Players/Player 4/Interactable Controller/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_bAdd5": {
+   "path": "Players/Players/Player 4/Interactable Controller/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_bRemove10": {
+   "path": "Players/Players/Player 4/Interactable Controller/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_bRemove5": {
+   "path": "Players/Players/Player 4/Interactable Controller/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p4_n0": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s0": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_n1": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s1": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_n2": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s2": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_n3": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s3": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_n4": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s4": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_n5": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s5": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_n6": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s6": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_n7": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s7": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_n8": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s8": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_n9": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s9": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_n10": {
+   "path": "Players/Players/Player 4/Card Position Animator/Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p4_s10": {
+   "path": "Players/Players/Player 4/Card Position Animator/Split Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5": {
+   "path": "Players/Players/Player 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_nd": {
+   "path": "Players/Players/Player 5/Normal Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_sd": {
+   "path": "Players/Players/Player 5/Split Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_ui": {
+   "path": "Players/Players/Player 5/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_ic": {
+   "path": "Players/Players/Player 5/Interactable Controller",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_uiAnim": {
+   "path": "Players/Players/Player 5/Player UI/Player UI Canvas/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_ownerUI": {
+   "path": "Players/Players/Player 5/Player UI/Owner UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_notOwnerUI": {
+   "path": "Players/Players/Player 5/Player UI/Not Owner UI/Player Idle",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_nameObj": {
+   "path": "Players/Players/Player 5/Player UI/Not Owner UI/Player Name",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_nameText": {
+   "path": "Players/Players/Player 5/Player UI/Not Owner UI/Player Name/Text",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_normalHelper": {
+   "path": "Players/Players/Player 5/Player UI/Player UI Canvas/Player UI/Player/Normal Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_splitHelper": {
+   "path": "Players/Players/Player 5/Player UI/Player UI Canvas/Player UI/Player/Split Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_timer": {
+   "path": "Players/Players/Player 5/Player UI/Player UI Canvas/Player UI/Player/Timer",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_dealerCanvas": {
+   "path": "Players/Players/Player 5/Dealer Player UI Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_dealerMask": {
+   "path": "Players/Players/Player 5/Dealer Player UI Canvas/Mask",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_dealerName": {
+   "path": "Players/Players/Player 5/Dealer Player UI Canvas/Mask/PLAYER NAME",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_normalCount": {
+   "path": "Players/Players/Player 5/Dealer Player UI Canvas/Mask/Normal/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_splitCount": {
+   "path": "Players/Players/Player 5/Dealer Player UI Canvas/Mask/Split/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_dHitNormal": {
+   "path": "Players/Players/Player 5/Dealer Player UI Canvas/Mask/Normal/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_dHitSplit": {
+   "path": "Players/Players/Player 5/Dealer Player UI Canvas/Mask/Split/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_dStand": {
+   "path": "Players/Players/Player 5/Dealer Player UI Canvas/Mask/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_chips": {
+   "path": "Players/Players/Player 5/Chip Panel",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_currentBet": {
+   "path": "Players/Players/Player 5/Chip Panel/Current Bet",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_totalChips": {
+   "path": "Players/Players/Player 5/Chip Panel/Total Chips",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_vizJoin": {
+   "path": "Players/Players/Player 5/Player UI/Not Owner UI/Player Idle/JOIN",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_vizStand": {
+   "path": "Players/Players/Player 5/Player UI/Player UI Canvas/Player UI/Player/Buttons/STAND",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_vizSplit": {
+   "path": "Players/Players/Player 5/Player UI/Player UI Canvas/Player UI/Player/Buttons/SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_vizHitSplit": {
+   "path": "Players/Players/Player 5/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_vizHitNormal": {
+   "path": "Players/Players/Player 5/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT NORMAL",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_vizLeave": {
+   "path": "Players/Players/Player 5/Player UI/Owner UI/Player UI Canvas (1)/LEAVE",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_vizAdd10": {
+   "path": "Players/Players/Player 5/Chip Panel/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_vizAdd5": {
+   "path": "Players/Players/Player 5/Chip Panel/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_vizRemove10": {
+   "path": "Players/Players/Player 5/Chip Panel/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_vizRemove5": {
+   "path": "Players/Players/Player 5/Chip Panel/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_bJoin": {
+   "path": "Players/Players/Player 5/Interactable Controller/Join Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_bStand": {
+   "path": "Players/Players/Player 5/Interactable Controller/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_bSplit": {
+   "path": "Players/Players/Player 5/Interactable Controller/Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_bHitSplit": {
+   "path": "Players/Players/Player 5/Interactable Controller/Hit Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_bHitNormal": {
+   "path": "Players/Players/Player 5/Interactable Controller/Hit Normal",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_bLeave": {
+   "path": "Players/Players/Player 5/Interactable Controller/Leave Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_bAdd10": {
+   "path": "Players/Players/Player 5/Interactable Controller/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_bAdd5": {
+   "path": "Players/Players/Player 5/Interactable Controller/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_bRemove10": {
+   "path": "Players/Players/Player 5/Interactable Controller/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_bRemove5": {
+   "path": "Players/Players/Player 5/Interactable Controller/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p5_n0": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s0": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_n1": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s1": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_n2": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s2": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_n3": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s3": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_n4": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s4": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_n5": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s5": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_n6": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s6": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_n7": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s7": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_n8": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s8": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_n9": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s9": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_n10": {
+   "path": "Players/Players/Player 5/Card Position Animator/Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p5_s10": {
+   "path": "Players/Players/Player 5/Card Position Animator/Split Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6": {
+   "path": "Players/Players/Player 6",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_nd": {
+   "path": "Players/Players/Player 6/Normal Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_sd": {
+   "path": "Players/Players/Player 6/Split Deck",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_ui": {
+   "path": "Players/Players/Player 6/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_ic": {
+   "path": "Players/Players/Player 6/Interactable Controller",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_uiAnim": {
+   "path": "Players/Players/Player 6/Player UI/Player UI Canvas/Player UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_ownerUI": {
+   "path": "Players/Players/Player 6/Player UI/Owner UI",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_notOwnerUI": {
+   "path": "Players/Players/Player 6/Player UI/Not Owner UI/Player Idle",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_nameObj": {
+   "path": "Players/Players/Player 6/Player UI/Not Owner UI/Player Name",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_nameText": {
+   "path": "Players/Players/Player 6/Player UI/Not Owner UI/Player Name/Text",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_normalHelper": {
+   "path": "Players/Players/Player 6/Player UI/Player UI Canvas/Player UI/Player/Normal Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_splitHelper": {
+   "path": "Players/Players/Player 6/Player UI/Player UI Canvas/Player UI/Player/Split Adjustment/HELPER",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_timer": {
+   "path": "Players/Players/Player 6/Player UI/Player UI Canvas/Player UI/Player/Timer",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_dealerCanvas": {
+   "path": "Players/Players/Player 6/Dealer Player UI Canvas",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_dealerMask": {
+   "path": "Players/Players/Player 6/Dealer Player UI Canvas/Mask",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_dealerName": {
+   "path": "Players/Players/Player 6/Dealer Player UI Canvas/Mask/PLAYER NAME",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_normalCount": {
+   "path": "Players/Players/Player 6/Dealer Player UI Canvas/Mask/Normal/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_splitCount": {
+   "path": "Players/Players/Player 6/Dealer Player UI Canvas/Mask/Split/COUNT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_dHitNormal": {
+   "path": "Players/Players/Player 6/Dealer Player UI Canvas/Mask/Normal/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_dHitSplit": {
+   "path": "Players/Players/Player 6/Dealer Player UI Canvas/Mask/Split/HIT",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_dStand": {
+   "path": "Players/Players/Player 6/Dealer Player UI Canvas/Mask/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_chips": {
+   "path": "Players/Players/Player 6/Chip Panel",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_currentBet": {
+   "path": "Players/Players/Player 6/Chip Panel/Current Bet",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_totalChips": {
+   "path": "Players/Players/Player 6/Chip Panel/Total Chips",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_vizJoin": {
+   "path": "Players/Players/Player 6/Player UI/Not Owner UI/Player Idle/JOIN",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_vizStand": {
+   "path": "Players/Players/Player 6/Player UI/Player UI Canvas/Player UI/Player/Buttons/STAND",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_vizSplit": {
+   "path": "Players/Players/Player 6/Player UI/Player UI Canvas/Player UI/Player/Buttons/SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_vizHitSplit": {
+   "path": "Players/Players/Player 6/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT SPLIT",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_vizHitNormal": {
+   "path": "Players/Players/Player 6/Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT NORMAL",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_vizLeave": {
+   "path": "Players/Players/Player 6/Player UI/Owner UI/Player UI Canvas (1)/LEAVE",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_vizAdd10": {
+   "path": "Players/Players/Player 6/Chip Panel/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_vizAdd5": {
+   "path": "Players/Players/Player 6/Chip Panel/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_vizRemove10": {
+   "path": "Players/Players/Player 6/Chip Panel/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_vizRemove5": {
+   "path": "Players/Players/Player 6/Chip Panel/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_bJoin": {
+   "path": "Players/Players/Player 6/Interactable Controller/Join Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_bStand": {
+   "path": "Players/Players/Player 6/Interactable Controller/Stand",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_bSplit": {
+   "path": "Players/Players/Player 6/Interactable Controller/Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_bHitSplit": {
+   "path": "Players/Players/Player 6/Interactable Controller/Hit Split",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_bHitNormal": {
+   "path": "Players/Players/Player 6/Interactable Controller/Hit Normal",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_bLeave": {
+   "path": "Players/Players/Player 6/Interactable Controller/Leave Game",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_bAdd10": {
+   "path": "Players/Players/Player 6/Interactable Controller/Add 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_bAdd5": {
+   "path": "Players/Players/Player 6/Interactable Controller/Add 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_bRemove10": {
+   "path": "Players/Players/Player 6/Interactable Controller/Remove 10",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_bRemove5": {
+   "path": "Players/Players/Player 6/Interactable Controller/Remove 5",
+   "sync": "none",
+   "grab": false,
+   "click": true,
+   "seat": false
+  },
+  "p6_n0": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s0": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/1/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_n1": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s1": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/2/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_n2": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s2": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/3/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_n3": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s3": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/4/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_n4": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s4": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/5/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_n5": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s5": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/6/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_n6": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s6": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/7/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_n7": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s7": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/8/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_n8": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s8": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/9/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_n9": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s9": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/10/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_n10": {
+   "path": "Players/Players/Player 6/Card Position Animator/Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  },
+  "p6_s10": {
+   "path": "Players/Players/Player 6/Card Position Animator/Split Positions/11/Card",
+   "sync": "none",
+   "grab": false,
+   "click": false,
+   "seat": false
+  }
+ },
+ "refs": [
+  "tableCanvas",
+  "autoCanvas",
+  "autoOwner",
+  "autoIdle",
+  "manualCanvas",
+  "manualOwner",
+  "manualNotOwner",
+  "heightGroup",
+  "heightAnim",
+  "manualSettings",
+  "resetButton",
+  "dealerCamera",
+  "dealerValuesCanvas",
+  "dealerValues",
+  "helpersChanger",
+  "chipToggle",
+  "deckChanger",
+  "deckCount",
+  "deckSubArrow",
+  "helpersOnBtn",
+  "helpersOffBtn",
+  "chipsOnBtn",
+  "chipsOffBtn",
+  "mhelpersChanger",
+  "mchipToggle",
+  "mdeckChanger",
+  "mdeckCount",
+  "mdeckSubArrow",
+  "mhelpersOnBtn",
+  "mhelpersOffBtn",
+  "mchipsOnBtn",
+  "mchipsOffBtn",
+  "d0",
+  "d1",
+  "d2",
+  "d3",
+  "d4",
+  "d5",
+  "d6",
+  "d7",
+  "d8",
+  "d9",
+  "d10",
+  "p0_uiAnim",
+  "p0_ownerUI",
+  "p0_notOwnerUI",
+  "p0_nameObj",
+  "p0_nameText",
+  "p0_normalHelper",
+  "p0_splitHelper",
+  "p0_timer",
+  "p0_dealerCanvas",
+  "p0_dealerMask",
+  "p0_dealerName",
+  "p0_normalCount",
+  "p0_splitCount",
+  "p0_chips",
+  "p0_currentBet",
+  "p0_totalChips",
+  "p0_vizJoin",
+  "p0_vizStand",
+  "p0_vizSplit",
+  "p0_vizHitSplit",
+  "p0_vizHitNormal",
+  "p0_vizLeave",
+  "p0_vizAdd10",
+  "p0_vizAdd5",
+  "p0_vizRemove10",
+  "p0_vizRemove5",
+  "p0_n0",
+  "p0_s0",
+  "p0_n1",
+  "p0_s1",
+  "p0_n2",
+  "p0_s2",
+  "p0_n3",
+  "p0_s3",
+  "p0_n4",
+  "p0_s4",
+  "p0_n5",
+  "p0_s5",
+  "p0_n6",
+  "p0_s6",
+  "p0_n7",
+  "p0_s7",
+  "p0_n8",
+  "p0_s8",
+  "p0_n9",
+  "p0_s9",
+  "p0_n10",
+  "p0_s10",
+  "p1_uiAnim",
+  "p1_ownerUI",
+  "p1_notOwnerUI",
+  "p1_nameObj",
+  "p1_nameText",
+  "p1_normalHelper",
+  "p1_splitHelper",
+  "p1_timer",
+  "p1_dealerCanvas",
+  "p1_dealerMask",
+  "p1_dealerName",
+  "p1_normalCount",
+  "p1_splitCount",
+  "p1_chips",
+  "p1_currentBet",
+  "p1_totalChips",
+  "p1_vizJoin",
+  "p1_vizStand",
+  "p1_vizSplit",
+  "p1_vizHitSplit",
+  "p1_vizHitNormal",
+  "p1_vizLeave",
+  "p1_vizAdd10",
+  "p1_vizAdd5",
+  "p1_vizRemove10",
+  "p1_vizRemove5",
+  "p1_n0",
+  "p1_s0",
+  "p1_n1",
+  "p1_s1",
+  "p1_n2",
+  "p1_s2",
+  "p1_n3",
+  "p1_s3",
+  "p1_n4",
+  "p1_s4",
+  "p1_n5",
+  "p1_s5",
+  "p1_n6",
+  "p1_s6",
+  "p1_n7",
+  "p1_s7",
+  "p1_n8",
+  "p1_s8",
+  "p1_n9",
+  "p1_s9",
+  "p1_n10",
+  "p1_s10",
+  "p2_uiAnim",
+  "p2_ownerUI",
+  "p2_notOwnerUI",
+  "p2_nameObj",
+  "p2_nameText",
+  "p2_normalHelper",
+  "p2_splitHelper",
+  "p2_timer",
+  "p2_dealerCanvas",
+  "p2_dealerMask",
+  "p2_dealerName",
+  "p2_normalCount",
+  "p2_splitCount",
+  "p2_chips",
+  "p2_currentBet",
+  "p2_totalChips",
+  "p2_vizJoin",
+  "p2_vizStand",
+  "p2_vizSplit",
+  "p2_vizHitSplit",
+  "p2_vizHitNormal",
+  "p2_vizLeave",
+  "p2_vizAdd10",
+  "p2_vizAdd5",
+  "p2_vizRemove10",
+  "p2_vizRemove5",
+  "p2_n0",
+  "p2_s0",
+  "p2_n1",
+  "p2_s1",
+  "p2_n2",
+  "p2_s2",
+  "p2_n3",
+  "p2_s3",
+  "p2_n4",
+  "p2_s4",
+  "p2_n5",
+  "p2_s5",
+  "p2_n6",
+  "p2_s6",
+  "p2_n7",
+  "p2_s7",
+  "p2_n8",
+  "p2_s8",
+  "p2_n9",
+  "p2_s9",
+  "p2_n10",
+  "p2_s10",
+  "p3_uiAnim",
+  "p3_ownerUI",
+  "p3_notOwnerUI",
+  "p3_nameObj",
+  "p3_nameText",
+  "p3_normalHelper",
+  "p3_splitHelper",
+  "p3_timer",
+  "p3_dealerCanvas",
+  "p3_dealerMask",
+  "p3_dealerName",
+  "p3_normalCount",
+  "p3_splitCount",
+  "p3_chips",
+  "p3_currentBet",
+  "p3_totalChips",
+  "p3_vizJoin",
+  "p3_vizStand",
+  "p3_vizSplit",
+  "p3_vizHitSplit",
+  "p3_vizHitNormal",
+  "p3_vizLeave",
+  "p3_vizAdd10",
+  "p3_vizAdd5",
+  "p3_vizRemove10",
+  "p3_vizRemove5",
+  "p3_n0",
+  "p3_s0",
+  "p3_n1",
+  "p3_s1",
+  "p3_n2",
+  "p3_s2",
+  "p3_n3",
+  "p3_s3",
+  "p3_n4",
+  "p3_s4",
+  "p3_n5",
+  "p3_s5",
+  "p3_n6",
+  "p3_s6",
+  "p3_n7",
+  "p3_s7",
+  "p3_n8",
+  "p3_s8",
+  "p3_n9",
+  "p3_s9",
+  "p3_n10",
+  "p3_s10",
+  "p4_uiAnim",
+  "p4_ownerUI",
+  "p4_notOwnerUI",
+  "p4_nameObj",
+  "p4_nameText",
+  "p4_normalHelper",
+  "p4_splitHelper",
+  "p4_timer",
+  "p4_dealerCanvas",
+  "p4_dealerMask",
+  "p4_dealerName",
+  "p4_normalCount",
+  "p4_splitCount",
+  "p4_chips",
+  "p4_currentBet",
+  "p4_totalChips",
+  "p4_vizJoin",
+  "p4_vizStand",
+  "p4_vizSplit",
+  "p4_vizHitSplit",
+  "p4_vizHitNormal",
+  "p4_vizLeave",
+  "p4_vizAdd10",
+  "p4_vizAdd5",
+  "p4_vizRemove10",
+  "p4_vizRemove5",
+  "p4_n0",
+  "p4_s0",
+  "p4_n1",
+  "p4_s1",
+  "p4_n2",
+  "p4_s2",
+  "p4_n3",
+  "p4_s3",
+  "p4_n4",
+  "p4_s4",
+  "p4_n5",
+  "p4_s5",
+  "p4_n6",
+  "p4_s6",
+  "p4_n7",
+  "p4_s7",
+  "p4_n8",
+  "p4_s8",
+  "p4_n9",
+  "p4_s9",
+  "p4_n10",
+  "p4_s10",
+  "p5_uiAnim",
+  "p5_ownerUI",
+  "p5_notOwnerUI",
+  "p5_nameObj",
+  "p5_nameText",
+  "p5_normalHelper",
+  "p5_splitHelper",
+  "p5_timer",
+  "p5_dealerCanvas",
+  "p5_dealerMask",
+  "p5_dealerName",
+  "p5_normalCount",
+  "p5_splitCount",
+  "p5_chips",
+  "p5_currentBet",
+  "p5_totalChips",
+  "p5_vizJoin",
+  "p5_vizStand",
+  "p5_vizSplit",
+  "p5_vizHitSplit",
+  "p5_vizHitNormal",
+  "p5_vizLeave",
+  "p5_vizAdd10",
+  "p5_vizAdd5",
+  "p5_vizRemove10",
+  "p5_vizRemove5",
+  "p5_n0",
+  "p5_s0",
+  "p5_n1",
+  "p5_s1",
+  "p5_n2",
+  "p5_s2",
+  "p5_n3",
+  "p5_s3",
+  "p5_n4",
+  "p5_s4",
+  "p5_n5",
+  "p5_s5",
+  "p5_n6",
+  "p5_s6",
+  "p5_n7",
+  "p5_s7",
+  "p5_n8",
+  "p5_s8",
+  "p5_n9",
+  "p5_s9",
+  "p5_n10",
+  "p5_s10",
+  "p6_uiAnim",
+  "p6_ownerUI",
+  "p6_notOwnerUI",
+  "p6_nameObj",
+  "p6_nameText",
+  "p6_normalHelper",
+  "p6_splitHelper",
+  "p6_timer",
+  "p6_dealerCanvas",
+  "p6_dealerMask",
+  "p6_dealerName",
+  "p6_normalCount",
+  "p6_splitCount",
+  "p6_chips",
+  "p6_currentBet",
+  "p6_totalChips",
+  "p6_vizJoin",
+  "p6_vizStand",
+  "p6_vizSplit",
+  "p6_vizHitSplit",
+  "p6_vizHitNormal",
+  "p6_vizLeave",
+  "p6_vizAdd10",
+  "p6_vizAdd5",
+  "p6_vizRemove10",
+  "p6_vizRemove5",
+  "p6_n0",
+  "p6_s0",
+  "p6_n1",
+  "p6_s1",
+  "p6_n2",
+  "p6_s2",
+  "p6_n3",
+  "p6_s3",
+  "p6_n4",
+  "p6_s4",
+  "p6_n5",
+  "p6_s5",
+  "p6_n6",
+  "p6_s6",
+  "p6_n7",
+  "p6_s7",
+  "p6_n8",
+  "p6_s8",
+  "p6_n9",
+  "p6_s9",
+  "p6_n10",
+  "p6_s10"
+ ],
+ "behaviours": [
+  {
+   "id": "world",
+   "type": "BlackjackWorldController",
+   "fields": {
+    "ChipController": {
+     "$beh": "chips"
+    },
+    "BlackjackTables": [
+     {
+      "$beh": "ctrl"
+     }
+    ]
+   }
+  },
+  {
+   "id": "chips",
+   "type": "ChipController",
+   "object": "chipAudio",
+   "fields": {
+    "UseChipSystem": true,
+    "StartingChips": 100,
+    "Audio": {
+     "$comp": "chipAudio",
+     "kind": "AudioSource"
+    },
+    "NotEnoughChipsClip": {
+     "$clip": 0
+    },
+    "AddToBetClip": {
+     "$clip": 1
+    }
+   }
+  },
+  {
+   "id": "ctrl",
+   "type": "Controller",
+   "object": "controller",
+   "group": "table",
+   "fields": {
+    "ChipController": {
+     "$beh": "chips"
+    },
+    "AudioController": {
+     "$beh": "audio"
+    },
+    "Dealer": {
+     "$beh": "dealer"
+    },
+    "Players": [
+     {
+      "$beh": "p0"
+     },
+     {
+      "$beh": "p1"
+     },
+     {
+      "$beh": "p2"
+     },
+     {
+      "$beh": "p3"
+     },
+     {
+      "$beh": "p4"
+     },
+     {
+      "$beh": "p5"
+     },
+     {
+      "$beh": "p6"
+     }
+    ],
+    "Deck": {
+     "$beh": "deck"
+    },
+    "DealerUI": {
+     "$beh": "dealerUI"
+    },
+    "Distance": {
+     "$beh": "distance"
+    }
+   }
+  },
+  {
+   "id": "deck",
+   "type": "DeckManager",
+   "object": "deck",
+   "group": "table",
+   "fields": {
+    "BlackjackController": {
+     "$beh": "ctrl"
+    }
+   }
+  },
+  {
+   "id": "dealer",
+   "type": "Dealer",
+   "object": "dealer",
+   "group": "table",
+   "fields": {
+    "GameController": {
+     "$beh": "ctrl"
+    },
+    "Deck": {
+     "$beh": "deck"
+    },
+    "DealerUI": {
+     "$beh": "dealerUI"
+    }
+   }
+  },
+  {
+   "id": "dealerUI",
+   "type": "DealerUIController",
+   "object": "dealerUI",
+   "fields": {
+    "BlackjackController": {
+     "$beh": "ctrl"
+    },
+    "DealerController": {
+     "$beh": "dealer"
+    },
+    "AutoCanvas": {
+     "$obj": "autoCanvas"
+    },
+    "AutoCanvasAnimator": {
+     "$comp": "autoCanvas",
+     "kind": "Animator"
+    },
+    "OwnerUI": {
+     "$obj": "autoOwner"
+    },
+    "ManualOwnerUI": {
+     "$obj": "manualOwner"
+    },
+    "ManualOwnerSettings": {
+     "$obj": "manualSettings"
+    },
+    "ManualNotOwnerUI": {
+     "$obj": "manualNotOwner"
+    },
+    "OwnerSlider": {
+     "$obj": "heightGroup"
+    },
+    "UIHeightAnimator": {
+     "$comp": "heightAnim",
+     "kind": "Animator"
+    },
+    "DeckCount": {
+     "$comp": "deckCount",
+     "kind": "TMP"
+    },
+    "DeckCountManual": {
+     "$comp": "mdeckCount",
+     "kind": "TMP"
+    },
+    "NotOwnerUI": {
+     "$obj": "autoIdle"
+    },
+    "TableUIAnimator": {
+     "$comp": "tableCanvas",
+     "kind": "Animator"
+    },
+    "ChipToggle": {
+     "$obj": "chipToggle"
+    },
+    "ChipOn": {
+     "$obj": "chipsOffBtn"
+    },
+    "ChipOff": {
+     "$obj": "chipsOnBtn"
+    },
+    "DeckChanger": {
+     "$obj": "deckChanger"
+    },
+    "DeckSubtractArrow": {
+     "$obj": "deckSubArrow"
+    },
+    "HelpersChanger": {
+     "$obj": "helpersChanger"
+    },
+    "HelpersOn": {
+     "$obj": "helpersOffBtn"
+    },
+    "HelpersOff": {
+     "$obj": "helpersOnBtn"
+    },
+    "ChipToggleManual": {
+     "$obj": "mchipToggle"
+    },
+    "ChipOnManual": {
+     "$obj": "mchipsOffBtn"
+    },
+    "ChipOffManual": {
+     "$obj": "mchipsOnBtn"
+    },
+    "DeckChangerManual": {
+     "$obj": "mdeckChanger"
+    },
+    "DeckSubtractArrowManual": {
+     "$obj": "mdeckSubArrow"
+    },
+    "HelpersChangerManual": {
+     "$obj": "mhelpersChanger"
+    },
+    "HelpersOnManual": {
+     "$obj": "mhelpersOffBtn"
+    },
+    "HelpersOffManual": {
+     "$obj": "mhelpersOnBtn"
+    },
+    "DealerValuesCanvas": {
+     "$obj": "dealerValuesCanvas"
+    },
+    "DealerValues": {
+     "$comp": "dealerValues",
+     "kind": "TMP"
+    },
+    "Slots": [
+     {
+      "$obj": "d0"
+     },
+     {
+      "$obj": "d1"
+     },
+     {
+      "$obj": "d2"
+     },
+     {
+      "$obj": "d3"
+     },
+     {
+      "$obj": "d4"
+     },
+     {
+      "$obj": "d5"
+     },
+     {
+      "$obj": "d6"
+     },
+     {
+      "$obj": "d7"
+     },
+     {
+      "$obj": "d8"
+     },
+     {
+      "$obj": "d9"
+     },
+     {
+      "$obj": "d10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "d0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "d1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "d2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "d3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "d4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "d5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "d6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "d7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "d8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "d9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "d10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "d0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "d1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "d2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "d3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "d4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "d5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "d6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "d7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "d8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "d9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "d10",
+      "kind": "Animator"
+     }
+    ]
+   }
+  },
+  {
+   "id": "audio",
+   "type": "AudioController",
+   "object": "audioController",
+   "fields": {
+    "Audio": {
+     "$comp": "audio",
+     "kind": "AudioSource"
+    },
+    "StartMatch": {
+     "$clip": 0
+    },
+    "StartActivePlay": {
+     "$clip": 1
+    },
+    "SplitDeck": {
+     "$clip": 2
+    },
+    "Stand": {
+     "$clip": 3
+    },
+    "WinMatch": {
+     "$clip": 4
+    },
+    "LoseMatch": {
+     "$clip": 5
+    },
+    "DrawMatch": {
+     "$clip": 6
+    },
+    "DealerWantToHit": {
+     "$clip": 7
+    },
+    "Bust": {
+     "$clip": 8
+    },
+    "TakeControl": {
+     "$clip": 9
+    },
+    "ReleaseControl": {
+     "$clip": 10
+    },
+    "UIInteract": {
+     "$clip": 11
+    },
+    "DrawCard": [
+     {
+      "$clip": 12
+     },
+     {
+      "$clip": 13
+     },
+     {
+      "$clip": 14
+     },
+     {
+      "$clip": 15
+     },
+     {
+      "$clip": 16
+     },
+     {
+      "$clip": 17
+     },
+     {
+      "$clip": 18
+     },
+     {
+      "$clip": 19
+     },
+     {
+      "$clip": 20
+     },
+     {
+      "$clip": 21
+     },
+     {
+      "$clip": 22
+     },
+     {
+      "$clip": 23
+     },
+     {
+      "$clip": 24
+     },
+     {
+      "$clip": 25
+     },
+     {
+      "$clip": 26
+     },
+     {
+      "$clip": 27
+     },
+     {
+      "$clip": 28
+     },
+     {
+      "$clip": 29
+     },
+     {
+      "$clip": 30
+     },
+     {
+      "$clip": 31
+     },
+     {
+      "$clip": 32
+     },
+     {
+      "$clip": 33
+     },
+     {
+      "$clip": 34
+     },
+     {
+      "$clip": 35
+     },
+     {
+      "$clip": 36
+     },
+     {
+      "$clip": 37
+     },
+     {
+      "$clip": 38
+     },
+     {
+      "$clip": 39
+     },
+     {
+      "$clip": 40
+     },
+     {
+      "$clip": 41
+     },
+     {
+      "$clip": 42
+     },
+     {
+      "$clip": 43
+     },
+     {
+      "$clip": 44
+     },
+     {
+      "$clip": 45
+     },
+     {
+      "$clip": 46
+     }
+    ],
+    "FlipCard": [
+     {
+      "$clip": 47
+     },
+     {
+      "$clip": 48
+     },
+     {
+      "$clip": 49
+     },
+     {
+      "$clip": 50
+     },
+     {
+      "$clip": 51
+     },
+     {
+      "$clip": 52
+     },
+     {
+      "$clip": 53
+     },
+     {
+      "$clip": 54
+     },
+     {
+      "$clip": 55
+     },
+     {
+      "$clip": 56
+     },
+     {
+      "$clip": 57
+     },
+     {
+      "$clip": 58
+     },
+     {
+      "$clip": 59
+     },
+     {
+      "$clip": 60
+     },
+     {
+      "$clip": 61
+     },
+     {
+      "$clip": 62
+     },
+     {
+      "$clip": 63
+     },
+     {
+      "$clip": 64
+     },
+     {
+      "$clip": 65
+     },
+     {
+      "$clip": 66
+     },
+     {
+      "$clip": 67
+     },
+     {
+      "$clip": 68
+     },
+     {
+      "$clip": 69
+     },
+     {
+      "$clip": 70
+     },
+     {
+      "$clip": 71
+     },
+     {
+      "$clip": 72
+     },
+     {
+      "$clip": 73
+     },
+     {
+      "$clip": 74
+     },
+     {
+      "$clip": 75
+     },
+     {
+      "$clip": 76
+     },
+     {
+      "$clip": 77
+     },
+     {
+      "$clip": 78
+     },
+     {
+      "$clip": 79
+     },
+     {
+      "$clip": 80
+     },
+     {
+      "$clip": 81
+     },
+     {
+      "$clip": 82
+     },
+     {
+      "$clip": 83
+     },
+     {
+      "$clip": 84
+     },
+     {
+      "$clip": 85
+     },
+     {
+      "$clip": 86
+     },
+     {
+      "$clip": 87
+     },
+     {
+      "$clip": 88
+     },
+     {
+      "$clip": 89
+     },
+     {
+      "$clip": 90
+     },
+     {
+      "$clip": 91
+     },
+     {
+      "$clip": 92
+     },
+     {
+      "$clip": 93
+     },
+     {
+      "$clip": 94
+     }
+    ]
+   }
+  },
+  {
+   "id": "distance",
+   "type": "DistanceOptimizer",
+   "object": "distance",
+   "fields": {
+    "GameController": {
+     "$beh": "ctrl"
+    },
+    "AudioController": {
+     "$beh": "audio"
+    },
+    "Players": [
+     {
+      "$beh": "p0"
+     },
+     {
+      "$beh": "p1"
+     },
+     {
+      "$beh": "p2"
+     },
+     {
+      "$beh": "p3"
+     },
+     {
+      "$beh": "p4"
+     },
+     {
+      "$beh": "p5"
+     },
+     {
+      "$beh": "p6"
+     }
+    ],
+    "DealerUI": {
+     "$beh": "dealerUI"
+    },
+    "TurnOff": [
+     {
+      "$obj": "dealerCamera"
+     },
+     {
+      "$obj": "manualCanvas"
+     },
+     {
+      "$obj": "autoCanvas"
+     },
+     {
+      "$obj": "tableCanvas"
+     },
+     {
+      "$obj": "resetButton"
+     }
+    ]
+   }
+  },
+  {
+   "id": "disable",
+   "type": "DisableFixer",
+   "fields": {
+    "Players": [
+     {
+      "$beh": "p0"
+     },
+     {
+      "$beh": "p1"
+     },
+     {
+      "$beh": "p2"
+     },
+     {
+      "$beh": "p3"
+     },
+     {
+      "$beh": "p4"
+     },
+     {
+      "$beh": "p5"
+     },
+     {
+      "$beh": "p6"
+     }
+    ],
+    "Controller": {
+     "$beh": "ctrl"
+    }
+   }
+  },
+  {
+   "id": "p0",
+   "type": "Player",
+   "object": "p0",
+   "group": "table",
+   "fields": {
+    "BlackjackController": {
+     "$beh": "ctrl"
+    },
+    "PlayerNum": 0,
+    "NormalDeck": {
+     "$beh": "p0n"
+    },
+    "SplitDeck": {
+     "$beh": "p0s"
+    },
+    "Deck": {
+     "$beh": "deck"
+    },
+    "PlayerUI": {
+     "$beh": "p0ui"
+    },
+    "Interactables": {
+     "$beh": "p0ic"
+    },
+    "PlayerName": {
+     "$comp": "p0_dealerName",
+     "kind": "TMP"
+    },
+    "BetPanel": {
+     "$obj": "p0_chips"
+    },
+    "ChipAnimator": {
+     "$comp": "p0_chips",
+     "kind": "Animator"
+    },
+    "CurrentBet": {
+     "$comp": "p0_currentBet",
+     "kind": "TMP"
+    },
+    "TotalChips": {
+     "$comp": "p0_totalChips",
+     "kind": "TMP"
+    },
+    "Timer": {
+     "$comp": "p0_timer",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p0n",
+   "type": "PlayerDeck",
+   "object": "p0_nd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p0"
+    },
+    "isSplitDeck": false,
+    "Slots": [
+     {
+      "$obj": "p0_n0"
+     },
+     {
+      "$obj": "p0_n1"
+     },
+     {
+      "$obj": "p0_n2"
+     },
+     {
+      "$obj": "p0_n3"
+     },
+     {
+      "$obj": "p0_n4"
+     },
+     {
+      "$obj": "p0_n5"
+     },
+     {
+      "$obj": "p0_n6"
+     },
+     {
+      "$obj": "p0_n7"
+     },
+     {
+      "$obj": "p0_n8"
+     },
+     {
+      "$obj": "p0_n9"
+     },
+     {
+      "$obj": "p0_n10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p0_n0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_n1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_n2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_n3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_n4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_n5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_n6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_n7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_n8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_n9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_n10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p0_n0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_n1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_n2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_n3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_n4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_n5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_n6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_n7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_n8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_n9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_n10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p0_normalCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p0s",
+   "type": "PlayerDeck",
+   "object": "p0_sd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p0"
+    },
+    "isSplitDeck": true,
+    "Slots": [
+     {
+      "$obj": "p0_s0"
+     },
+     {
+      "$obj": "p0_s1"
+     },
+     {
+      "$obj": "p0_s2"
+     },
+     {
+      "$obj": "p0_s3"
+     },
+     {
+      "$obj": "p0_s4"
+     },
+     {
+      "$obj": "p0_s5"
+     },
+     {
+      "$obj": "p0_s6"
+     },
+     {
+      "$obj": "p0_s7"
+     },
+     {
+      "$obj": "p0_s8"
+     },
+     {
+      "$obj": "p0_s9"
+     },
+     {
+      "$obj": "p0_s10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p0_s0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_s1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_s2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_s3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_s4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_s5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_s6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_s7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_s8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_s9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p0_s10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p0_s0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_s1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_s2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_s3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_s4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_s5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_s6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_s7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_s8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_s9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p0_s10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p0_splitCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p0ui",
+   "type": "PlayerUIController",
+   "object": "p0_ui",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p0"
+    },
+    "OwnerUI": {
+     "$obj": "p0_ownerUI"
+    },
+    "DealerUI": {
+     "$obj": "p0_dealerMask"
+    },
+    "NotOwnerUI": {
+     "$obj": "p0_notOwnerUI"
+    },
+    "PlayerName": {
+     "$obj": "p0_nameObj"
+    },
+    "PlayerUIAnimator": {
+     "$comp": "p0_uiAnim",
+     "kind": "Animator"
+    },
+    "DealerUIAnimator": {
+     "$comp": "p0_dealerCanvas",
+     "kind": "Animator"
+    },
+    "PlayerOwner": {
+     "$comp": "p0_nameText",
+     "kind": "TMP"
+    },
+    "NormalHelper": {
+     "$comp": "p0_normalHelper",
+     "kind": "TMP"
+    },
+    "SplitHelper": {
+     "$comp": "p0_splitHelper",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p0bJoin",
+   "type": "Interactable",
+   "object": "p0_bJoin",
+   "fields": {
+    "Event": "_TakeControl",
+    "TargetBehaviour": {
+     "$beh": "p0"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p0_vizJoin",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p0bStand",
+   "type": "Interactable",
+   "object": "p0_bStand",
+   "fields": {
+    "Event": "Stand",
+    "TargetBehaviour": {
+     "$beh": "p0"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p0_vizStand",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p0bSplit",
+   "type": "Interactable",
+   "object": "p0_bSplit",
+   "fields": {
+    "Event": "Split",
+    "TargetBehaviour": {
+     "$beh": "p0"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p0_vizSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p0bHitSplit",
+   "type": "Interactable",
+   "object": "p0_bHitSplit",
+   "fields": {
+    "Event": "_AutoSplitHitMe",
+    "TargetBehaviour": {
+     "$beh": "p0"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p0_vizHitSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p0bHitNormal",
+   "type": "Interactable",
+   "object": "p0_bHitNormal",
+   "fields": {
+    "Event": "_AutoNormalHitMe",
+    "TargetBehaviour": {
+     "$beh": "p0"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p0_vizHitNormal",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p0bLeave",
+   "type": "Interactable",
+   "object": "p0_bLeave",
+   "fields": {
+    "Event": "ReleaseControl",
+    "TargetBehaviour": {
+     "$beh": "p0"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p0_vizLeave",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p0bAdd10",
+   "type": "Interactable",
+   "object": "p0_bAdd10",
+   "fields": {
+    "Event": "_Add10ToBet",
+    "TargetBehaviour": {
+     "$beh": "p0"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p0_vizAdd10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p0bAdd5",
+   "type": "Interactable",
+   "object": "p0_bAdd5",
+   "fields": {
+    "Event": "_Add5ToBet",
+    "TargetBehaviour": {
+     "$beh": "p0"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p0_vizAdd5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p0bRemove10",
+   "type": "Interactable",
+   "object": "p0_bRemove10",
+   "fields": {
+    "Event": "_Remove10FromBet",
+    "TargetBehaviour": {
+     "$beh": "p0"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p0_vizRemove10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p0bRemove5",
+   "type": "Interactable",
+   "object": "p0_bRemove5",
+   "fields": {
+    "Event": "_Remove5FromBet",
+    "TargetBehaviour": {
+     "$beh": "p0"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p0_vizRemove5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p0ic",
+   "type": "InteractableController",
+   "object": "p0_ic",
+   "fields": {
+    "Controller": {
+     "$beh": "ctrl"
+    },
+    "Seat": {
+     "$beh": "p0"
+    },
+    "JoinGame": {
+     "$beh": "p0bJoin"
+    },
+    "Stand": {
+     "$beh": "p0bStand"
+    },
+    "Split": {
+     "$beh": "p0bSplit"
+    },
+    "HitSplit": {
+     "$beh": "p0bHitSplit"
+    },
+    "HitNormal": {
+     "$beh": "p0bHitNormal"
+    },
+    "LeaveGame": {
+     "$beh": "p0bLeave"
+    },
+    "Add10": {
+     "$beh": "p0bAdd10"
+    },
+    "Add5": {
+     "$beh": "p0bAdd5"
+    },
+    "Remove10": {
+     "$beh": "p0bRemove10"
+    },
+    "Remove5": {
+     "$beh": "p0bRemove5"
+    }
+   }
+  },
+  {
+   "id": "p1",
+   "type": "Player",
+   "object": "p1",
+   "group": "table",
+   "fields": {
+    "BlackjackController": {
+     "$beh": "ctrl"
+    },
+    "PlayerNum": 1,
+    "NormalDeck": {
+     "$beh": "p1n"
+    },
+    "SplitDeck": {
+     "$beh": "p1s"
+    },
+    "Deck": {
+     "$beh": "deck"
+    },
+    "PlayerUI": {
+     "$beh": "p1ui"
+    },
+    "Interactables": {
+     "$beh": "p1ic"
+    },
+    "PlayerName": {
+     "$comp": "p1_dealerName",
+     "kind": "TMP"
+    },
+    "BetPanel": {
+     "$obj": "p1_chips"
+    },
+    "ChipAnimator": {
+     "$comp": "p1_chips",
+     "kind": "Animator"
+    },
+    "CurrentBet": {
+     "$comp": "p1_currentBet",
+     "kind": "TMP"
+    },
+    "TotalChips": {
+     "$comp": "p1_totalChips",
+     "kind": "TMP"
+    },
+    "Timer": {
+     "$comp": "p1_timer",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p1n",
+   "type": "PlayerDeck",
+   "object": "p1_nd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p1"
+    },
+    "isSplitDeck": false,
+    "Slots": [
+     {
+      "$obj": "p1_n0"
+     },
+     {
+      "$obj": "p1_n1"
+     },
+     {
+      "$obj": "p1_n2"
+     },
+     {
+      "$obj": "p1_n3"
+     },
+     {
+      "$obj": "p1_n4"
+     },
+     {
+      "$obj": "p1_n5"
+     },
+     {
+      "$obj": "p1_n6"
+     },
+     {
+      "$obj": "p1_n7"
+     },
+     {
+      "$obj": "p1_n8"
+     },
+     {
+      "$obj": "p1_n9"
+     },
+     {
+      "$obj": "p1_n10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p1_n0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_n1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_n2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_n3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_n4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_n5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_n6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_n7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_n8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_n9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_n10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p1_n0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_n1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_n2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_n3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_n4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_n5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_n6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_n7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_n8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_n9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_n10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p1_normalCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p1s",
+   "type": "PlayerDeck",
+   "object": "p1_sd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p1"
+    },
+    "isSplitDeck": true,
+    "Slots": [
+     {
+      "$obj": "p1_s0"
+     },
+     {
+      "$obj": "p1_s1"
+     },
+     {
+      "$obj": "p1_s2"
+     },
+     {
+      "$obj": "p1_s3"
+     },
+     {
+      "$obj": "p1_s4"
+     },
+     {
+      "$obj": "p1_s5"
+     },
+     {
+      "$obj": "p1_s6"
+     },
+     {
+      "$obj": "p1_s7"
+     },
+     {
+      "$obj": "p1_s8"
+     },
+     {
+      "$obj": "p1_s9"
+     },
+     {
+      "$obj": "p1_s10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p1_s0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_s1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_s2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_s3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_s4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_s5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_s6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_s7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_s8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_s9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p1_s10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p1_s0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_s1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_s2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_s3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_s4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_s5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_s6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_s7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_s8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_s9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p1_s10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p1_splitCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p1ui",
+   "type": "PlayerUIController",
+   "object": "p1_ui",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p1"
+    },
+    "OwnerUI": {
+     "$obj": "p1_ownerUI"
+    },
+    "DealerUI": {
+     "$obj": "p1_dealerMask"
+    },
+    "NotOwnerUI": {
+     "$obj": "p1_notOwnerUI"
+    },
+    "PlayerName": {
+     "$obj": "p1_nameObj"
+    },
+    "PlayerUIAnimator": {
+     "$comp": "p1_uiAnim",
+     "kind": "Animator"
+    },
+    "DealerUIAnimator": {
+     "$comp": "p1_dealerCanvas",
+     "kind": "Animator"
+    },
+    "PlayerOwner": {
+     "$comp": "p1_nameText",
+     "kind": "TMP"
+    },
+    "NormalHelper": {
+     "$comp": "p1_normalHelper",
+     "kind": "TMP"
+    },
+    "SplitHelper": {
+     "$comp": "p1_splitHelper",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p1bJoin",
+   "type": "Interactable",
+   "object": "p1_bJoin",
+   "fields": {
+    "Event": "_TakeControl",
+    "TargetBehaviour": {
+     "$beh": "p1"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p1_vizJoin",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p1bStand",
+   "type": "Interactable",
+   "object": "p1_bStand",
+   "fields": {
+    "Event": "Stand",
+    "TargetBehaviour": {
+     "$beh": "p1"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p1_vizStand",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p1bSplit",
+   "type": "Interactable",
+   "object": "p1_bSplit",
+   "fields": {
+    "Event": "Split",
+    "TargetBehaviour": {
+     "$beh": "p1"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p1_vizSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p1bHitSplit",
+   "type": "Interactable",
+   "object": "p1_bHitSplit",
+   "fields": {
+    "Event": "_AutoSplitHitMe",
+    "TargetBehaviour": {
+     "$beh": "p1"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p1_vizHitSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p1bHitNormal",
+   "type": "Interactable",
+   "object": "p1_bHitNormal",
+   "fields": {
+    "Event": "_AutoNormalHitMe",
+    "TargetBehaviour": {
+     "$beh": "p1"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p1_vizHitNormal",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p1bLeave",
+   "type": "Interactable",
+   "object": "p1_bLeave",
+   "fields": {
+    "Event": "ReleaseControl",
+    "TargetBehaviour": {
+     "$beh": "p1"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p1_vizLeave",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p1bAdd10",
+   "type": "Interactable",
+   "object": "p1_bAdd10",
+   "fields": {
+    "Event": "_Add10ToBet",
+    "TargetBehaviour": {
+     "$beh": "p1"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p1_vizAdd10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p1bAdd5",
+   "type": "Interactable",
+   "object": "p1_bAdd5",
+   "fields": {
+    "Event": "_Add5ToBet",
+    "TargetBehaviour": {
+     "$beh": "p1"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p1_vizAdd5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p1bRemove10",
+   "type": "Interactable",
+   "object": "p1_bRemove10",
+   "fields": {
+    "Event": "_Remove10FromBet",
+    "TargetBehaviour": {
+     "$beh": "p1"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p1_vizRemove10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p1bRemove5",
+   "type": "Interactable",
+   "object": "p1_bRemove5",
+   "fields": {
+    "Event": "_Remove5FromBet",
+    "TargetBehaviour": {
+     "$beh": "p1"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p1_vizRemove5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p1ic",
+   "type": "InteractableController",
+   "object": "p1_ic",
+   "fields": {
+    "Controller": {
+     "$beh": "ctrl"
+    },
+    "Seat": {
+     "$beh": "p1"
+    },
+    "JoinGame": {
+     "$beh": "p1bJoin"
+    },
+    "Stand": {
+     "$beh": "p1bStand"
+    },
+    "Split": {
+     "$beh": "p1bSplit"
+    },
+    "HitSplit": {
+     "$beh": "p1bHitSplit"
+    },
+    "HitNormal": {
+     "$beh": "p1bHitNormal"
+    },
+    "LeaveGame": {
+     "$beh": "p1bLeave"
+    },
+    "Add10": {
+     "$beh": "p1bAdd10"
+    },
+    "Add5": {
+     "$beh": "p1bAdd5"
+    },
+    "Remove10": {
+     "$beh": "p1bRemove10"
+    },
+    "Remove5": {
+     "$beh": "p1bRemove5"
+    }
+   }
+  },
+  {
+   "id": "p2",
+   "type": "Player",
+   "object": "p2",
+   "group": "table",
+   "fields": {
+    "BlackjackController": {
+     "$beh": "ctrl"
+    },
+    "PlayerNum": 2,
+    "NormalDeck": {
+     "$beh": "p2n"
+    },
+    "SplitDeck": {
+     "$beh": "p2s"
+    },
+    "Deck": {
+     "$beh": "deck"
+    },
+    "PlayerUI": {
+     "$beh": "p2ui"
+    },
+    "Interactables": {
+     "$beh": "p2ic"
+    },
+    "PlayerName": {
+     "$comp": "p2_dealerName",
+     "kind": "TMP"
+    },
+    "BetPanel": {
+     "$obj": "p2_chips"
+    },
+    "ChipAnimator": {
+     "$comp": "p2_chips",
+     "kind": "Animator"
+    },
+    "CurrentBet": {
+     "$comp": "p2_currentBet",
+     "kind": "TMP"
+    },
+    "TotalChips": {
+     "$comp": "p2_totalChips",
+     "kind": "TMP"
+    },
+    "Timer": {
+     "$comp": "p2_timer",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p2n",
+   "type": "PlayerDeck",
+   "object": "p2_nd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p2"
+    },
+    "isSplitDeck": false,
+    "Slots": [
+     {
+      "$obj": "p2_n0"
+     },
+     {
+      "$obj": "p2_n1"
+     },
+     {
+      "$obj": "p2_n2"
+     },
+     {
+      "$obj": "p2_n3"
+     },
+     {
+      "$obj": "p2_n4"
+     },
+     {
+      "$obj": "p2_n5"
+     },
+     {
+      "$obj": "p2_n6"
+     },
+     {
+      "$obj": "p2_n7"
+     },
+     {
+      "$obj": "p2_n8"
+     },
+     {
+      "$obj": "p2_n9"
+     },
+     {
+      "$obj": "p2_n10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p2_n0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_n1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_n2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_n3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_n4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_n5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_n6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_n7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_n8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_n9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_n10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p2_n0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_n1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_n2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_n3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_n4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_n5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_n6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_n7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_n8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_n9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_n10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p2_normalCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p2s",
+   "type": "PlayerDeck",
+   "object": "p2_sd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p2"
+    },
+    "isSplitDeck": true,
+    "Slots": [
+     {
+      "$obj": "p2_s0"
+     },
+     {
+      "$obj": "p2_s1"
+     },
+     {
+      "$obj": "p2_s2"
+     },
+     {
+      "$obj": "p2_s3"
+     },
+     {
+      "$obj": "p2_s4"
+     },
+     {
+      "$obj": "p2_s5"
+     },
+     {
+      "$obj": "p2_s6"
+     },
+     {
+      "$obj": "p2_s7"
+     },
+     {
+      "$obj": "p2_s8"
+     },
+     {
+      "$obj": "p2_s9"
+     },
+     {
+      "$obj": "p2_s10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p2_s0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_s1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_s2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_s3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_s4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_s5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_s6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_s7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_s8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_s9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p2_s10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p2_s0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_s1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_s2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_s3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_s4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_s5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_s6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_s7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_s8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_s9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p2_s10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p2_splitCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p2ui",
+   "type": "PlayerUIController",
+   "object": "p2_ui",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p2"
+    },
+    "OwnerUI": {
+     "$obj": "p2_ownerUI"
+    },
+    "DealerUI": {
+     "$obj": "p2_dealerMask"
+    },
+    "NotOwnerUI": {
+     "$obj": "p2_notOwnerUI"
+    },
+    "PlayerName": {
+     "$obj": "p2_nameObj"
+    },
+    "PlayerUIAnimator": {
+     "$comp": "p2_uiAnim",
+     "kind": "Animator"
+    },
+    "DealerUIAnimator": {
+     "$comp": "p2_dealerCanvas",
+     "kind": "Animator"
+    },
+    "PlayerOwner": {
+     "$comp": "p2_nameText",
+     "kind": "TMP"
+    },
+    "NormalHelper": {
+     "$comp": "p2_normalHelper",
+     "kind": "TMP"
+    },
+    "SplitHelper": {
+     "$comp": "p2_splitHelper",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p2bJoin",
+   "type": "Interactable",
+   "object": "p2_bJoin",
+   "fields": {
+    "Event": "_TakeControl",
+    "TargetBehaviour": {
+     "$beh": "p2"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p2_vizJoin",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p2bStand",
+   "type": "Interactable",
+   "object": "p2_bStand",
+   "fields": {
+    "Event": "Stand",
+    "TargetBehaviour": {
+     "$beh": "p2"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p2_vizStand",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p2bSplit",
+   "type": "Interactable",
+   "object": "p2_bSplit",
+   "fields": {
+    "Event": "Split",
+    "TargetBehaviour": {
+     "$beh": "p2"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p2_vizSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p2bHitSplit",
+   "type": "Interactable",
+   "object": "p2_bHitSplit",
+   "fields": {
+    "Event": "_AutoSplitHitMe",
+    "TargetBehaviour": {
+     "$beh": "p2"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p2_vizHitSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p2bHitNormal",
+   "type": "Interactable",
+   "object": "p2_bHitNormal",
+   "fields": {
+    "Event": "_AutoNormalHitMe",
+    "TargetBehaviour": {
+     "$beh": "p2"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p2_vizHitNormal",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p2bLeave",
+   "type": "Interactable",
+   "object": "p2_bLeave",
+   "fields": {
+    "Event": "ReleaseControl",
+    "TargetBehaviour": {
+     "$beh": "p2"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p2_vizLeave",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p2bAdd10",
+   "type": "Interactable",
+   "object": "p2_bAdd10",
+   "fields": {
+    "Event": "_Add10ToBet",
+    "TargetBehaviour": {
+     "$beh": "p2"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p2_vizAdd10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p2bAdd5",
+   "type": "Interactable",
+   "object": "p2_bAdd5",
+   "fields": {
+    "Event": "_Add5ToBet",
+    "TargetBehaviour": {
+     "$beh": "p2"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p2_vizAdd5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p2bRemove10",
+   "type": "Interactable",
+   "object": "p2_bRemove10",
+   "fields": {
+    "Event": "_Remove10FromBet",
+    "TargetBehaviour": {
+     "$beh": "p2"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p2_vizRemove10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p2bRemove5",
+   "type": "Interactable",
+   "object": "p2_bRemove5",
+   "fields": {
+    "Event": "_Remove5FromBet",
+    "TargetBehaviour": {
+     "$beh": "p2"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p2_vizRemove5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p2ic",
+   "type": "InteractableController",
+   "object": "p2_ic",
+   "fields": {
+    "Controller": {
+     "$beh": "ctrl"
+    },
+    "Seat": {
+     "$beh": "p2"
+    },
+    "JoinGame": {
+     "$beh": "p2bJoin"
+    },
+    "Stand": {
+     "$beh": "p2bStand"
+    },
+    "Split": {
+     "$beh": "p2bSplit"
+    },
+    "HitSplit": {
+     "$beh": "p2bHitSplit"
+    },
+    "HitNormal": {
+     "$beh": "p2bHitNormal"
+    },
+    "LeaveGame": {
+     "$beh": "p2bLeave"
+    },
+    "Add10": {
+     "$beh": "p2bAdd10"
+    },
+    "Add5": {
+     "$beh": "p2bAdd5"
+    },
+    "Remove10": {
+     "$beh": "p2bRemove10"
+    },
+    "Remove5": {
+     "$beh": "p2bRemove5"
+    }
+   }
+  },
+  {
+   "id": "p3",
+   "type": "Player",
+   "object": "p3",
+   "group": "table",
+   "fields": {
+    "BlackjackController": {
+     "$beh": "ctrl"
+    },
+    "PlayerNum": 3,
+    "NormalDeck": {
+     "$beh": "p3n"
+    },
+    "SplitDeck": {
+     "$beh": "p3s"
+    },
+    "Deck": {
+     "$beh": "deck"
+    },
+    "PlayerUI": {
+     "$beh": "p3ui"
+    },
+    "Interactables": {
+     "$beh": "p3ic"
+    },
+    "PlayerName": {
+     "$comp": "p3_dealerName",
+     "kind": "TMP"
+    },
+    "BetPanel": {
+     "$obj": "p3_chips"
+    },
+    "ChipAnimator": {
+     "$comp": "p3_chips",
+     "kind": "Animator"
+    },
+    "CurrentBet": {
+     "$comp": "p3_currentBet",
+     "kind": "TMP"
+    },
+    "TotalChips": {
+     "$comp": "p3_totalChips",
+     "kind": "TMP"
+    },
+    "Timer": {
+     "$comp": "p3_timer",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p3n",
+   "type": "PlayerDeck",
+   "object": "p3_nd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p3"
+    },
+    "isSplitDeck": false,
+    "Slots": [
+     {
+      "$obj": "p3_n0"
+     },
+     {
+      "$obj": "p3_n1"
+     },
+     {
+      "$obj": "p3_n2"
+     },
+     {
+      "$obj": "p3_n3"
+     },
+     {
+      "$obj": "p3_n4"
+     },
+     {
+      "$obj": "p3_n5"
+     },
+     {
+      "$obj": "p3_n6"
+     },
+     {
+      "$obj": "p3_n7"
+     },
+     {
+      "$obj": "p3_n8"
+     },
+     {
+      "$obj": "p3_n9"
+     },
+     {
+      "$obj": "p3_n10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p3_n0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_n1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_n2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_n3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_n4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_n5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_n6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_n7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_n8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_n9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_n10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p3_n0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_n1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_n2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_n3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_n4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_n5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_n6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_n7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_n8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_n9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_n10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p3_normalCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p3s",
+   "type": "PlayerDeck",
+   "object": "p3_sd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p3"
+    },
+    "isSplitDeck": true,
+    "Slots": [
+     {
+      "$obj": "p3_s0"
+     },
+     {
+      "$obj": "p3_s1"
+     },
+     {
+      "$obj": "p3_s2"
+     },
+     {
+      "$obj": "p3_s3"
+     },
+     {
+      "$obj": "p3_s4"
+     },
+     {
+      "$obj": "p3_s5"
+     },
+     {
+      "$obj": "p3_s6"
+     },
+     {
+      "$obj": "p3_s7"
+     },
+     {
+      "$obj": "p3_s8"
+     },
+     {
+      "$obj": "p3_s9"
+     },
+     {
+      "$obj": "p3_s10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p3_s0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_s1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_s2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_s3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_s4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_s5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_s6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_s7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_s8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_s9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p3_s10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p3_s0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_s1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_s2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_s3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_s4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_s5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_s6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_s7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_s8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_s9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p3_s10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p3_splitCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p3ui",
+   "type": "PlayerUIController",
+   "object": "p3_ui",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p3"
+    },
+    "OwnerUI": {
+     "$obj": "p3_ownerUI"
+    },
+    "DealerUI": {
+     "$obj": "p3_dealerMask"
+    },
+    "NotOwnerUI": {
+     "$obj": "p3_notOwnerUI"
+    },
+    "PlayerName": {
+     "$obj": "p3_nameObj"
+    },
+    "PlayerUIAnimator": {
+     "$comp": "p3_uiAnim",
+     "kind": "Animator"
+    },
+    "DealerUIAnimator": {
+     "$comp": "p3_dealerCanvas",
+     "kind": "Animator"
+    },
+    "PlayerOwner": {
+     "$comp": "p3_nameText",
+     "kind": "TMP"
+    },
+    "NormalHelper": {
+     "$comp": "p3_normalHelper",
+     "kind": "TMP"
+    },
+    "SplitHelper": {
+     "$comp": "p3_splitHelper",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p3bJoin",
+   "type": "Interactable",
+   "object": "p3_bJoin",
+   "fields": {
+    "Event": "_TakeControl",
+    "TargetBehaviour": {
+     "$beh": "p3"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p3_vizJoin",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p3bStand",
+   "type": "Interactable",
+   "object": "p3_bStand",
+   "fields": {
+    "Event": "Stand",
+    "TargetBehaviour": {
+     "$beh": "p3"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p3_vizStand",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p3bSplit",
+   "type": "Interactable",
+   "object": "p3_bSplit",
+   "fields": {
+    "Event": "Split",
+    "TargetBehaviour": {
+     "$beh": "p3"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p3_vizSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p3bHitSplit",
+   "type": "Interactable",
+   "object": "p3_bHitSplit",
+   "fields": {
+    "Event": "_AutoSplitHitMe",
+    "TargetBehaviour": {
+     "$beh": "p3"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p3_vizHitSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p3bHitNormal",
+   "type": "Interactable",
+   "object": "p3_bHitNormal",
+   "fields": {
+    "Event": "_AutoNormalHitMe",
+    "TargetBehaviour": {
+     "$beh": "p3"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p3_vizHitNormal",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p3bLeave",
+   "type": "Interactable",
+   "object": "p3_bLeave",
+   "fields": {
+    "Event": "ReleaseControl",
+    "TargetBehaviour": {
+     "$beh": "p3"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p3_vizLeave",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p3bAdd10",
+   "type": "Interactable",
+   "object": "p3_bAdd10",
+   "fields": {
+    "Event": "_Add10ToBet",
+    "TargetBehaviour": {
+     "$beh": "p3"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p3_vizAdd10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p3bAdd5",
+   "type": "Interactable",
+   "object": "p3_bAdd5",
+   "fields": {
+    "Event": "_Add5ToBet",
+    "TargetBehaviour": {
+     "$beh": "p3"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p3_vizAdd5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p3bRemove10",
+   "type": "Interactable",
+   "object": "p3_bRemove10",
+   "fields": {
+    "Event": "_Remove10FromBet",
+    "TargetBehaviour": {
+     "$beh": "p3"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p3_vizRemove10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p3bRemove5",
+   "type": "Interactable",
+   "object": "p3_bRemove5",
+   "fields": {
+    "Event": "_Remove5FromBet",
+    "TargetBehaviour": {
+     "$beh": "p3"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p3_vizRemove5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p3ic",
+   "type": "InteractableController",
+   "object": "p3_ic",
+   "fields": {
+    "Controller": {
+     "$beh": "ctrl"
+    },
+    "Seat": {
+     "$beh": "p3"
+    },
+    "JoinGame": {
+     "$beh": "p3bJoin"
+    },
+    "Stand": {
+     "$beh": "p3bStand"
+    },
+    "Split": {
+     "$beh": "p3bSplit"
+    },
+    "HitSplit": {
+     "$beh": "p3bHitSplit"
+    },
+    "HitNormal": {
+     "$beh": "p3bHitNormal"
+    },
+    "LeaveGame": {
+     "$beh": "p3bLeave"
+    },
+    "Add10": {
+     "$beh": "p3bAdd10"
+    },
+    "Add5": {
+     "$beh": "p3bAdd5"
+    },
+    "Remove10": {
+     "$beh": "p3bRemove10"
+    },
+    "Remove5": {
+     "$beh": "p3bRemove5"
+    }
+   }
+  },
+  {
+   "id": "p4",
+   "type": "Player",
+   "object": "p4",
+   "group": "table",
+   "fields": {
+    "BlackjackController": {
+     "$beh": "ctrl"
+    },
+    "PlayerNum": 4,
+    "NormalDeck": {
+     "$beh": "p4n"
+    },
+    "SplitDeck": {
+     "$beh": "p4s"
+    },
+    "Deck": {
+     "$beh": "deck"
+    },
+    "PlayerUI": {
+     "$beh": "p4ui"
+    },
+    "Interactables": {
+     "$beh": "p4ic"
+    },
+    "PlayerName": {
+     "$comp": "p4_dealerName",
+     "kind": "TMP"
+    },
+    "BetPanel": {
+     "$obj": "p4_chips"
+    },
+    "ChipAnimator": {
+     "$comp": "p4_chips",
+     "kind": "Animator"
+    },
+    "CurrentBet": {
+     "$comp": "p4_currentBet",
+     "kind": "TMP"
+    },
+    "TotalChips": {
+     "$comp": "p4_totalChips",
+     "kind": "TMP"
+    },
+    "Timer": {
+     "$comp": "p4_timer",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p4n",
+   "type": "PlayerDeck",
+   "object": "p4_nd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p4"
+    },
+    "isSplitDeck": false,
+    "Slots": [
+     {
+      "$obj": "p4_n0"
+     },
+     {
+      "$obj": "p4_n1"
+     },
+     {
+      "$obj": "p4_n2"
+     },
+     {
+      "$obj": "p4_n3"
+     },
+     {
+      "$obj": "p4_n4"
+     },
+     {
+      "$obj": "p4_n5"
+     },
+     {
+      "$obj": "p4_n6"
+     },
+     {
+      "$obj": "p4_n7"
+     },
+     {
+      "$obj": "p4_n8"
+     },
+     {
+      "$obj": "p4_n9"
+     },
+     {
+      "$obj": "p4_n10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p4_n0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_n1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_n2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_n3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_n4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_n5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_n6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_n7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_n8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_n9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_n10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p4_n0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_n1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_n2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_n3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_n4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_n5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_n6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_n7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_n8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_n9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_n10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p4_normalCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p4s",
+   "type": "PlayerDeck",
+   "object": "p4_sd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p4"
+    },
+    "isSplitDeck": true,
+    "Slots": [
+     {
+      "$obj": "p4_s0"
+     },
+     {
+      "$obj": "p4_s1"
+     },
+     {
+      "$obj": "p4_s2"
+     },
+     {
+      "$obj": "p4_s3"
+     },
+     {
+      "$obj": "p4_s4"
+     },
+     {
+      "$obj": "p4_s5"
+     },
+     {
+      "$obj": "p4_s6"
+     },
+     {
+      "$obj": "p4_s7"
+     },
+     {
+      "$obj": "p4_s8"
+     },
+     {
+      "$obj": "p4_s9"
+     },
+     {
+      "$obj": "p4_s10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p4_s0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_s1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_s2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_s3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_s4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_s5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_s6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_s7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_s8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_s9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p4_s10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p4_s0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_s1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_s2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_s3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_s4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_s5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_s6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_s7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_s8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_s9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p4_s10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p4_splitCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p4ui",
+   "type": "PlayerUIController",
+   "object": "p4_ui",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p4"
+    },
+    "OwnerUI": {
+     "$obj": "p4_ownerUI"
+    },
+    "DealerUI": {
+     "$obj": "p4_dealerMask"
+    },
+    "NotOwnerUI": {
+     "$obj": "p4_notOwnerUI"
+    },
+    "PlayerName": {
+     "$obj": "p4_nameObj"
+    },
+    "PlayerUIAnimator": {
+     "$comp": "p4_uiAnim",
+     "kind": "Animator"
+    },
+    "DealerUIAnimator": {
+     "$comp": "p4_dealerCanvas",
+     "kind": "Animator"
+    },
+    "PlayerOwner": {
+     "$comp": "p4_nameText",
+     "kind": "TMP"
+    },
+    "NormalHelper": {
+     "$comp": "p4_normalHelper",
+     "kind": "TMP"
+    },
+    "SplitHelper": {
+     "$comp": "p4_splitHelper",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p4bJoin",
+   "type": "Interactable",
+   "object": "p4_bJoin",
+   "fields": {
+    "Event": "_TakeControl",
+    "TargetBehaviour": {
+     "$beh": "p4"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p4_vizJoin",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p4bStand",
+   "type": "Interactable",
+   "object": "p4_bStand",
+   "fields": {
+    "Event": "Stand",
+    "TargetBehaviour": {
+     "$beh": "p4"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p4_vizStand",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p4bSplit",
+   "type": "Interactable",
+   "object": "p4_bSplit",
+   "fields": {
+    "Event": "Split",
+    "TargetBehaviour": {
+     "$beh": "p4"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p4_vizSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p4bHitSplit",
+   "type": "Interactable",
+   "object": "p4_bHitSplit",
+   "fields": {
+    "Event": "_AutoSplitHitMe",
+    "TargetBehaviour": {
+     "$beh": "p4"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p4_vizHitSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p4bHitNormal",
+   "type": "Interactable",
+   "object": "p4_bHitNormal",
+   "fields": {
+    "Event": "_AutoNormalHitMe",
+    "TargetBehaviour": {
+     "$beh": "p4"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p4_vizHitNormal",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p4bLeave",
+   "type": "Interactable",
+   "object": "p4_bLeave",
+   "fields": {
+    "Event": "ReleaseControl",
+    "TargetBehaviour": {
+     "$beh": "p4"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p4_vizLeave",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p4bAdd10",
+   "type": "Interactable",
+   "object": "p4_bAdd10",
+   "fields": {
+    "Event": "_Add10ToBet",
+    "TargetBehaviour": {
+     "$beh": "p4"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p4_vizAdd10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p4bAdd5",
+   "type": "Interactable",
+   "object": "p4_bAdd5",
+   "fields": {
+    "Event": "_Add5ToBet",
+    "TargetBehaviour": {
+     "$beh": "p4"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p4_vizAdd5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p4bRemove10",
+   "type": "Interactable",
+   "object": "p4_bRemove10",
+   "fields": {
+    "Event": "_Remove10FromBet",
+    "TargetBehaviour": {
+     "$beh": "p4"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p4_vizRemove10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p4bRemove5",
+   "type": "Interactable",
+   "object": "p4_bRemove5",
+   "fields": {
+    "Event": "_Remove5FromBet",
+    "TargetBehaviour": {
+     "$beh": "p4"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p4_vizRemove5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p4ic",
+   "type": "InteractableController",
+   "object": "p4_ic",
+   "fields": {
+    "Controller": {
+     "$beh": "ctrl"
+    },
+    "Seat": {
+     "$beh": "p4"
+    },
+    "JoinGame": {
+     "$beh": "p4bJoin"
+    },
+    "Stand": {
+     "$beh": "p4bStand"
+    },
+    "Split": {
+     "$beh": "p4bSplit"
+    },
+    "HitSplit": {
+     "$beh": "p4bHitSplit"
+    },
+    "HitNormal": {
+     "$beh": "p4bHitNormal"
+    },
+    "LeaveGame": {
+     "$beh": "p4bLeave"
+    },
+    "Add10": {
+     "$beh": "p4bAdd10"
+    },
+    "Add5": {
+     "$beh": "p4bAdd5"
+    },
+    "Remove10": {
+     "$beh": "p4bRemove10"
+    },
+    "Remove5": {
+     "$beh": "p4bRemove5"
+    }
+   }
+  },
+  {
+   "id": "p5",
+   "type": "Player",
+   "object": "p5",
+   "group": "table",
+   "fields": {
+    "BlackjackController": {
+     "$beh": "ctrl"
+    },
+    "PlayerNum": 5,
+    "NormalDeck": {
+     "$beh": "p5n"
+    },
+    "SplitDeck": {
+     "$beh": "p5s"
+    },
+    "Deck": {
+     "$beh": "deck"
+    },
+    "PlayerUI": {
+     "$beh": "p5ui"
+    },
+    "Interactables": {
+     "$beh": "p5ic"
+    },
+    "PlayerName": {
+     "$comp": "p5_dealerName",
+     "kind": "TMP"
+    },
+    "BetPanel": {
+     "$obj": "p5_chips"
+    },
+    "ChipAnimator": {
+     "$comp": "p5_chips",
+     "kind": "Animator"
+    },
+    "CurrentBet": {
+     "$comp": "p5_currentBet",
+     "kind": "TMP"
+    },
+    "TotalChips": {
+     "$comp": "p5_totalChips",
+     "kind": "TMP"
+    },
+    "Timer": {
+     "$comp": "p5_timer",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p5n",
+   "type": "PlayerDeck",
+   "object": "p5_nd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p5"
+    },
+    "isSplitDeck": false,
+    "Slots": [
+     {
+      "$obj": "p5_n0"
+     },
+     {
+      "$obj": "p5_n1"
+     },
+     {
+      "$obj": "p5_n2"
+     },
+     {
+      "$obj": "p5_n3"
+     },
+     {
+      "$obj": "p5_n4"
+     },
+     {
+      "$obj": "p5_n5"
+     },
+     {
+      "$obj": "p5_n6"
+     },
+     {
+      "$obj": "p5_n7"
+     },
+     {
+      "$obj": "p5_n8"
+     },
+     {
+      "$obj": "p5_n9"
+     },
+     {
+      "$obj": "p5_n10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p5_n0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_n1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_n2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_n3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_n4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_n5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_n6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_n7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_n8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_n9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_n10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p5_n0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_n1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_n2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_n3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_n4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_n5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_n6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_n7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_n8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_n9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_n10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p5_normalCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p5s",
+   "type": "PlayerDeck",
+   "object": "p5_sd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p5"
+    },
+    "isSplitDeck": true,
+    "Slots": [
+     {
+      "$obj": "p5_s0"
+     },
+     {
+      "$obj": "p5_s1"
+     },
+     {
+      "$obj": "p5_s2"
+     },
+     {
+      "$obj": "p5_s3"
+     },
+     {
+      "$obj": "p5_s4"
+     },
+     {
+      "$obj": "p5_s5"
+     },
+     {
+      "$obj": "p5_s6"
+     },
+     {
+      "$obj": "p5_s7"
+     },
+     {
+      "$obj": "p5_s8"
+     },
+     {
+      "$obj": "p5_s9"
+     },
+     {
+      "$obj": "p5_s10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p5_s0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_s1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_s2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_s3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_s4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_s5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_s6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_s7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_s8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_s9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p5_s10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p5_s0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_s1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_s2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_s3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_s4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_s5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_s6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_s7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_s8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_s9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p5_s10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p5_splitCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p5ui",
+   "type": "PlayerUIController",
+   "object": "p5_ui",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p5"
+    },
+    "OwnerUI": {
+     "$obj": "p5_ownerUI"
+    },
+    "DealerUI": {
+     "$obj": "p5_dealerMask"
+    },
+    "NotOwnerUI": {
+     "$obj": "p5_notOwnerUI"
+    },
+    "PlayerName": {
+     "$obj": "p5_nameObj"
+    },
+    "PlayerUIAnimator": {
+     "$comp": "p5_uiAnim",
+     "kind": "Animator"
+    },
+    "DealerUIAnimator": {
+     "$comp": "p5_dealerCanvas",
+     "kind": "Animator"
+    },
+    "PlayerOwner": {
+     "$comp": "p5_nameText",
+     "kind": "TMP"
+    },
+    "NormalHelper": {
+     "$comp": "p5_normalHelper",
+     "kind": "TMP"
+    },
+    "SplitHelper": {
+     "$comp": "p5_splitHelper",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p5bJoin",
+   "type": "Interactable",
+   "object": "p5_bJoin",
+   "fields": {
+    "Event": "_TakeControl",
+    "TargetBehaviour": {
+     "$beh": "p5"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p5_vizJoin",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p5bStand",
+   "type": "Interactable",
+   "object": "p5_bStand",
+   "fields": {
+    "Event": "Stand",
+    "TargetBehaviour": {
+     "$beh": "p5"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p5_vizStand",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p5bSplit",
+   "type": "Interactable",
+   "object": "p5_bSplit",
+   "fields": {
+    "Event": "Split",
+    "TargetBehaviour": {
+     "$beh": "p5"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p5_vizSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p5bHitSplit",
+   "type": "Interactable",
+   "object": "p5_bHitSplit",
+   "fields": {
+    "Event": "_AutoSplitHitMe",
+    "TargetBehaviour": {
+     "$beh": "p5"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p5_vizHitSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p5bHitNormal",
+   "type": "Interactable",
+   "object": "p5_bHitNormal",
+   "fields": {
+    "Event": "_AutoNormalHitMe",
+    "TargetBehaviour": {
+     "$beh": "p5"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p5_vizHitNormal",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p5bLeave",
+   "type": "Interactable",
+   "object": "p5_bLeave",
+   "fields": {
+    "Event": "ReleaseControl",
+    "TargetBehaviour": {
+     "$beh": "p5"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p5_vizLeave",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p5bAdd10",
+   "type": "Interactable",
+   "object": "p5_bAdd10",
+   "fields": {
+    "Event": "_Add10ToBet",
+    "TargetBehaviour": {
+     "$beh": "p5"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p5_vizAdd10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p5bAdd5",
+   "type": "Interactable",
+   "object": "p5_bAdd5",
+   "fields": {
+    "Event": "_Add5ToBet",
+    "TargetBehaviour": {
+     "$beh": "p5"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p5_vizAdd5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p5bRemove10",
+   "type": "Interactable",
+   "object": "p5_bRemove10",
+   "fields": {
+    "Event": "_Remove10FromBet",
+    "TargetBehaviour": {
+     "$beh": "p5"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p5_vizRemove10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p5bRemove5",
+   "type": "Interactable",
+   "object": "p5_bRemove5",
+   "fields": {
+    "Event": "_Remove5FromBet",
+    "TargetBehaviour": {
+     "$beh": "p5"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p5_vizRemove5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p5ic",
+   "type": "InteractableController",
+   "object": "p5_ic",
+   "fields": {
+    "Controller": {
+     "$beh": "ctrl"
+    },
+    "Seat": {
+     "$beh": "p5"
+    },
+    "JoinGame": {
+     "$beh": "p5bJoin"
+    },
+    "Stand": {
+     "$beh": "p5bStand"
+    },
+    "Split": {
+     "$beh": "p5bSplit"
+    },
+    "HitSplit": {
+     "$beh": "p5bHitSplit"
+    },
+    "HitNormal": {
+     "$beh": "p5bHitNormal"
+    },
+    "LeaveGame": {
+     "$beh": "p5bLeave"
+    },
+    "Add10": {
+     "$beh": "p5bAdd10"
+    },
+    "Add5": {
+     "$beh": "p5bAdd5"
+    },
+    "Remove10": {
+     "$beh": "p5bRemove10"
+    },
+    "Remove5": {
+     "$beh": "p5bRemove5"
+    }
+   }
+  },
+  {
+   "id": "p6",
+   "type": "Player",
+   "object": "p6",
+   "group": "table",
+   "fields": {
+    "BlackjackController": {
+     "$beh": "ctrl"
+    },
+    "PlayerNum": 6,
+    "NormalDeck": {
+     "$beh": "p6n"
+    },
+    "SplitDeck": {
+     "$beh": "p6s"
+    },
+    "Deck": {
+     "$beh": "deck"
+    },
+    "PlayerUI": {
+     "$beh": "p6ui"
+    },
+    "Interactables": {
+     "$beh": "p6ic"
+    },
+    "PlayerName": {
+     "$comp": "p6_dealerName",
+     "kind": "TMP"
+    },
+    "BetPanel": {
+     "$obj": "p6_chips"
+    },
+    "ChipAnimator": {
+     "$comp": "p6_chips",
+     "kind": "Animator"
+    },
+    "CurrentBet": {
+     "$comp": "p6_currentBet",
+     "kind": "TMP"
+    },
+    "TotalChips": {
+     "$comp": "p6_totalChips",
+     "kind": "TMP"
+    },
+    "Timer": {
+     "$comp": "p6_timer",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p6n",
+   "type": "PlayerDeck",
+   "object": "p6_nd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p6"
+    },
+    "isSplitDeck": false,
+    "Slots": [
+     {
+      "$obj": "p6_n0"
+     },
+     {
+      "$obj": "p6_n1"
+     },
+     {
+      "$obj": "p6_n2"
+     },
+     {
+      "$obj": "p6_n3"
+     },
+     {
+      "$obj": "p6_n4"
+     },
+     {
+      "$obj": "p6_n5"
+     },
+     {
+      "$obj": "p6_n6"
+     },
+     {
+      "$obj": "p6_n7"
+     },
+     {
+      "$obj": "p6_n8"
+     },
+     {
+      "$obj": "p6_n9"
+     },
+     {
+      "$obj": "p6_n10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p6_n0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_n1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_n2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_n3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_n4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_n5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_n6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_n7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_n8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_n9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_n10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p6_n0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_n1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_n2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_n3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_n4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_n5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_n6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_n7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_n8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_n9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_n10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p6_normalCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p6s",
+   "type": "PlayerDeck",
+   "object": "p6_sd",
+   "group": "table",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p6"
+    },
+    "isSplitDeck": true,
+    "Slots": [
+     {
+      "$obj": "p6_s0"
+     },
+     {
+      "$obj": "p6_s1"
+     },
+     {
+      "$obj": "p6_s2"
+     },
+     {
+      "$obj": "p6_s3"
+     },
+     {
+      "$obj": "p6_s4"
+     },
+     {
+      "$obj": "p6_s5"
+     },
+     {
+      "$obj": "p6_s6"
+     },
+     {
+      "$obj": "p6_s7"
+     },
+     {
+      "$obj": "p6_s8"
+     },
+     {
+      "$obj": "p6_s9"
+     },
+     {
+      "$obj": "p6_s10"
+     }
+    ],
+    "SlotRenderers": [
+     {
+      "$comp": "p6_s0",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_s1",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_s2",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_s3",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_s4",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_s5",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_s6",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_s7",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_s8",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_s9",
+      "kind": "Renderer"
+     },
+     {
+      "$comp": "p6_s10",
+      "kind": "Renderer"
+     }
+    ],
+    "SlotAnimators": [
+     {
+      "$comp": "p6_s0",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_s1",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_s2",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_s3",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_s4",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_s5",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_s6",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_s7",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_s8",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_s9",
+      "kind": "Animator"
+     },
+     {
+      "$comp": "p6_s10",
+      "kind": "Animator"
+     }
+    ],
+    "DealerValueDisplay": {
+     "$comp": "p6_splitCount",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p6ui",
+   "type": "PlayerUIController",
+   "object": "p6_ui",
+   "fields": {
+    "PlayerController": {
+     "$beh": "p6"
+    },
+    "OwnerUI": {
+     "$obj": "p6_ownerUI"
+    },
+    "DealerUI": {
+     "$obj": "p6_dealerMask"
+    },
+    "NotOwnerUI": {
+     "$obj": "p6_notOwnerUI"
+    },
+    "PlayerName": {
+     "$obj": "p6_nameObj"
+    },
+    "PlayerUIAnimator": {
+     "$comp": "p6_uiAnim",
+     "kind": "Animator"
+    },
+    "DealerUIAnimator": {
+     "$comp": "p6_dealerCanvas",
+     "kind": "Animator"
+    },
+    "PlayerOwner": {
+     "$comp": "p6_nameText",
+     "kind": "TMP"
+    },
+    "NormalHelper": {
+     "$comp": "p6_normalHelper",
+     "kind": "TMP"
+    },
+    "SplitHelper": {
+     "$comp": "p6_splitHelper",
+     "kind": "TMP"
+    }
+   }
+  },
+  {
+   "id": "p6bJoin",
+   "type": "Interactable",
+   "object": "p6_bJoin",
+   "fields": {
+    "Event": "_TakeControl",
+    "TargetBehaviour": {
+     "$beh": "p6"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p6_vizJoin",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p6bStand",
+   "type": "Interactable",
+   "object": "p6_bStand",
+   "fields": {
+    "Event": "Stand",
+    "TargetBehaviour": {
+     "$beh": "p6"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p6_vizStand",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p6bSplit",
+   "type": "Interactable",
+   "object": "p6_bSplit",
+   "fields": {
+    "Event": "Split",
+    "TargetBehaviour": {
+     "$beh": "p6"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p6_vizSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p6bHitSplit",
+   "type": "Interactable",
+   "object": "p6_bHitSplit",
+   "fields": {
+    "Event": "_AutoSplitHitMe",
+    "TargetBehaviour": {
+     "$beh": "p6"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p6_vizHitSplit",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p6bHitNormal",
+   "type": "Interactable",
+   "object": "p6_bHitNormal",
+   "fields": {
+    "Event": "_AutoNormalHitMe",
+    "TargetBehaviour": {
+     "$beh": "p6"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p6_vizHitNormal",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p6bLeave",
+   "type": "Interactable",
+   "object": "p6_bLeave",
+   "fields": {
+    "Event": "ReleaseControl",
+    "TargetBehaviour": {
+     "$beh": "p6"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p6_vizLeave",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p6bAdd10",
+   "type": "Interactable",
+   "object": "p6_bAdd10",
+   "fields": {
+    "Event": "_Add10ToBet",
+    "TargetBehaviour": {
+     "$beh": "p6"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p6_vizAdd10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p6bAdd5",
+   "type": "Interactable",
+   "object": "p6_bAdd5",
+   "fields": {
+    "Event": "_Add5ToBet",
+    "TargetBehaviour": {
+     "$beh": "p6"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p6_vizAdd5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p6bRemove10",
+   "type": "Interactable",
+   "object": "p6_bRemove10",
+   "fields": {
+    "Event": "_Remove10FromBet",
+    "TargetBehaviour": {
+     "$beh": "p6"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p6_vizRemove10",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p6bRemove5",
+   "type": "Interactable",
+   "object": "p6_bRemove5",
+   "fields": {
+    "Event": "_Remove5FromBet",
+    "TargetBehaviour": {
+     "$beh": "p6"
+    },
+    "PressName": "Press",
+    "PressViz": {
+     "$comp": "p6_vizRemove5",
+     "kind": "Animator"
+    }
+   }
+  },
+  {
+   "id": "p6ic",
+   "type": "InteractableController",
+   "object": "p6_ic",
+   "fields": {
+    "Controller": {
+     "$beh": "ctrl"
+    },
+    "Seat": {
+     "$beh": "p6"
+    },
+    "JoinGame": {
+     "$beh": "p6bJoin"
+    },
+    "Stand": {
+     "$beh": "p6bStand"
+    },
+    "Split": {
+     "$beh": "p6bSplit"
+    },
+    "HitSplit": {
+     "$beh": "p6bHitSplit"
+    },
+    "HitNormal": {
+     "$beh": "p6bHitNormal"
+    },
+    "LeaveGame": {
+     "$beh": "p6bLeave"
+    },
+    "Add10": {
+     "$beh": "p6bAdd10"
+    },
+    "Add5": {
+     "$beh": "p6bAdd5"
+    },
+    "Remove10": {
+     "$beh": "p6bRemove10"
+    },
+    "Remove5": {
+     "$beh": "p6bRemove5"
+    }
+   }
+  }
+ ],
+ "events": [
+  {
+   "object": "p0_dHitNormal",
+   "kind": "click",
+   "behaviour": "p0",
+   "method": "_ManualNormalHitMe"
+  },
+  {
+   "object": "p0_dHitSplit",
+   "kind": "click",
+   "behaviour": "p0",
+   "method": "_ManualSplitHitMe"
+  },
+  {
+   "object": "p0_dStand",
+   "kind": "click",
+   "behaviour": "p0",
+   "method": "Stand"
+  },
+  {
+   "object": "p1_dHitNormal",
+   "kind": "click",
+   "behaviour": "p1",
+   "method": "_ManualNormalHitMe"
+  },
+  {
+   "object": "p1_dHitSplit",
+   "kind": "click",
+   "behaviour": "p1",
+   "method": "_ManualSplitHitMe"
+  },
+  {
+   "object": "p1_dStand",
+   "kind": "click",
+   "behaviour": "p1",
+   "method": "Stand"
+  },
+  {
+   "object": "p2_dHitNormal",
+   "kind": "click",
+   "behaviour": "p2",
+   "method": "_ManualNormalHitMe"
+  },
+  {
+   "object": "p2_dHitSplit",
+   "kind": "click",
+   "behaviour": "p2",
+   "method": "_ManualSplitHitMe"
+  },
+  {
+   "object": "p2_dStand",
+   "kind": "click",
+   "behaviour": "p2",
+   "method": "Stand"
+  },
+  {
+   "object": "p3_dHitNormal",
+   "kind": "click",
+   "behaviour": "p3",
+   "method": "_ManualNormalHitMe"
+  },
+  {
+   "object": "p3_dHitSplit",
+   "kind": "click",
+   "behaviour": "p3",
+   "method": "_ManualSplitHitMe"
+  },
+  {
+   "object": "p3_dStand",
+   "kind": "click",
+   "behaviour": "p3",
+   "method": "Stand"
+  },
+  {
+   "object": "p4_dHitNormal",
+   "kind": "click",
+   "behaviour": "p4",
+   "method": "_ManualNormalHitMe"
+  },
+  {
+   "object": "p4_dHitSplit",
+   "kind": "click",
+   "behaviour": "p4",
+   "method": "_ManualSplitHitMe"
+  },
+  {
+   "object": "p4_dStand",
+   "kind": "click",
+   "behaviour": "p4",
+   "method": "Stand"
+  },
+  {
+   "object": "p5_dHitNormal",
+   "kind": "click",
+   "behaviour": "p5",
+   "method": "_ManualNormalHitMe"
+  },
+  {
+   "object": "p5_dHitSplit",
+   "kind": "click",
+   "behaviour": "p5",
+   "method": "_ManualSplitHitMe"
+  },
+  {
+   "object": "p5_dStand",
+   "kind": "click",
+   "behaviour": "p5",
+   "method": "Stand"
+  },
+  {
+   "object": "p6_dHitNormal",
+   "kind": "click",
+   "behaviour": "p6",
+   "method": "_ManualNormalHitMe"
+  },
+  {
+   "object": "p6_dHitSplit",
+   "kind": "click",
+   "behaviour": "p6",
+   "method": "_ManualSplitHitMe"
+  },
+  {
+   "object": "p6_dStand",
+   "kind": "click",
+   "behaviour": "p6",
+   "method": "Stand"
+  },
+  {
+   "object": "takeOwnership",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_TakeOwnership"
+  },
+  {
+   "object": "takeOwnershipManual",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_TakeOwnership"
+  },
+  {
+   "object": "startGame",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "GlobalStartMatch"
+  },
+  {
+   "object": "startGameManual",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "GlobalStartMatch"
+  },
+  {
+   "object": "swapToManual",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_ToggleManualPlay"
+  },
+  {
+   "object": "swapToAuto",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_ToggleManualPlay"
+  },
+  {
+   "object": "helpersOnBtn",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_ActivateHelpers"
+  },
+  {
+   "object": "helpersOffBtn",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_DeactivateHelpers"
+  },
+  {
+   "object": "chipsOnBtn",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_ActivateChips"
+  },
+  {
+   "object": "chipsOffBtn",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_DeactivateChips"
+  },
+  {
+   "object": "deckAdd",
+   "kind": "click",
+   "behaviour": "deck",
+   "method": "AddDeck"
+  },
+  {
+   "object": "deckSub",
+   "kind": "click",
+   "behaviour": "deck",
+   "method": "SubtractDeck"
+  },
+  {
+   "object": "mhelpersOnBtn",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_ActivateHelpers"
+  },
+  {
+   "object": "mhelpersOffBtn",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_DeactivateHelpers"
+  },
+  {
+   "object": "mchipsOnBtn",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_ActivateChips"
+  },
+  {
+   "object": "mchipsOffBtn",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "_DeactivateChips"
+  },
+  {
+   "object": "mdeckAdd",
+   "kind": "click",
+   "behaviour": "deck",
+   "method": "AddDeck"
+  },
+  {
+   "object": "mdeckSub",
+   "kind": "click",
+   "behaviour": "deck",
+   "method": "SubtractDeck"
+  },
+  {
+   "object": "resetTable",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "ForceGlobalReset"
+  },
+  {
+   "object": "resetChips",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "ResetChips"
+  },
+  {
+   "object": "heightUp",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "RaiseDealerPanels"
+  },
+  {
+   "object": "heightDown",
+   "kind": "click",
+   "behaviour": "ctrl",
+   "method": "LowerDealerPanels"
+  }
+ ]
+}

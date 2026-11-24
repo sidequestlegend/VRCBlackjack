@@ -1,0 +1,24 @@
+{
+  "name": "blackjack-rules",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The rules of blackjack (a port of Centauri2442/VRCBlackjack, Apache-2.0) on the portkit runtime. portkit/ is a copy of the shared kit (tools/sync.sh).",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "node --disable-warning=ExperimentalWarning portkit/tools/lint.ts src portkit/src",
+    "unit": "node --disable-warning=ExperimentalWarning --test \"test/*.test.ts\"",
+    "test": "npm run typecheck && npm run lint && npm run unit",
+    "build": "node --disable-warning=ExperimentalWarning portkit/tools/build.ts --game . --out ../Assets/WebRoot",
+    "bindings": "node --disable-warning=ExperimentalWarning tools/provisional-bindings.ts",
+    "golden": "node --disable-warning=ExperimentalWarning golden/extract.ts && dotnet run --project golden/upstream -- vectors/upstream.json"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  }
+}

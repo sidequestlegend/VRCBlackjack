@@ -1,0 +1,5 @@
+node_modules/
+dist/
+golden/upstream/bin/
+golden/upstream/obj/
+!golden/upstream/Upstream.csproj

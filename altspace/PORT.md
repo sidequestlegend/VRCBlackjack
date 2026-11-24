@@ -1,7 +1,8 @@
-# Blackjack: port notes (analysis only)
+# Blackjack: port notes
 
-Written 2026-11-24 from a read of the upstream sources, prefab YAML and asset files. Nothing was built,
-compiled, run or opened in Unity. Statements marked **(reading)** are conclusions from reading code that
+Written 2026-11-24 from a read of the upstream sources, prefab YAML and asset files; the status section below was
+added the same day, when the rules were ported to TypeScript and tested in Node. Nothing has been built or opened
+in Unity. Statements marked **(reading)** are conclusions from reading code that
 was not executed. Where something could not be determined, it says so.
 
 Paths are relative to the fork root `C:\workspace\AltspaceGames\blackjack\` at upstream commit `83f05db`.
@@ -13,9 +14,249 @@ Short names used below:
 - "table owner" = the player who owns the `Controller`, `Dealer` and `Deck` objects (upstream's dealer role)
 - "holder" = the player who has taken a seat
 
-Contents: 1 Upstream at a glance · 2 Feature checklist · 3 State and messages · 4 Platform-call census ·
+Contents: Status of the port · 1 Upstream at a glance · 2 Feature checklist · 3 State and messages · 4 Platform-call census ·
 5 Object model · 6 Assets · 7 Translation map · 8 Snippet design · 9 Test plan · 10 Changed, left out,
 risks and questions.
+
+## Status: the TypeScript rules port (2026-11-24)
+
+The rules run in Node on the fake room; nothing has been built or run in Unity yet. Everything below this section
+is the analysis it was built from, with section 10's questions now answered (10.4).
+
+### What exists
+
+- `altspace/ts/` from `portkit/ts/game-template` (slug `blackjack`), with `portkit/ts` copied into
+  `altspace/ts/portkit/` (no `node_modules`, no `dist`). Nothing under `C:\workspace\AltspaceGames\portkit\` was
+  changed.
+- One file per upstream file, as section 7 maps them: `src/DeckManager.ts`, `PlayerDeck.ts`, `Dealer.ts`,
+  `Player.ts`, `Controller.ts`, `ChipController.ts`, `AudioController.ts`, `PlayerUIController.ts`,
+  `DealerUIController.ts`, `Interactable.ts`, `InteractableController.ts`, `DistanceOptimizer.ts`,
+  `DisableFixer.ts`, `BlackjackWorldController.ts`; plus `index.ts` (the game definition) and `notice.ts` (the
+  Apache notice every file refers to). `PlayerDebug.cs` is not translated (L1). The 1,166 generated event handlers
+  are gone: cards are arrays in state. Each file's header names its upstream file and says it was changed.
+- `bindings.json` is **PROVISIONAL**: written by `tools/provisional-bindings.ts` from section 5's object model
+  (527 objects, 379 refs, 114 behaviours, 43 click events; paths are upstream's names, `root` is `Blackjack`). It
+  says so in a `provisional` member. The kit builder replaces it.
+- `script-header.txt`: the Apache notice and the change notice at the top of the built `pk-blackjack.js`.
+- `golden/`: `extract.ts` copies upstream's rule methods **verbatim by line range** (each range checks its first
+  line) into `golden/upstream/Extracted.cs`, compiled with dotnet 8 against `Stubs.cs`; `Harness.cs` writes
+  `vectors/upstream.json`. Regenerate with `npm run golden`. This replaces the full-class stubs of 9.1: only the rule
+  methods are compiled, so the stubs are small (about 200 lines).
+
+### How it works (as built)
+
+- **State held by the referee (C1).** Every synced behaviour (Controller, DeckManager, Dealer, 7 Players, 14
+  PlayerDecks) is in one sync group, `table`: one leaf, one owner (the referee), one atomic write per change. Every
+  client draws the table from state; a late joiner gets the same table as everyone.
+- **Presses are commands.** A button runs upstream's method on the presser's client (local sound, local checks),
+  which sends a numbered command to the referee (`SendCommand`); the referee checks the sender
+  (`Networking.CallingSession`) against the seat's holder or the table owner and the phase, then writes state. A
+  method whose name starts with `_` cannot be a command (runtime rule, as in UdonSharp), so `_TakeControl` sends
+  `TakeControl`, and so on. Every referee half also checks `IsReferee`, so the same name sent as a network event by
+  a modified client changes nothing anywhere.
+- **Timers on the shared clock.** The round is `phase` (idle, dealing, turns, dealer, settled), `t0` and a `step`
+  counter; the deal schedule (V8), the 2 s poll, the 30 s deadline and the dealer's steps (V9) run on the referee
+  each tick against `GetServerTimeInSeconds`, so a new referee carries on from state with nothing done twice.
+- **Fair draws (C2).** Fresh random cards per draw, as upstream (no shoe): draw k of a segment starts upstream's
+  probe at `new Draw(seed).Int(52, k)`. The referee commits to the seed (`Secrets.commit`) when the segment opens
+  and publishes the opening when the round ends; every client replays the round's draws (`DeckManager.Verify`) and
+  logs an error on any mismatch. A referee that takes over mid-round does not know the seed: it opens segment 2
+  with its own committed seed, and the lost segment is counted in `lostSegments`.
+- **The hole card (C3).** The referee draws it from the committed seed, keeps it on its own client with its own
+  commitment (`Dealer.holeHash`), and shows `-1` in state; the dealer's public total counts the up card only. At
+  the flip it publishes the card and the opening, and every client checks it (`Dealer.holeVerified`). A referee
+  that took over before the flip never knew the card: it draws a new one at the flip (`holeRedrawn`).
+- **Chips (decision: keep upstream's behaviour).** Upstream never saves chips (each world load starts at
+  `StartingChips`), so the port saves nothing either: no `localStorage`. They stay local to the holder's client,
+  one balance per page across tables (upstream: per world), and the holder pays itself from the referee's results.
+
+### Coordinator decisions applied (answers to 10.4)
+
+| # | Decision |
+|---|---|
+| K2 | Rules unchanged: every win pays 1 to 1. The felt's "BLACKJACK PAYS 2 TO 1" will be repainted in the kit (not done yet) |
+| K3 | Fixed: Q1 (two of clubs), Q4 (split aces), Q5 (split payouts), and Q12 (seats stuck after reset), each listed below as a deliberate difference; upstream's literal arithmetic is kept for the golden vectors |
+| K4 | No double down, insurance or surrender (F43) |
+| K6 | No saved chips: upstream saves none |
+| K10 | One player may hold several seats, as upstream |
+| Hidden information | Commit and reveal for the hole card; fresh draws made checkable with the runtime's `Draw` |
+
+### Checklist status (section 2)
+
+Status: **tested** = asserted by a Node test (scenario or golden vector); **ported** = in the TypeScript, not
+asserted on its own; **kit** = the TypeScript side is done, the effect needs the Unity kit; **left out** = as
+section 10.2 says.
+
+**78 items: 51 tested, 20 ported, 5 kit, 2 left out.**
+
+| # | Status | Evidence or note |
+|---|---|---|
+| F1 | tested | two tables in one room (security.test.ts) |
+| F2 | tested | attributes chips, chip-system, decks, helpers, manual, allow-change, turn-seconds, range (BlackjackWorldController.ts) |
+| F3 | tested | defaults: chips off, 2 decks, 100 chips, helpers off, manual off, no changes |
+| F4 | tested | the table is the instance; bets are per table |
+| F5 | tested | take the table (TakeOwnership) |
+| F6 | tested | a new table owner resets the table |
+| F7 | tested | owner-only settings, allow-change |
+| F8 | tested | vectors V1 and the settings test |
+| F9 | tested | Reset Table, owner only, once per 2 s |
+| F10 | tested | ChipBank.ResetChips against vectors V7 |
+| F11 | ported | PlayUIInteract on the presser's half |
+| F12 | tested | Join Game |
+| F13 | tested | refused mid-round; the 2 s after leaving is enforced by the referee |
+| F14 | tested | name on the seat and the dealer's panel |
+| F15 | tested | LEAVE GAME; a mid-turn hand is stood |
+| F16 | tested | one player, two seats (split test) |
+| F17 | ported | no BS.Seat |
+| F18 | ported | join and leave sounds for the actor |
+| F19 | tested | local chips, one balance per page |
+| F20 | tested | bets refused once the round runs |
+| F21 | tested | bets across tables stay within the chips |
+| F22 | tested | holder pays itself from the referee's results |
+| F23 | tested | bet back to 0 after each round |
+| F24 | ported | chips off hides the panel and moves nothing |
+| F25 | tested | Start Game: owner, a seat, no round |
+| F26 | ported | round start clears the table, shuffle sound |
+| F27 | tested | vectors V8; schedule run against the shared clock |
+| F28 | kit | NotHidden trigger and one draw sound per card are sent; the zoom is the kit's |
+| F29 | ported | at most 11 cards per hand |
+| F30 | ported | counts per round, from the cards on the table |
+| F31 | tested | vectors V2 and the seed replay |
+| F32 | tested | card table test |
+| F33 | tested | vectors V3 |
+| F34 | tested | all seats act at once |
+| F35 | tested | timer text, one new-round sound |
+| F36 | tested | no hits in the second after a split |
+| F37 | ported | no automatic stand on 21 |
+| F38 | ported | bust banner and end of turn |
+| F39 | tested | stand ends the turn |
+| F40 | tested | split offered on equal values |
+| F41 | tested | split: two hands, a card each after 1 s, bet doubled |
+| F42 | ported | no re-split; split aces not limited |
+| F43 | tested | golden test: no natural bonus; no double, insurance or surrender |
+| F44 | tested | manual play is state |
+| F45 | tested | the mark and the bleep |
+| F46 | tested | dealer's per-seat panel: count text, marks |
+| F47 | tested | dealer's Hit Me and Stand |
+| F48 | ported | deal and dealer's play are automatic in both modes |
+| F49 | kit | two buttons drive the Height parameter (C12); the buttons are the kit's |
+| F50 | ported | marks cleared on stand and at start |
+| F51 | ported | 2 s poll from n+2 s |
+| F52 | tested | vectors V9; flip at the shared time |
+| F53 | tested | vectors V9 (soft 17 stands) |
+| F54 | ported | dealer plays when all bust; Bust banner |
+| F55 | ported | dealer's total after the round |
+| F56 | kit | overhead camera screen (K9) |
+| F57 | tested | settlement |
+| F58 | tested | split hand settled separately (Q5 fixed) |
+| F59 | tested | 1 to 1 (vectors V6) |
+| F60 | ported | holder hears the first hand's sound |
+| F61 | tested | freed seat not settled |
+| F62 | ported | cards stay until the next start or a reset |
+| F63 | tested | 30 s timer by shared deadline |
+| F64 | tested | helper totals |
+| F65 | kit | clicks on layer-5 boxes; the boxes and spike S6 are the kit's |
+| F66 | left out | touch buttons (L5) |
+| F67 | ported | Press trigger on a click |
+| F68 | kit | sounds fire from state; the clips go on audio sources in the kit |
+| F69 | tested | range by head distance |
+| F70 | tested | walking out releases the seat |
+| F71 | ported | fixed sound source (C10) |
+| F72 | tested | holder leaves mid-hand |
+| F73 | tested | table owner leaves: reset |
+| F74 | ported | element removed: DisableFixer, best effort (L7) |
+| F75 | tested | covered by F72 |
+| F76 | left out | debug panel (L1) |
+| F77 | tested | late joiner sees the table (C1) |
+| F78 | tested | GameActive is in state from the start |
+
+### Quirks (Q1 to Q21): what the port does
+
+| # | Port | Evidence |
+|---|---|---|
+| Q1 | **Fixed**: the two of clubs has NumberOfDecks copies | V1 asserts upstream's 999 and the port's count |
+| Q2 | Kept: uniform over card types, next index up when used up | V2 |
+| Q3 | Replaced: counts follow from the cards in state | seed replay |
+| Q4 | **Fixed**: each hand is scored from its own cards | V4 asserts upstream's 11 and the port's 21 for split aces and a ten |
+| Q5 | **Fixed**: each split hand settles at the bet the round started with (the panel still shows the doubled bet, as upstream) | V6 (upstream +40, port +20 on two wins of a 10 bet); split scenario |
+| Q6 | **Fixed**: split is offered only when the doubled bet fits next to the bets on every table | ported |
+| Q7 | **Fixed**: everyone sees the split and both results | split scenario |
+| Q8 | **Fixed**: a timeout ends the turn in state, for everyone | timer scenario |
+| Q9 | **Fixed**: the referee deals no card to a bust or finished hand | ported |
+| Q10 | Kept: leaving mid-round avoids settlement (F61) | leave scenario |
+| Q11 | **Fixed**: no seat is taken during a round | late-joiner scenario |
+| Q12 | **Fixed**: a reset frees every seat | reset and owner-leaves scenarios |
+| Q13 | **Fixed**: the hole card is in no channel before the flip | hole-card scenario |
+| Q14 | Kit: the missing constraint source on seat 0 | kit builder |
+| Q15 | **Fixed**: toggles follow the synced values | settings scenario |
+| Q16 | **Fixed**: the new-round sound plays once per round | three-player scenario |
+| Q17 | **Fixed**: one draw sound per card | ported |
+| Q18 | Kept 1 to 1 (K2); the felt is to be repainted | kit |
+| Q19 | Kit: replace the two missing sprites | kit builder |
+| Q20 | Gone with C1 | |
+| Q21 | **Fixed**: CanSplit follows the hand: two cards of equal value, before any other card | ported |
+
+### Deliberate differences from upstream (beyond section 10.1)
+
+| # | Difference | Why |
+|---|---|---|
+| D1 | A table reset also clears the dealer's cards (upstream's ResetTable left them on the table) | a reset clears the table |
+| D2 | A taken seat cannot be taken by someone else (upstream left it to the UI; a touch press could take it) | Q12, and a bystander must not act for a seat |
+| D3 | The dealer panel's Stand is accepted from the table owner or the holder only | upstream relied on the panel being visible to the owner alone |
+| D4 | Command names drop the leading `_` of upstream's method names | runtime rule |
+| D5 | "5 frames" is 0.25 s (a frame is one 50 ms tick) | runtime tick |
+| D6 | The chips toggle is shown whenever settings may change (upstream: only if chips were on when that client started) | C18; upstream's rule differed per client |
+| D7 | A referee that takes over before the flip draws a new hole card | it cannot know the old one, and nobody may learn it |
+| D8 | Draws come from a seed the referee commits to and reveals; the referee draws every card (C2) | one writer; checkable after the round |
+| D9 | The flip sound and the hole card's deal sound play for everyone in range (C19) | sounds follow state |
+| D10 | Settings come from snippet attributes, applied once by the first referee (C20) | no inspector in someone else's world |
+
+### Runtime gaps (local workarounds in the game's files; portkit unchanged)
+
+| # | Gap | Workaround | Cost |
+|---|---|---|---|
+| G1 | No object shared by every instance on a page (one chip balance for all tables) | module-level map keyed by the local session id (`ChipController.ts`) | none seen; a second page of the same session would share it (cannot happen) |
+| G2 | No strong random value for game code (lint forbids `crypto`; `this.Random` is the platform's generator) | the round's seed is two commitment nonces (`Secrets.commit(x).reveal().s`, from `crypto.getRandomValues`) | a hack on the nonce's purpose; a `Secrets.RandomBytes(n)` would be cleaner |
+| G3 | No referee-dealt draw that the referee cannot bias: `Secrets.beginDraw` is a player's own draw numbered by the referee | commit and reveal of the referee's seed | a modified referee could try seeds before committing (it still cannot change a card afterwards or pick cards as the round develops). A helper where the referee commits first and players add entropy afterwards would close it |
+| G4 | `Behaviour.Player` (the per-player accessor) takes the name of upstream's field `InteractableController.Player` | renamed `Seat` | none |
+| G5 | Game code cannot read its instance key (upstream's `TableIndex`) | the table's ChipController object keys its bet | none |
+| G6 | Commands from one sender run one at a time (each waits for the previous acknowledgement) | none needed | a burst of presses is queued; about 0.3 s each in the fake room |
+| G7 | Controls are live only after the first tick (InteractableController sets them in Update) | the test helper waits one tick | none for a person |
+
+The additions asked in 10.3 are all in the runtime now: `animResetTrigger` and `animPlay` relay ops, the sender
+of a command or event (`CallingSession`, `CallingPlayer`), `OnPlayerLeft`, `OnMasterTransferred` and
+`SendCustomEventDelayedFrames`.
+
+### Tests (`npm test`: typecheck, lint, then the Node tests)
+
+32 tests, all passing; the scenario files were also run six times in a row (draws differ every run) without a
+failure.
+
+- `test/golden.test.ts` (15): vectors V1 to V9 from upstream's compiled C# (2,610 scoring sequences, 1,664 probe
+  cases, 120 split cases, 1,170 settlement cases, 30 chip runs, 7 schedules, 100 dealer plays); hand-derived soft,
+  hard, bust and two-card-21 cases; the seed replay catching a changed card. Q1, Q4 and Q5 asserted as differences.
+- `test/scenarios.test.ts` (6): three players, four rounds with chips (chips follow results, every round replays,
+  one new-round sound per round); a split; a player leaving mid-hand; a late joiner mid-hand (cards, faces, totals,
+  the hole card's back, no seat mid-round, the result banner); the referee leaving mid-hand (round finishes, hole
+  card redrawn, segment 2 replays); the referee who is also table owner leaving (reset).
+- `test/security.test.ts` (5): the hole card unreadable before the flip (every state write, user-state write and
+  one-shot recorded; neither the seed nor either opening goes out; every client, the referee's page included, holds
+  -1 and sends no face; the flip matches the commitment); a bystander's clicks, commands and network events change
+  nothing; two tables in one room stay apart and share one chip balance; settings are the owner's, between rounds;
+  allow-change.
+- `test/table.test.ts` (6): the table owner leaving; Reset Table freeing every seat, LEAVE GAME, the 2 s rejoin; the
+  30 s timer; manual dealing; the room budget (one group, 5 space leaves; with seven players the largest leaf was 1,557 bytes
+  and the busiest second saw 3 state writes, against 16,384 bytes and 20 a second); walking out of range.
+
+`npm run build` writes `../Assets/WebRoot/pk-blackjack.js`; built to a scratch folder for this check: 531,193 bytes,
+licence banner first.
+
+### Not done yet
+
+The Unity side: the importer config, `BlackjackKitBuilder.cs` (card slots with a `_CardIndex` material float, the
+layer-5 boxes for the 20 table buttons and the dealer panels, the height buttons, the repainted felt, fonts,
+textures), the real `bindings.json`, bundles, rungs 2 to 4, and the spikes this design leans on (S6 clicks, R1
+card faces, R7 clips).
 
 ## 0. What the analysis found, in short
 
