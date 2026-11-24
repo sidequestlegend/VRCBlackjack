@@ -79,54 +79,65 @@ ok 12 - V7 ChipController: balances, bets per table and sounds over 30 random ru
 ok 13 - V8 the deal schedule for 1 to 7 seats
 ok 14 - V9 DealerPlay: stands on every 17 (soft 17 too), draws every 0.5 s after a 1 s flip
 ok 15 - draws replay from the revealed deal, and a changed card is caught
+ok 16 - the hands on the table are held against the deal: a changed, swapped, extra or missing card is caught
 ```
 
-### Multi-player scenarios on the fake room (18 tests)
+### Multi-player scenarios on the fake room (22 tests)
 
 Players act through the inputs a player has: clicks on the click boxes (layer 5) and the kit's commands. The fake
 room records every state write, user-state write and one-shot, so a test can show what each client could have read.
 
 ```
-ok 16 - three players play four rounds with chips: every client agrees, chips follow the results, every round's draws check out
-ok 17 - a split: two hands, each dealt a card after 1 s, settled separately for everyone, each at the round's bet
-ok 18 - a player leaving mid-hand: the seat is freed, the hand not settled, the round goes on
-ok 19 - a late joiner mid-hand sees the cards and totals as they are, and cannot take a seat until the round ends
-ok 20 - the referee leaves mid-hand: the next referee finishes the round, draws the unknown hole card anew, and the new segment checks out
-ok 21 - the referee who is also the table owner leaves: the table resets and every seat is freed (F73, Q12)
-ok 22 - the hole card is unreadable to every client, the referee's page included, until the flip
-ok 23 - a bystander cannot act for a seat, even from a modified client
-ok 24 - two tables in one room stay separate; one chip balance serves both on a page
-ok 25 - Start Game and the table's settings are the table owner's alone, and only between rounds
-ok 26 - without allow-change, even the table owner cannot change chips, helpers or decks (F7)
-ok 27 - the deal: every seated player contributes; one whose runtime never answers cannot hang the table
-ok 28 - the table owner leaves: the referee's player takes the table, which resets; bets at the table go to 0 (F6, F73)
-ok 29 - Reset Table frees every seat, whoever holds it (Q12), at most once per 2 s
-ok 30 - the turn timer: nobody acts, every turn ends at the deadline on every client, and the dealer plays
-ok 31 - manual dealing: a player's HIT raises a mark; the table owner deals and stands players from the dealer's panel
-ok 32 - what one table costs the room: one sync group, a few leaves, small writes, under the rate limit
-ok 33 - walking out of range releases the player's seat (F70)
+ok 17 - three players play four rounds with chips: every client agrees, chips follow the results, every round's draws check out
+ok 18 - a split: two hands, each dealt a card after 1 s, settled separately for everyone, each at the round's bet
+ok 19 - a player leaving mid-hand: the seat is freed, the hand not settled, the round goes on
+ok 20 - a late joiner mid-hand sees the cards and totals as they are, and cannot take a seat until the round ends
+ok 21 - the referee leaves mid-hand: the next referee finishes the round, draws the unknown hole card anew, and the new segment checks out
+ok 22 - the referee who is also the table owner leaves: the table resets and every seat is freed (F73, Q12)
+ok 23 - the hole card is unreadable to every client, the referee's page included, until the flip
+ok 24 - a bystander cannot act for a seat, even from a modified client
+ok 25 - two tables in one room stay separate; one chip balance serves both on a page
+ok 26 - Start Game and the table's settings are the table owner's alone, and only between rounds
+ok 27 - without allow-change, even the table owner cannot change chips, helpers or decks (F7)
+ok 28 - the deal: every seated player contributes; one whose runtime never answers cannot hang the table
+ok 29 - a referee that changes a hand (not the drawLog) is caught by every other client after the round
+ok 30 - a referee that lists other contributors than the seated players is caught
+ok 31 - a deal of the referee alone is shown as not checkable; the check replays with the round's own deck count (finding 6)
+ok 32 - a page that arrives after a contributor left cannot check that deal and says so; the others check it
+ok 33 - the table owner leaves: the referee's player takes the table, which resets; bets at the table go to 0 (F6, F73)
+ok 34 - Reset Table frees every seat, whoever holds it (Q12), at most once per 2 s
+ok 35 - the turn timer: nobody acts, every turn ends at the deadline on every client, and the dealer plays
+ok 36 - manual dealing: a player's HIT raises a mark; the table owner deals and stands players from the dealer's panel
+ok 37 - what one table costs the room: one sync group, a few leaves, small writes, under the rate limit
+ok 38 - walking out of range releases the player's seat (F70)
 ```
 
-Every scenario ends with all clients holding the same state digest and no error logged. A refused network event is
+Every scenario ends with all clients holding the same state digest and no error logged (except 29 and 30, where
+the error is the point: a page that catches a forged deal logs it). A refused network event is
 logged as an error, so a missing `networkCallable` entry fails the run. The tests run on the real `bindings.json` that
-the kit builder writes (hash `b3d4ca74...`), not the provisional one.
+the kit builder writes (hash `7a402ba3...`), not the provisional one.
 
 ## Rung 2: the kit in edit mode (`PortKit/Kit/Check`)
 
-Re-run 2026-11-25 on the final bundles:
+Re-run 2026-11-25 (review pass) on the rebuilt kit and bundles:
 
 ```
 PASS graphs: the SDK's check found 0 nodes the app will not run
-PASS blackjack bindings: 867 objects resolve by path; hash matches (b3d4ca74e481132f555e2917343de28c3ec5a686)
-PASS blackjack android bundle: PASS Kind=Pass Reasons=[] Reports=[] Stats=files 1 (format 22), scenes 0, objects 2166/7953, behaviours 2101, scripts 11, calls 0, animation events 0, graph blobs 5 (308 KiB), decompressed 21 blocks / 2 MiB of 14 MiB (LZ4), ...
-PASS blackjack windows bundle: PASS Kind=Pass Reasons=[] Reports=[] Stats=files 1 (format 22), scenes 0, objects 2166/7953, behaviours 2101, scripts 11, calls 0, animation events 0, graph blobs 5 (308 KiB), decompressed 21 blocks / 2 MiB of 20 MiB (LZ4), ...
+PASS blackjack bindings: 869 objects resolve by path; hash matches (7a402ba3bc0b11ca214fc58ef6eb26adfd445529)
+PASS blackjack android bundle: PASS Kind=Pass Reasons=[] Reports=[] Stats=files 1 (format 22), scenes 0, objects 2170/7972, behaviours 2105, scripts 11, calls 0, animation events 0, graph blobs 5 (332 KiB), decompressed 21 blocks / 2 MiB of 14 MiB (LZ4), ...
+PASS blackjack windows bundle: PASS Kind=Pass Reasons=[] Reports=[] Stats=files 1 (format 22), scenes 0, objects 2170/7972, behaviours 2105, scripts 11, calls 0, animation events 0, graph blobs 5 (332 KiB), decompressed 21 blocks / 2 MiB of 20 MiB (LZ4), ...
 DONE
 ```
 
-The kit (`Logs/portkit_kits.txt`): 1,872 objects, 867 bound (115 clickable, 0 synced, 0 grabbable), 546 refs, 115
-behaviours, 44 events. The relay graph has 519 units, 207 control and 518 value connections and 49 distinct members,
-all on the SDK's allow list of 29,061. It carries the standard ops only; the game defines no relay ops of its own and
-relays no events. Bundles: Android 7,122 KiB, Windows 8,790 KiB, each with the third-party notices inside.
+The kit (`Logs/portkit_kits.txt`): 1,874 objects, 869 bound (115 clickable, 0 synced, 0 grabbable), 548 refs, 115
+behaviours, 44 events (the review pass added the deal-check line: its backing `dealCheck` and its text
+`dealCheckText`). The relay graph (rebuilt by the re-synced kit) has 565 units, 231 control and 555 value connections
+and 49 distinct members, all on the SDK's allow list of 29,061. It carries the standard ops only; the game defines no
+relay ops of its own and relays no events. Bundles: Android 7,149 KiB, Windows 8,813 KiB (before the review pass
+7,122 and 8,790), each with the third-party notices and, as files of their own, the licence texts
+(`Logs/portkit_bundles.txt`): Apache-2.0-VRCBlackjack.txt, Cinzel-OFL.txt, CinzelDecorative-OFL.txt,
+Kenney-Boardgame-Pack-License.txt, Kenney-Casino-Audio-License.txt, Kenney-Interface-Sounds-License.txt,
+Limelight-OFL.txt, portkit-MIT.txt and TextMesh Pro's `LiberationSans - OFL.txt`.
 
 **Click boxes against uGUI buttons**, measured by building the kit both ways (`Logs/portkit_kits_click.txt` and
 `portkit_kits_uibutton.txt`). With the 41 seat and table buttons as `uiButton` events, the relay graph has 1,011 units,
@@ -137,25 +148,30 @@ Artifacts (`PortKit/Kit/Take Photos`, then `PortKit/Kit/Export Artifacts`, `alts
 
 | File | Bytes | sha1 |
 |---|---|---|
-| `android/blackjack` | 7,293,189 | `532e00e503e57020543cd6763e64c03b07983aeb` |
-| `windows/blackjack` | 9,001,367 | `89f9f56664ff50590e220917cdbc9a770a7529e6` |
-| `pk-blackjack.js` (Apache-2.0 banner) | 651,521 | `df8efe8cf5a3595f216436500e7db06d1667b5bf` |
-| `blackjack.jpg` | 61,658 | `815ea0b04610adc95f83d956b9c7187a00f88870` |
+| `android/blackjack` | 7,320,545 | `76862f5aa8a65d1ac55f52a2540a30893d283679` |
+| `windows/blackjack` | 9,024,863 | `1659febfd952f34d7ebb93ad4e7dab6f031e9bcb` |
+| `pk-blackjack.js` (Apache-2.0 banner, then portkit's MIT notice) | 687,326 | `c3d0c178fd1bc2c11f72e10a2e4e76a1ff51cec9` |
+| `blackjack.jpg` | 60,457 | `d8c1f73a7ec116372df45854fb88cd67b9e65c92` |
 | `blackjack.snippet.html` (the game's settings, `position="0 0 0"`) | 523 | `f2fb8cb65af04aca1f69d773c3f54bf3865b6ef5` |
 
-`manifest.json`: checks android PASS, windows PASS, bindings `b3d4ca74e481132f555e2917343de28c3ec5a686`, footprint
-3.95 x 0.92 x 2.07 m. Export copies files and builds nothing, so the Play-mode runs below loaded these same files. The
-pages asked for the Windows bundle as `kits/windows/blackjack?v=89f9f56664`, the start of the exported sha1, and the
-script is byte for byte `Assets/WebRoot/pk-blackjack.js`. The editor loads only the Windows bundle. The Android
-bundle passed the check but was never loaded.
+`manifest.json`: checks android PASS, windows PASS, bindings `7a402ba3bc0b11ca214fc58ef6eb26adfd445529`, footprint
+3.95 x 0.92 x 2.07 m (review pass; before it the bundles were 7,293,189 and 9,001,367 bytes and the script 651,521).
+Export copies files and builds nothing: the bundles are the ones the Play-mode runs below were served from the test
+server, and the script is byte for byte `Assets/WebRoot/pk-blackjack.js` (same sha1). The editor loads only the
+Windows bundle. The Android bundle passed the check but was never loaded.
 
 ## Rung 3: Play mode, one player (`playtest/single.json`)
 
 A hand-written `<bs-snippet name="blackjack" ... chips="true">` with the built script and both bundles from the
 test's local server, and `Assets/WebRoot/playtest/blackjack-playtest.js`. The driver works the table through the SDK's
 desktop player with portkit's InputSim: a mouse of the test's own, with which the SDK casts its own rays and raises the
-clicks. It reads Unity back with the `probe` command. **RESULT 21 passed, 0 failed; 0 console error lines**
-(`playtest/evidence_single.txt`, screenshots `evidence_single_deal.jpg` and `evidence_single_settled.jpg`).
+clicks. It reads Unity back with the `probe` command.
+
+**Review pass (2026-11-25), on the rebuilt bundles: RESULT 22 passed, 0 failed; 0 console error lines, twice in a
+row** (runs 4 and 5 below; `playtest/evidence_single.txt` is run 5, screenshots `evidence_single_deal.jpg` and
+`evidence_single_settled.jpg`). A round in which the hand busts has no STAND check, so it counts 21. Alone at the
+table, this page is the referee and the only player: its deal is its own, and the page now says so instead of
+calling it checked (the first pass asserted `{"ok":true}` here).
 
 ```
 PASS the kit loads from a hand-written bs-snippet and the instance starts
@@ -166,20 +182,28 @@ PASS Join Game takes seat 3 (click box on the UI layer, real mouse)
 PASS the seat's name reached Unity (relay op text): Main Editor
 PASS two chip buttons make a bet of 15, shown on the chip panel: bet 15, panel '15', total '100'
 PASS Start Game starts a round: round 1, phase dealing
-PASS the deal: two cards to the seat, two to the dealer, the hole card face down: phase turns, seat [51,5], dealer [-1,16], deal bj1.1.f0964ed7
-PASS the seat's two cards are on in Unity with the faces in state (matFloat _CardIndex): state [51,5]; Unity True/51 True/5; next slot active False
-PASS the dealer's up card shows its face; the hole card's face is blank in Unity: d0 True/-1, d1 True/16 (state 16)
-PASS HIT deals a third card: [51,5,24] total 12
-PASS the third card is on in Unity with its face: state [51,5,24]; Unity True/51 True/5 True/24; next slot active False
+PASS the deal: two cards to the seat, two to the dealer, the hole card face down: phase turns, seat [30,7], dealer [-1,31], deal bj1.1.163b44d6
+PASS the seat's two cards are on in Unity with the faces in state (matFloat _CardIndex): state [30,7]; Unity True/30 True/7; next slot active False
+PASS the dealer's up card shows its face; the hole card's face is blank in Unity: d0 True/-1, d1 True/31 (state 31)
+PASS HIT deals a third card: [30,7,19] total 18
+PASS the third card is on in Unity with its face: state [30,7,19]; Unity True/30 True/7 True/19; next slot active False
 PASS STAND ends the turn
-PASS the dealer flips and plays; the round settles: dealer [51,16] = 17, seat [51,5,24] = 12, result lose
-PASS the flipped hole card's face reached Unity and matches its commitment: Unity 51, state 51, verified true
-PASS the verdict follows the totals: lose (by the totals: lose)
-PASS the chips change by the bet (1 to 1): 100 -> 85 (-15)
-PASS the chip panel shows the new total: 85
-PASS the round's draws replay from the revealed deal: {"ok":true,"reason":""}
+PASS the dealer flips and plays; the round settles: dealer [7,31,0,3,27] = 24, seat [30,7,19] = 18, result win
+PASS the flipped hole card's face reached Unity and matches its commitment: Unity 7, state 7, verified true
+PASS the verdict follows the totals: win (by the totals: win)
+PASS the chips change by the bet (1 to 1): 100 -> 115 (+15)
+PASS the chip panel shows the new total: 115
+PASS a deal with no contributor but the referee is not checkable (the only player dealt alone): {"ok":false,"status":"unverifiable","reason":"the dealer's page was the only player: nobody else took part in the deal"}
+PASS the table shows every player that this deal could not be checked (Unity text, its backing on): Deal NOT checkable: the dealer's page was the only player; backing True
 PASS the credits panel opens and closes: True, False
 ```
+
+Runs of the review pass: 1 (22 passed) found the new line under the credits button hidden behind the table's rail in
+the screenshot; 2 (22 passed) had it above the buttons but pale against the sky and cut to two lines; 3 (21, a bust
+round) with short texts; then a backing panel shown only while there is a line, and runs 4 and 5 passed (22 each).
+The driver also prints, as information only, the new probes `animstate` on a dealt card's animator (`short 370891857
+... transition False`: the zoom's state after its trigger) and `audioplaying` on the table's source (False when
+asked, a second after the deal sounds ended); neither is counted.
 
 Every click went through a click box on the UI layer and registered on the first try. Fixes made on the way to this
 result: the felt's smoothness map also carried the "2 to 1" line (painted out); the card faces were mirrored (fixed
@@ -202,32 +226,41 @@ of their own, which the runtime ignores.
   Before the flip it checks the hole card again, this time from the state it was sent on joining. Both pages compare
   digests and views at the end.
 
-**RESULT 35 passed, 0 failed (main 14, Player 2 21); 0 console error lines**, twice in a row on the exported bundles
-(runs 5 and 6 below). The file `playtest/evidence_multi.txt` is run 6.
+**Review pass (2026-11-25), on the rebuilt bundles: RESULT 39 passed, 0 failed (main 16, Player 2 23); 0 console
+error lines, twice in a row**, each on the first try after the changes (`playtest/evidence_multi.txt` is the second
+run). `playtest.sh` started Player 2 itself and waited for it ("Player 2: Launched (Clone)"). New or changed in this
+pass:
+
+- the round's deal is checked the new way on both pages (contributors are the seated players, the draws replay, every
+  hand holds the deal's cards: `checked`), and the line on the table says so in Unity;
+- in round 2 the owner's page checks the deal, and the reloaded page, whose old session contributed and left, says it
+  cannot check it (`unverifiable`, "left before this page arrived"), on the table too, rather than raising a false
+  alarm (the first pass did not check the deal on the reloaded page);
+- digests are compared at equal `version()` (portkit `bf8b5c6`) instead of within one 2 s poll epoch, after round 1,
+  at the reload and at the end.
 
 ```
 [main] PASS two players in the room: ["Main Editor","Player 2"]
-[main] PASS this player takes seat 3                     [vp-..] PASS this player takes seat 4
 [both] PASS both players are seated, on both pages: -,-,-,Main Editor,Player 2,-,-
-[both] PASS before the flip this page holds the hole card face down, and Unity's slot face is blank: state [-1,11], Unity -1
-[both] PASS the hole card was unreadable on this page before the flip, and the flipped card matches its commitment: hole 11 (value 4); before: cards [-1,11], total 4, hash OgtkaQDiCSSH..., Unity -1
-[both] PASS the round's draws replay from the revealed deal (both seats contributed): {"ok":true,"reason":""} bj1.1.ab1bf97f
-[both] PASS round 1: seat 3's cards are on in this page's Unity with the faces in state: state [36,26]; Unity True/36 True/26; next slot active False
-[both] PASS round 1: seat 4's cards are on in this page's Unity with the faces in state: state [16,6,2,27]; Unity True/16 True/6 True/2 True/27; next slot active False
-[main] PASS round 1: the other player's hand was played and settled, as this page sees it: Player 2 [16,6,2,27] = 19, win
-[vp-..] PASS round 1: the other player's hand was played and settled, as this page sees it: Main Editor [36,26] = 18, draw
-[both] PASS both pages reach the same state digest after round 1: f89e5ba1 / f89e5ba1
-[vp-..] INFO the guest reloads its page mid-hand
-[vp-..] PASS the kit is in the scene after the reload, the dealer's first slot as the state says: table True, dealer slot 0 active True, dealer [-1,32]
-[vp-..] PASS after reloading mid-hand the guest sees the same table (late join): turns r2 dealer -1,32=10 | - | - | - | Main Editor:25,7=11 00 | - | - | - / (the owner's view, identical)
-[vp-..] PASS the reloaded page shows the other seat's cards in Unity with their faces: state [25,7]; Unity True/25 True/7; next slot active False
-[vp-..] PASS the reloaded page shows the dealer's cards as they are (hole card still blank unless flipped): d1 True/32, dealer [-1,32]
+[both] PASS before the flip this page holds the hole card face down, and Unity's slot face is blank: state [-1,51], Unity -1
+[both] PASS the hole card was unreadable on this page before the flip, and the flipped card matches its commitment: hole 31 (value 9); before: cards [-1,51], total 11, hash -r_3QwVa92IO..., Unity -1
+[both] PASS the round's deal checks: contributors are the seated players, the draws replay, every hand holds the deal's cards: {"ok":true,"status":"checked","reason":""} bj1.1.d4b57711
+[both] PASS the table shows every player that the deal was checked (Unity text): Deal checked: every card came from the shared shuffle
+[both] PASS round 1: seat 3's cards are on in this page's Unity with the faces in state: state [7,7,6,43]; Unity True/7 True/7 True/6 True/43; next slot active False
+[both] PASS round 1: seat 4's cards are on in this page's Unity with the faces in state: state [40,10,49]; Unity True/40 True/10 True/49; next slot active False
+[both] PASS both pages reach the same state after round 1 (equal version() and digest): 613de6ba / 613de6ba at 19:a81f184e / 19:a81f184e
+[vp-..] PASS after reloading mid-hand the guest sees the same table (late join): turns r2 dealer -1,16=6 | - | - | - | Main Editor:27,46=18 00 | - | - | - / (the owner's view, identical)
 [vp-..] PASS the guest's old seat was freed when its session left (C21, F72)
-[vp-..] PASS the reloaded page joined before the flip: flipped false, dealer [-1,32]
-[main] PASS the reloaded guest's page holds the same state as the owner's (digest, same poll epoch): 8d395d1c / 8d395d1c at poll epoch 1795550480.11364 (guest sample 1; 0 samples from another epoch skipped)
-[vp-..] PASS round 2: the hole card was unreadable on the reloaded page (late join state) before the flip, and the flipped card matches its commitment: hole 39 (value 10); before: cards [-1,32], total 10, hash ZKKW3TZlxRlW..., Unity -1
-[main] PASS both pages agree at the end of round 2: 8be559a6 / 8be559a6; settled r2 dealer 39,32=20 | - | - | - | Main Editor:25,7,35=21 10 | - | - | -
+[vp-..] PASS the reloaded page joined before the flip: flipped false, dealer [-1,16]
+[main] PASS the reloaded guest's page holds the same state as the owner's (digest at equal version()): 9b2fc67a / 9b2fc67a at version 33:3985a8be (guest sample 1; 0 samples of another version skipped)
+[vp-..] PASS round 2: the hole card was unreadable on the reloaded page (late join state) before the flip, and the flipped card matches its commitment: hole 26 (value 8); before: cards [-1,16], total 6, ...
+[vp-..] PASS round 2: the reloaded page cannot check a deal its old session contributed to, and shows that (not a false alarm): {"ok":false,"status":"unverifiable","reason":"a player who contributed to this deal left before this page arrived: ..."}
+[main] PASS round 2: the owner's page checks the deal (it saw the guest's old session contribute): {"ok":true,"status":"checked","reason":""}
+[main] PASS both pages agree at the end of round 2 (equal version() and digest): 1ae9db72 / 1ae9db72 at 37:2e6b078a / 37:2e6b078a; settled r2 dealer 26,16,12=19 | - | - | - | Main Editor:27,46=18 30 | - | - | -
 ```
+
+The first pass (portkit `1118ef0`): 35 passed, 0 failed (main 14, Player 2 21), twice in a row; its runs and their
+causes are in the table below.
 
 **What the hole-card check asserts**, on each page (`holeCheck` in the driver):
 
@@ -242,7 +275,7 @@ of their own, which the runtime ignores.
 Round 2 runs the same check on the reloaded page, so the late-join snapshot it was sent held no more than any other
 page.
 
-### Runs, failures and their causes
+### Runs, failures and their causes (first pass)
 
 | Run | Result | Cause | Fix |
 |---|---|---|---|
@@ -268,4 +301,6 @@ skipped. Run 6, the evidence file, also had two HIT clicks that registered on th
 - **A referee or table-owner change with two real clients:** in Node only. In rung 4 the guest, not the referee,
   reloaded, so the referee never changed.
 - **More than two players, and simultaneous presses within one 50 ms tick:** in Node only (three players).
-- **A deal where a seated player's runtime withholds its contribution:** in Node only.
+- **A deal where a seated player's runtime withholds its contribution, and the forged-deal cases (a changed hand, a
+  forged contributor list):** in Node only. Play mode shows the two honest outcomes (checked; not checkable, alone and
+  after a reload), not a mismatch.

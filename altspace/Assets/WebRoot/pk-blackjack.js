@@ -39,7 +39,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-/* pk-blackjack.js: portkit runtime with the rules of 'blackjack' (protocol pk1, bindings 72ee3641c9e761c4a5294b106f0a7792c55dbab7). Built file: do not edit. */
+/* pk-blackjack.js: portkit runtime with the rules of 'blackjack' (protocol pk1, bindings 7a402ba3bc0b11ca214fc58ef6eb26adfd445529). Built file: do not edit. */
 (() => {
   var __defProp = Object.defineProperty;
   var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
@@ -6417,7 +6417,11 @@ ${label}`)));
         const v = this.verified;
         if (!v) return this.dealRevealed ? "Checking the deal..." : "Waiting for the dealer's page to reveal the deal";
         if (v.status === "checked") return this.lostSegments > 0 ? "Deal checked (part of it was lost with a dealer who left)" : "Deal checked: every card came from the shared shuffle";
-        if (v.status === "unverifiable") return `Deal NOT checkable: ${v.reason}`;
+        if (v.status === "unverifiable") {
+          if (/only player/.test(v.reason)) return "Deal NOT checkable: the dealer's page was the only player";
+          if (/left before/.test(v.reason)) return "Deal NOT checkable here: a contributor left before this page came";
+          return "Deal NOT checkable: the dealer's page dealt from its own seed alone";
+        }
         return `DEAL CHECK FAILED: ${v.reason}`;
       }
       const listed = this.Secrets.dealContributors(this.dealLabel);
@@ -7722,6 +7726,8 @@ ${label}`)));
       __publicField(this, "SlotAnimators", []);
       /** Added: one line under the dealer's buttons with this client's check of the round's deal (DeckManager.CheckText). */
       __publicField(this, "DealCheck", null);
+      /** Added: the line's backing, shown while there is a line. */
+      __publicField(this, "DealCheckPanel", null);
       __publicField(this, "actives", /* @__PURE__ */ new Map());
       __publicField(this, "shown", []);
       __publicField(this, "seen", { round: -1, resets: -1, bust: false });
@@ -7782,7 +7788,9 @@ ${label}`)));
       }
       this.SetActive(this.DeckChanger, change);
       this.SetActive(this.DeckChangerManual, change);
-      if (this.DealCheck) this.DealCheck.text = ctrl.Deck.CheckText();
+      const line = ctrl.Deck.CheckText();
+      if (this.DealCheck) this.DealCheck.text = line;
+      this.SetActive(this.DealCheckPanel, line !== "");
     }
     /** Called by Controller.Redraw: the dealer's cards, the flip, and the table banner, from state. */
     Apply(instant) {
@@ -8451,8 +8459,11 @@ ${label}`)));
             $obj: "mchipToggle"
           },
           DealCheck: {
-            $comp: "dealCheck",
+            $comp: "dealCheckText",
             kind: "TMP"
+          },
+          DealCheckPanel: {
+            $obj: "dealCheck"
           },
           DealerController: {
             $beh: "dealer"
@@ -13195,7 +13206,7 @@ ${label}`)));
         object: "creditsPanel"
       }
     ],
-    hash: "72ee3641c9e761c4a5294b106f0a7792c55dbab7",
+    hash: "7a402ba3bc0b11ca214fc58ef6eb26adfd445529",
     objects: {
       audio: {
         click: false,
@@ -13506,9 +13517,17 @@ ${label}`)));
         sync: "none"
       },
       dealCheck: {
+        active: false,
         click: false,
         grab: false,
         path: "Table/Dealer/Dealer UI Controller/Auto Canvas/DealCheck",
+        seat: false,
+        sync: "none"
+      },
+      dealCheckText: {
+        click: false,
+        grab: false,
+        path: "Table/Dealer/Dealer UI Controller/Auto Canvas/DealCheck/Text",
         seat: false,
         sync: "none"
       },
@@ -19501,6 +19520,7 @@ ${label}`)));
       "mchipsOnBtn",
       "mchipsOffBtn",
       "dealCheck",
+      "dealCheckText",
       "d0",
       "d0f",
       "d1",

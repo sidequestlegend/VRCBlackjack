@@ -21,14 +21,16 @@ risks and questions.
 
 ## Status: the Unity kit and the editor rungs (2026-11-24 and 25)
 
-Rungs 0 to 4 pass in the Unity editor; `altspace/TESTS.md` has the evidence and how to run each again.
+Rungs 0 to 4 pass in the Unity editor; `altspace/TESTS.md` has the evidence and how to run each again. Re-run on
+2026-11-25 after the re-sync to portkit `812f285` and the fixes for the independent review (`REVIEW-FINDINGS.md`,
+blackjack: the deal check, licences, notices, docs).
 
 | Rung | Result |
 |---|---|
-| 0/1 static and Node | `npm test`: typecheck and lint clean, 33 of 33 (15 golden-vector tests on upstream's compiled C#, 18 scenarios) |
-| 2 `PortKit/Kit/Check` | 0 disallowed graph nodes; 867 bindings resolve (hash `b3d4ca74...`); Android 7,122 KiB and Windows 8,790 KiB, both PASS, notices inside |
-| 3 Play mode, one player | 21 of 21, 0 console errors: seat, bet, deal, hit, stand, the flip, result, chips and the credits panel, through the desktop player's mouse on the exported bundles |
-| 4 two Local Multiplayer players | 35 of 35, twice in a row, 0 console errors: both seated, a full round, the hole card unreadable on both pages before the flip, a guest reload mid-hand in round 2 (same table, same digest, hole card unreadable on the reloaded page too), digests and views equal at the end |
+| 0/1 static and Node | `npm test`: typecheck and lint clean, 38 of 38 (16 golden-vector and rule tests, 22 scenarios, among them the forged-hand and forged-contributor tests) |
+| 2 `PortKit/Kit/Check` | 0 disallowed graph nodes; 869 bindings resolve (hash `7a402ba3...`); Android 7,149 KiB and Windows 8,813 KiB, both PASS, notices and licence texts inside |
+| 3 Play mode, one player | 22 of 22, twice in a row, 0 console errors: seat, bet, deal, hit, stand, the flip, result, chips, the deal shown as not checkable (one player who is also the referee) on the table, and the credits panel, through the desktop player's mouse |
+| 4 two Local Multiplayer players | 39 of 39, twice in a row, 0 console errors: both seated, a full round checked the new way on both pages and shown on the table, the hole card unreadable on both pages before the flip, a guest reload mid-hand in round 2 (same table, same digest at equal `version()`, hole card unreadable on the reloaded page too, the reloaded page saying it cannot check that deal), digests and views equal at the end |
 
 Artifacts: `PortKit/Kit/Take Photos` and `PortKit/Kit/Export Artifacts` wrote `altspace/dist/` (not committed): both
 bundles, `pk-blackjack.js`, `blackjack.jpg`, `blackjack.snippet.html` and `manifest.json` (both checks PASS). The
@@ -103,11 +105,16 @@ means a whole-state digest is only comparable within one 2-second epoch.
 - **Everything in the app and on a Quest (rung 5).** That covers laser clicks on the click boxes, `_CardIndex` faces
   and the card shader on Quest (R1), frame time (R3), relay traffic at a round's start (R4), and the Android bundle
   loading at all (it passed the bundle check only).
-- **The card zoom (F28) and the sounds (F68):** both ran in Play mode with 0 console errors, but no probe asserted
-  them (the probe cannot read an animator's state or whether a source is playing), and nobody listened.
+- **The card zoom (F28) and the sounds (F68):** both ran in Play mode with 0 console errors; the kit's new probes
+  (`animstate`, `audioplaying`) were printed for information but are not asserted (timing of short clips), and nobody
+  listened.
 - **Only in Node, never in Play mode:** split, manual dealing and the dealer's panel, the height buttons (F49), Reset
   Table, the turn timer running out, range, the owner's settings, two tables in one page, a referee or table-owner
-  change, more than two players, a withheld deal contribution.
+  change, more than two players, a withheld deal contribution, and a deal check that fails (a forged hand or
+  contributor list needs a modified referee page).
+- **The deal-check line in a headset:** its place above the dealer's buttons was checked in an editor screenshot only;
+  in manual mode the canvas it is on is shown to the table owner alone (as upstream's automatic canvas), so other
+  players then read the outcome only in the console.
 
 ### Trust: what a modified client can still do (compared with upstream)
 
@@ -360,21 +367,26 @@ referee).
 
 ### Tests (`npm test`: typecheck, lint, then the Node tests)
 
-33 tests, all passing (re-run 2026-11-25); the scenario files were also run six times in a row (draws differ every
-run) without a failure.
+38 tests, all passing (review pass, 2026-11-25; 33 before it); the scenario files were also run six times in a row
+(draws differ every run) without a failure in the first pass.
 
-- `test/golden.test.ts` (15): vectors V1 to V9 from upstream's compiled C# (2,610 scoring sequences, 1,664 probe
+- `test/golden.test.ts` (16): vectors V1 to V9 from upstream's compiled C# (2,610 scoring sequences, 1,664 probe
   cases, 120 split cases, 1,170 settlement cases, 30 chip runs, 7 schedules, 100 dealer plays); hand-derived soft,
-  hard, bust and two-card-21 cases; the seed replay catching a changed card. Q1, Q4 and Q5 asserted as differences.
+  hard, bust and two-card-21 cases; the seed replay catching a changed card; the hands held against the deal
+  (`CheckHands`: a changed, swapped, extra or missing card). Q1, Q4 and Q5 asserted as differences.
 - `test/scenarios.test.ts` (6): three players, four rounds with chips (chips follow results, every round replays,
   one new-round sound per round); a split; a player leaving mid-hand; a late joiner mid-hand (cards, faces, totals,
   the hole card's back, no seat mid-round, the result banner); the referee leaving mid-hand (round finishes, hole
   card redrawn, segment 2 replays); the referee who is also table owner leaving (reset).
-- `test/security.test.ts` (6): the hole card unreadable before the flip (every state write, user-state write and
+- `test/security.test.ts` (10): the hole card unreadable before the flip (every state write, user-state write and
   one-shot recorded; neither the seed nor either opening goes out; every client, the referee's page included, holds
   -1 and sends no face; the flip matches the commitment); a bystander's clicks, commands and network events change
   nothing; two tables in one room stay apart and share one chip balance; settings are the owner's, between rounds;
-  allow-change; a seated player whose runtime withholds its deal contribution cannot hang the table.
+  allow-change; a seated player whose runtime withholds its deal contribution cannot hang the table (and that deal is
+  shown as not checkable); a referee that changes a hand without touching `drawLog` is caught by every other page; a
+  referee that lists an accomplice, or leaves a seated player out, is caught; a referee alone at the table is shown
+  as not checkable, and the replay uses the segment's own deck count; a page that arrived after a contributor left
+  says it cannot check instead of raising a false alarm.
 - `test/table.test.ts` (6): the table owner leaving; Reset Table freeing every seat, LEAVE GAME, the 2 s rejoin; the
   30 s timer; manual dealing; the room budget (one group, 5 space leaves; with seven players the largest leaf was 1,557 bytes
   and the busiest second saw 3 state writes, against 16,384 bytes and 20 a second); walking out of range.
