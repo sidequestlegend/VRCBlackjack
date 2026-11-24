@@ -7,6 +7,7 @@ import { AudioController } from "./AudioController.ts";
 import { BlackjackWorldController } from "./BlackjackWorldController.ts";
 import { ChipController } from "./ChipController.ts";
 import { Controller } from "./Controller.ts";
+import { CreditsPanel } from "./CreditsPanel.ts";
 import { Dealer } from "./Dealer.ts";
 import { DealerUIController } from "./DealerUIController.ts";
 import { DeckManager } from "./DeckManager.ts";
@@ -25,6 +26,7 @@ const game: GameDefinition = {
     BlackjackWorldController,
     ChipController,
     Controller,
+    CreditsPanel,
     Dealer,
     DealerUIController,
     DeckManager,
