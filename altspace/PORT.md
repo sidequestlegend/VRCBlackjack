@@ -57,11 +57,14 @@ is the analysis it was built from, with section 10's questions now answered (10.
 - **Timers on the shared clock.** The round is `phase` (idle, dealing, turns, dealer, settled), `t0` and a `step`
   counter; the deal schedule (V8), the 2 s poll, the 30 s deadline and the dealer's steps (V9) run on the referee
   each tick against `GetServerTimeInSeconds`, so a new referee carries on from state with nothing done twice.
-- **Fair draws (C2).** Fresh random cards per draw, as upstream (no shoe): draw k of a segment starts upstream's
-  probe at `new Draw(seed).Int(52, k)`. The referee commits to the seed (`Secrets.commit`) when the segment opens
-  and publishes the opening when the round ends; every client replays the round's draws (`DeckManager.Verify`) and
-  logs an error on any mismatch. A referee that takes over mid-round does not know the seed: it opens segment 2
-  with its own committed seed, and the lost segment is counted in `lostSegments`.
+- **Fair draws (C2), as re-synced.** Fresh random cards per draw, as upstream (no shoe): draw k of a segment starts
+  upstream's probe at `deal.Int(52, k)`, where the deal is the kit's dealt draw (`Secrets.beginDeal(label, seated
+  sessions)`): the referee commits to a seed, each seated player's runtime commits to a contribution and reveals it, and
+  the deal is SHA-256 of all of them, so the referee cannot grind seeds. The deal schedule waits until the deal is
+  ready. At the end of the round the referee reveals its seed (`revealDeal`); every client recomputes the deal from what
+  it saw (`verifyDeal`) and replays the round's draws (`DeckManager.Verify`), logging an error on any mismatch. A
+  referee that takes over mid-round does not know the seed: it begins segment 2 with a deal of its own, and the lost
+  segment is counted in `lostSegments`.
 - **The hole card (C3).** The referee draws it from the committed seed, keeps it on its own client with its own
   commitment (`Dealer.holeHash`), and shows `-1` in state; the dealer's public total counts the up card only. At
   the flip it publishes the card and the opening, and every client checks it (`Dealer.holeVerified`). A referee
@@ -211,21 +214,22 @@ section 10.2 says.
 | D9 | The flip sound and the hole card's deal sound play for everyone in range (C19) | sounds follow state |
 | D10 | Settings come from snippet attributes, applied once by the first referee (C20) | no inspector in someone else's world |
 
-### Runtime gaps (local workarounds in the game's files; portkit unchanged)
+### Runtime gaps: closed by the fixed kit (re-sync of 2026-11-24, portkit `1118ef0`)
 
-| # | Gap | Workaround | Cost |
-|---|---|---|---|
-| G1 | No object shared by every instance on a page (one chip balance for all tables) | module-level map keyed by the local session id (`ChipController.ts`) | none seen; a second page of the same session would share it (cannot happen) |
-| G2 | No strong random value for game code (lint forbids `crypto`; `this.Random` is the platform's generator) | the round's seed is two commitment nonces (`Secrets.commit(x).reveal().s`, from `crypto.getRandomValues`) | a hack on the nonce's purpose; a `Secrets.RandomBytes(n)` would be cleaner |
-| G3 | No referee-dealt draw that the referee cannot bias: `Secrets.beginDraw` is a player's own draw numbered by the referee | commit and reveal of the referee's seed | a modified referee could try seeds before committing (it still cannot change a card afterwards or pick cards as the round develops). A helper where the referee commits first and players add entropy afterwards would close it |
-| G4 | `Behaviour.Player` (the per-player accessor) takes the name of upstream's field `InteractableController.Player` | renamed `Seat` | none |
-| G5 | Game code cannot read its instance key (upstream's `TableIndex`) | the table's ChipController object keys its bet | none |
-| G6 | Commands from one sender run one at a time (each waits for the previous acknowledgement) | none needed | a burst of presses is queued; about 0.3 s each in the fake room |
-| G7 | Controls are live only after the first tick (InteractableController sets them in Update) | the test helper waits one tick | none for a person |
+| # | Gap | Now |
+|---|---|---|
+| G1 | No object shared by every instance on a page | `this.Shared` holds the page's one chip bank, keyed by `this.InstanceKey`; the module-level map is gone |
+| G2 | No strong random value for game code | `this.Random.Bytes` (deal labels); the nonce-seed hack is gone |
+| G3 | The referee could grind seeds for the deck | the deck uses the kit's **dealt draws** (`beginDeal` / `dealDraw` / `revealDeal` / `verifyDeal`): the referee commits to a seed, every seated player's runtime commits to a contribution and reveals it, and the cards come from all of them. The deal schedule waits for it (the shuffle sound covers it); a new referee mid-round begins a deal of its own (segment 2); a deal some seated player's runtime never answers is begun again after 10 s from the referee's seed alone, logged and counted in `DeckManager.unfairDeals` (so a modified client cannot hang the table, but it can make that round's deal the referee's alone: stated) |
+| G4 | `Behaviour.Player` clashed with upstream's field | kept as `Seat` (the kit's convention allows either) |
+| G5 | Game code could not read its instance key | `this.InstanceKey` keys the bet |
+| G6 | Commands from one sender run one at a time | intended; nothing to change |
+| G7 | Controls live only after the first tick | the first `Update` runs in the start turn; the tests' one-tick wait is gone |
 
-The additions asked in 10.3 are all in the runtime now: `animResetTrigger` and `animPlay` relay ops, the sender
-of a command or event (`CallingSession`, `CallingPlayer`), `OnPlayerLeft`, `OnMasterTransferred` and
-`SendCustomEventDelayedFrames`.
+Every class whose methods are reached by a command declares `static networkCallable` (Controller 8 names, Player 8,
+DeckManager 2). Found while re-syncing (kit gap, reported): publishing a user-state record from inside a command
+handler (here `Secrets.beginDeal`) makes the kit's command runner run the same command again, recursively; the deal is
+therefore begun from the Controller's tick, never from a command.
 
 ### Tests (`npm test`: typecheck, lint, then the Node tests)
 
