@@ -1,7 +1,7 @@
 # Third-party notices: blackjack for Altspace
 
-**Draft, 2026-11-24.** Written with the TypeScript rules port. The asset part (what the kit builder re-encodes,
-replaces or leaves out) is filled in when the kit is built; until then this covers the code. Nothing has been
+Written 2026-11-24 with the port. A copy of this file, followed by the font and Kenney licence texts, travels in
+every kit bundle (`Assets/Kit/THIRD-PARTY-NOTICES.md`, made by `altspace/tools/make_notices.py`). Nothing has been
 released.
 
 ## What this covers
@@ -23,8 +23,8 @@ What is distributed, and where the obligations are met:
 | The fork (source) | `LICENSE` at the root, unchanged | this file; `altspace/PORT.md` sections "Status" and 10 | upstream files untouched on the `altspace` branch; notices repeated below |
 | `altspace/ts/src/*.ts` (translated source) | `LICENSE`; the notice in `src/notice.ts` | every file's header: "Translated from Scripts/<file>.cs ... changed for the Altspace port" | `src/notice.ts` holds upstream's copyright notice; each file's header names it |
 | `pk-blackjack.js` (built script, object form) | a link in its banner (`script-header.txt`), and this file in the fork | the banner says it was translated and changed, and where the changes are listed | the banner carries "Copyright 2022 CentauriCore" and the licence notice |
-| The kit bundles (object form, not built yet) | **to do**: the licence text as a text asset in each bundle | **to do**: the asset changes below | **to do**: the credits panel in the kit |
-| In the world | **to do**: an in-world credits panel with the notice, the credits and a link to the licence | | |
+| The kit bundles (object form) | this file with the full licence text, as a text asset in each bundle | "Changes made" below, in the same text asset | the in-world credits panel (copyright line, credits, licence, where the changes are listed) and the same text asset |
+| In the world | the credits panel at the back of the table names the licence and its address | it says the port was changed and how | it carries "Copyright 2022 CentauriCore" and every credit |
 
 ## Notices retained from upstream
 
