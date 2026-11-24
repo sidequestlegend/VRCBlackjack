@@ -86,6 +86,7 @@ namespace Blackjack
             HeightButtons(stage);
             Bind(stage, system, slots);
             Credits(stage, F("Dealer/Dealer UI Controller/Reset Button"));
+            Sounds(system);
             Fonts();
         }
 
@@ -651,6 +652,38 @@ namespace Blackjack
             box.size = new Vector3(rect.rect.width, rect.rect.height, Mathf.Min(rect.rect.width, rect.rect.height) * 0.2f);
         }
 
+        // ------------------------------------------------------------------ sounds (K8: upstream's clips replaced by Kenney CC0)
+
+        /// <summary>
+        /// Upstream's 97 clips (credited to Three Ribbon Studios, origin of the samples not verifiable) are not shipped: every
+        /// clip field of the stand-ins points at Kenney's Casino Audio and Interface Sounds (CC0) instead, before the
+        /// bindings are written, so the clip lists the kit builds hold only these.
+        /// </summary>
+        void Sounds(GameObject system)
+        {
+            const string A = "Assets/Kit/Audio/";
+            AudioClip C(string name) => Load<AudioClip>(A + name + ".ogg");
+            var audio = F("Audio Controller").GetComponent<CentauriCore.Blackjack.AudioController>();
+            audio.StartMatch = C("card-shuffle");
+            audio.StartActivePlay = C("confirmation_001");
+            audio.DrawCard = Enumerable.Range(1, 8).Select(i => C($"card-slide-{i}")).Concat(Enumerable.Range(1, 4).Select(i => C($"card-place-{i}"))).ToArray();
+            audio.FlipCard = new[] { C("card-fan-1"), C("card-shove-1"), C("card-shove-2"), C("card-shove-3"), C("card-shove-4") };
+            audio.SplitDeck = C("card-fan-2");
+            audio.Stand = C("click_003");
+            audio.WinMatch = C("confirmation_002");
+            audio.LoseMatch = C("error_004");
+            audio.DrawMatch = C("question_001");
+            audio.DealerWantToHit = C("tick_001");
+            audio.Bust = C("drop_002");
+            audio.TakeControl = C("chip-lay-1");
+            audio.ReleaseControl = C("chips-collide-1");
+            audio.UIInteract = C("click_001");
+            var chips = system.transform.Find("Chip Controller").GetComponent<CentauriCore.Blackjack.ChipController>();
+            chips.AddToBetClip = C("chips-stack-1");
+            chips.NotEnoughChipsClip = C("error_002");
+            foreach (var source in table.GetComponentsInChildren<AudioSource>(true).Concat(system.GetComponentsInChildren<AudioSource>(true))) source.clip = null;
+        }
+
         // ------------------------------------------------------------------ fonts (K1: three unlicensed fonts replaced)
 
         void Fonts()
@@ -720,7 +753,7 @@ namespace Blackjack
             "distributed on an \"AS IS\" basis, without warranties or conditions of any kind. Changed for Altspace (the rules translated to " +
             "TypeScript, the table synced as state, a fair shared deal, URP materials, new fonts and cards, the felt's 2 to 1 line and logo " +
             "painted out): see THIRD-PARTY-NOTICES in the port.\n" +
-            "Table model: Sentinel373. Table textures: FiyCsf. Sounds: Three Ribbon Studios (credited upstream; shipped under the repo's licence).\n" +
+            "Table model: Sentinel373. Table textures: FiyCsf. Sounds: Casino Audio and Interface Sounds by Kenney (www.kenney.nl), CC0.\n" +
             "Cards: Boardgame Pack v2 by Kenney (www.kenney.nl), CC0. Fonts: Cinzel and Cinzel Decorative (Natanael Gama, the Cinzel Project " +
             "Authors), Limelight (Sorkin Type Co), Liberation Sans: SIL Open Font License 1.1.\n" +
             "Every win pays 1 to 1. The script also holds the portkit runtime (MIT). Not affiliated with VRChat or CentauriCore. Click to close.";

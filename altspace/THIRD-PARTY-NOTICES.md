@@ -124,6 +124,8 @@ System.prefab`, changed as follows:
 | Cinzel (`Assets/Kit/Fonts/Cinzel.ttf`) | The Cinzel Project Authors (Natanael Gama) | SIL Open Font License 1.1 (`Cinzel-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/cinzel | Arcane Nine (labels) |
 | Cinzel Decorative Bold (`Assets/Kit/Fonts/CinzelDecorative-Bold.ttf`) | Natanael Gama, Reserved Font Name "Cinzel" | SIL OFL 1.1 (`CinzelDecorative-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/cinzeldecorative | Roman Gradient (Bust, Win, Draw, Lost) |
 | Limelight (`Assets/Kit/Fonts/Limelight-Regular.ttf`) | Sorkin Type Co, Reserved Font Name "Limelight" | SIL OFL 1.1 (`Limelight-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/limelight | Riesling (Hit Me, Stand, Split) |
+| Sounds (`Assets/Kit/Audio/card-*.ogg`, `chip*.ogg`: 24 files) | Kenney (www.kenney.nl), Casino Audio 1.1 | CC0 1.0 (`Assets/Kit/Audio/Kenney-Casino-Audio-License.txt`) | https://kenney.nl/assets/casino-audio (downloaded 2026-11-24) | upstream's deal, flip, shuffle, split and chip clips (`Audio/Cards`, `Audio/Chips`) |
+| Sounds (`Assets/Kit/Audio/click_*`, `confirmation_*`, `error_*`, `question_001`, `tick_001`, `drop_002`: 9 files) | Kenney (www.kenney.nl), Interface Sounds | CC0 1.0 (`Assets/Kit/Audio/Kenney-Interface-Sounds-License.txt`) | https://kenney.nl/assets/interface-sounds (downloaded 2026-11-24) | upstream's UI, bleep, win, lose, draw, bust and new-round clips (`Audio/Additional Sounds`, `Random UI_*`) |
 | Liberation Sans (TextMesh Pro's default asset) | Red Hat | SIL OFL 1.1 | TextMesh Pro essentials | upstream's copy of the same font |
 
 The font assets in the bundle hold static atlases baked from these fonts (a modified version under the OFL; the
@@ -131,9 +133,8 @@ reserved names are not used for them).
 
 ## Not covered by the Apache licence
 
-- **Audio** (credited upstream to Three Ribbon Studios): shipped under the repository's licence with that credit,
-  as the coordinator's decision K8 allows for the Private world; the origin of the samples could not be
-  determined from the repo. **Decide before release.**
+- **Audio**: upstream's 97 clips (credited to Three Ribbon Studios; sample-library names, origin not verifiable from the
+  repo) are **not shipped**; the kit uses Kenney's CC0 sounds (table above).
 - **Table model** (Sentinel373) and **table textures** (FiyCsf): credited upstream, covered only by the repository's
   licence and the credit.
 
