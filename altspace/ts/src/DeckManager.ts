@@ -511,7 +511,11 @@ export class DeckManager extends Behaviour {
       const v = this.verified;
       if (!v) return this.dealRevealed ? "Checking the deal..." : "Waiting for the dealer's page to reveal the deal";
       if (v.status === "checked") return this.lostSegments > 0 ? "Deal checked (part of it was lost with a dealer who left)" : "Deal checked: every card came from the shared shuffle";
-      if (v.status === "unverifiable") return `Deal NOT checkable: ${v.reason}`;
+      if (v.status === "unverifiable") {
+        if (/only player/.test(v.reason)) return "Deal NOT checkable: the dealer's page was the only player";
+        if (/left before/.test(v.reason)) return "Deal NOT checkable here: a contributor left before this page came";
+        return "Deal NOT checkable: the dealer's page dealt from its own seed alone";
+      }
       return `DEAL CHECK FAILED: ${v.reason}`;
     }
     const listed = this.Secrets.dealContributors(this.dealLabel);

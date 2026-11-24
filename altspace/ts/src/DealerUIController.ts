@@ -54,6 +54,8 @@ export class DealerUIController extends Behaviour {
   SlotAnimators: Array<AnimatorRef | null> = [];
   /** Added: one line under the dealer's buttons with this client's check of the round's deal (DeckManager.CheckText). */
   DealCheck: TextRef | null = null;
+  /** Added: the line's backing, shown while there is a line. */
+  DealCheckPanel: GameObject | null = null;
 
   private readonly actives = new Map<GameObject, boolean>();
   private shown: number[] = [];
@@ -122,7 +124,9 @@ export class DealerUIController extends Behaviour {
     }
     this.SetActive(this.DeckChanger, change);
     this.SetActive(this.DeckChangerManual, change);
-    if (this.DealCheck) this.DealCheck.text = ctrl.Deck.CheckText();
+    const line = ctrl.Deck.CheckText();
+    if (this.DealCheck) this.DealCheck.text = line;
+    this.SetActive(this.DealCheckPanel, line !== "");
   }
 
   /** Called by Controller.Redraw: the dealer's cards, the flip, and the table banner, from state. */

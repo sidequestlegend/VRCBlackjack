@@ -1,8 +1,9 @@
 # blackjack: test evidence
 
 Everything here ran on 2026-11-24 and 2026-11-25 on Windows, Unity 6000.3.21f1, Creator SDK 4.0.29, in the Unity
-editor, on the fixed kit (portkit `1118ef0`, synced by `portkit/tools/sync.sh blackjack`). Nothing ran in the Altspace
-app, on a Quest, or with controllers (rung 5: not run; worlds stay Private).
+editor. The results below are from the second pass of 2026-11-25: re-synced to portkit `812f285`
+(`portkit/tools/sync.sh blackjack`) and with the review's findings fixed (`REVIEW-FINDINGS.md`, blackjack). Nothing ran
+in the Altspace app, on a Quest, or with controllers (rung 5: not run; worlds stay Private).
 
 How to run each rung again:
 
@@ -11,15 +12,13 @@ cd altspace/ts && npm test                                                    ru
 cd altspace/ts && npm run golden                                              remake vectors/upstream.json (dotnet 8)
 portkit/tools/remote.sh altspace menu "PortKit/Kit/Check"                    rung 2 (Logs/portkit_check.txt)
 portkit/tools/playtest.sh altspace altspace/playtest/single.json blackjack     rung 3
-portkit/tools/remote.sh altspace menu "PortKit/Multiplayer/Activate Player 2"
-  then "PortKit/Multiplayer/Report" until Logs/portkit_multiplayer.txt says "Player 2: Launched (Clone)"
 portkit/tools/playtest.sh altspace altspace/playtest/multi.json blackjack      rung 4
 ```
 
+`playtest.sh` takes the machine's Play slot, clears the local relay's saved room, and for `"players": 2` activates
+Player 2 and waits until `PortKit/Multiplayer/Report` says it launched (the game's own wait and slot loop are gone).
 Player 2 is a Multiplayer Play Mode clone (`Library/VP/mppmf0d15246`, its log `Logs/Editor.log-mppmf0d15246.txt`).
-It shares the main project's Library (`-library-redirect ../..`), so it does not import anything of its own. In the
-final session it reported "Launched" about 15 s after activation. In an earlier session it took more than a minute,
-which is longer than the agent that started it waited. Poll the report; a single short wait is not enough.
+It shares the main project's Library (`-library-redirect ../..`), so it does not import anything of its own.
 
 ## Rung 0: static
 
@@ -31,9 +30,29 @@ lint: src, portkit/src clean (page and clock rules)
 
 ## Rung 1: Node (no Unity)
 
-`npm test` in `altspace/ts`: **33 tests, 33 pass, 0 fail** (golden 15, scenarios 6, security 6, table 6).
+`npm test` in `altspace/ts`: **38 tests, 38 pass, 0 fail** (golden 16, scenarios 6, security 10, table 6).
 
-### Golden vectors (`test/golden.test.ts`, 15 tests)
+The five tests added in the review pass fail on the code before the fix (checked by putting the old check back:
+the forged hand, the forged contributor list and the deck count fail; and the late joiner after a contributor left
+fails without its "cannot check" case):
+
+- 16: `CheckHands` unit cases: a changed card, two seats' cards swapped (same cards on the table), a seat's card given
+  to the dealer, a card nobody drew, a destination left out, a split, cards held from before a segment.
+- 29: a modified referee changes Bob's second card in state, leaving `drawLog` as the deal gave it: Bob and Cat show
+  `mismatch` ("seat 2's hand's card 2 is ..."), the table line says DEAL CHECK FAILED, and an error is logged.
+- 30: a modified referee lists an accomplice who is not seated, then (round 2) only one of the two seated players:
+  every other page shows `mismatch` ("the deal's contributors are not the players seated in the round").
+- 31: a referee alone at the table: the line says during the round that the deal is the referee's alone, and Bob's
+  check after it is `unverifiable` ("the only player"); then a two-player round checks, and the replay still checks
+  with the live deck count set to anything else (it uses the count recorded with the segment, finding 6).
+- 32: Cat contributes and leaves mid-round, Dan joins: Ann and Bob check the deal; Dan says he cannot (a contributor
+  left before his page arrived) instead of a false alarm.
+
+Changed: 28 (a seated player withholds its contribution) now asserts that the 10 s fallback deal is shown as **not
+checkable** on every page and on the table (it asserted a passing replay before); 18 (split) now also checks the
+split hands against the deal.
+
+### Golden vectors (`test/golden.test.ts`, 16 tests)
 
 `golden/extract.ts` copies upstream's rule methods **verbatim by line range** (each range checks its first line) from
 `DeckManager.cs`, `PlayerDeck.cs`, `Dealer.cs`, `Player.cs`, `ChipController.cs` and `Controller.cs` into

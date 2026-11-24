@@ -177,8 +177,11 @@
           "$obj": "mchipToggle"
         },
         "DealCheck": {
-          "$comp": "dealCheck",
+          "$comp": "dealCheckText",
           "kind": "TMP"
+        },
+        "DealCheckPanel": {
+          "$obj": "dealCheck"
         },
         "DealerController": {
           "$beh": "dealer"
@@ -4921,7 +4924,7 @@
       "object": "creditsPanel"
     }
   ],
-  "hash": "72ee3641c9e761c4a5294b106f0a7792c55dbab7",
+  "hash": "7a402ba3bc0b11ca214fc58ef6eb26adfd445529",
   "objects": {
     "audio": {
       "click": false,
@@ -5232,9 +5235,17 @@
       "sync": "none"
     },
     "dealCheck": {
+      "active": false,
       "click": false,
       "grab": false,
       "path": "Table/Dealer/Dealer UI Controller/Auto Canvas/DealCheck",
+      "seat": false,
+      "sync": "none"
+    },
+    "dealCheckText": {
+      "click": false,
+      "grab": false,
+      "path": "Table/Dealer/Dealer UI Controller/Auto Canvas/DealCheck/Text",
       "seat": false,
       "sync": "none"
     },
@@ -11227,6 +11238,7 @@
     "mchipsOnBtn",
     "mchipsOffBtn",
     "dealCheck",
+    "dealCheckText",
     "d0",
     "d0f",
     "d1",

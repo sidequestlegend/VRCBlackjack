@@ -109,6 +109,23 @@ means a whole-state digest is only comparable within one 2-second epoch.
   Table, the turn timer running out, range, the owner's settings, two tables in one page, a referee or table-owner
   change, more than two players, a withheld deal contribution.
 
+### Trust: what a modified client can still do (compared with upstream)
+
+Upstream trusts every client: each holder's client picks its own cards (`PlayerDeck.cs:203`), the table owner's client
+picks the dealer's and sees the hole card, and every client is sent the hole card (Q13). The port trusts the referee's
+page for the order of play and nothing else it can avoid. After the 2026-11-25 review fix:
+
+| Who | Can | Cannot |
+|---|---|---|
+| A player's page (not referee) | leave once a loss is certain (Q10, as upstream); withhold its deal contribution, which after 10 s makes the round's deal the referee's alone (shown as not checkable); set its own chip count (chips are local, as upstream) | act for another seat, start or reset the table, change settings (commands are checked by the referee); steer a card (its contribution is committed before it sees the others); read the hole card before the flip |
+| The referee's page | know every card it deals, the hole card included (it is the dealer, as upstream's table owner); restart a deal (a new label, visible); deal from its own seed alone by faking the 10 s fallback at once (every client then shows "Deal NOT checkable"); with an accomplice who is listed and leaves before a page first sees the deal, pass that page's check (pages present at the deal catch it); give a draw to a different hand than the one whose turn it was and record it so (the card then visibly lands in that hand at that moment); delay or refuse commands; never reveal its seed (every page then shows that it is waiting for the reveal) | pick its seed (contributions come after its commitment); change a card in any hand, swap cards between hands, give a card nobody drew or drop one without every other page showing **DEAL CHECK FAILED** after the round; list an accomplice or leave a seated player out of the contributors without every page present showing it; change the hole card after dealing it (commitment) |
+| Any page | overwrite synced public state (as with VRChat's synced variables); the referee writes it back, and a forged hand is caught by the deal check after the round | the checks run on each page from what that page saw, so forging another page's view is not possible |
+
+Limits of the check: it runs only after the round (the seed is secret until then), so a forged hand is caught when
+the round settles, not when it happens, and nothing undoes the round; only the current segment is checked (a segment
+lost with a referee who left is counted, not checked); a page that arrived after a contributor left cannot check that
+deal (it says so); a deal of the referee alone (the fallback, or a referee playing alone) cannot be checked.
+
 ## Status: the TypeScript rules port (2026-11-24)
 
 The rules run in Node on the fake room. The section above covers the Unity side. Everything below this section is

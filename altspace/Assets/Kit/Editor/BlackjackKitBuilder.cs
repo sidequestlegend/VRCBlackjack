@@ -488,6 +488,7 @@ namespace Blackjack
             Obj("resetTable", DUI + "/Reset Button/Take Ownership", click: true);
             Obj("resetChips", DUI + "/Reset Button/Reset Chips", click: true);
             ObjG("dealCheck", dealCheck);
+            ObjG("dealCheckText", dealCheck.transform.Find("Text").gameObject);
             foreach (var pair in slots) BindSlot(stage, objects, pair.Key, pair.Value.slot, pair.Value.face);
 
             var buttons = new (string key, string box, string method, string viz, string icField)[]
@@ -576,7 +577,8 @@ namespace Blackjack
                 ["Slots"] = new JArray(Enumerable.Range(0, Cards).Select(k => (JToken)Ov($"d{k}"))),
                 ["SlotRenderers"] = new JArray(Enumerable.Range(0, Cards).Select(k => (JToken)Cv($"d{k}f", "Renderer"))),
                 ["SlotAnimators"] = new JArray(Enumerable.Range(0, Cards).Select(k => (JToken)Cv($"d{k}", "Animator"))),
-                ["DealCheck"] = Cv("dealCheck", "TMP"),
+                ["DealCheck"] = Cv("dealCheckText", "TMP"),
+                ["DealCheckPanel"] = Ov("dealCheck"),
             };
             stage.Behaviour(dealerUI, extra: dui);
             for (int i = 0; i < Seats; i++)
@@ -710,7 +712,7 @@ namespace Blackjack
             ["Controller"] = new[] { "AudioController", "ChipController", "Dealer", "DealerUI", "Deck", "Distance", "Players" },
             ["CreditsPanel"] = new[] { "panel" },
             ["Dealer"] = new[] { "DealerUI", "Deck", "GameController" },
-            ["DealerUIController"] = new[] { "AutoCanvas", "AutoCanvasAnimator", "BlackjackController", "ChipOff", "ChipOffManual", "ChipOn", "ChipOnManual", "ChipToggle", "ChipToggleManual", "DealerController", "DealerValues", "DealerValuesCanvas", "DeckChanger", "DeckChangerManual", "DeckCount", "DeckCountManual", "DeckSubtractArrow", "DeckSubtractArrowManual", "HelpersChanger", "HelpersChangerManual", "HelpersOff", "HelpersOffManual", "HelpersOn", "HelpersOnManual", "ManualNotOwnerUI", "ManualOwnerSettings", "ManualOwnerUI", "NotOwnerUI", "OwnerSlider", "OwnerUI", "DealCheck", "SlotAnimators", "SlotRenderers", "Slots", "TableUIAnimator", "UIHeightAnimator" },
+            ["DealerUIController"] = new[] { "AutoCanvas", "AutoCanvasAnimator", "BlackjackController", "ChipOff", "ChipOffManual", "ChipOn", "ChipOnManual", "ChipToggle", "ChipToggleManual", "DealerController", "DealerValues", "DealerValuesCanvas", "DeckChanger", "DeckChangerManual", "DeckCount", "DeckCountManual", "DeckSubtractArrow", "DeckSubtractArrowManual", "HelpersChanger", "HelpersChangerManual", "HelpersOff", "HelpersOffManual", "HelpersOn", "HelpersOnManual", "ManualNotOwnerUI", "ManualOwnerSettings", "ManualOwnerUI", "NotOwnerUI", "OwnerSlider", "OwnerUI", "DealCheck", "DealCheckPanel", "SlotAnimators", "SlotRenderers", "Slots", "TableUIAnimator", "UIHeightAnimator" },
             ["DeckManager"] = new[] { "BlackjackController" },
             ["DisableFixer"] = new[] { "Controller", "Players" },
             ["DistanceOptimizer"] = new[] { "AudioController", "DealerUI", "GameController", "Players", "TurnOff" },
@@ -756,19 +758,25 @@ namespace Blackjack
         // ------------------------------------------------------------------ the deal check
 
         /// <summary>
-        /// One line under the credits button, on the same dealer canvas, where every player reads this page's check of the
+        /// One line above the dealer's buttons, on the canvas the credits button is on, where every player reads this page's check of the
         /// round's deal (DeckManager.CheckText): checked, not checkable, or failed.
         /// </summary>
         GameObject DealCheckLine(KitStage stage, Transform canvas, RectTransform anchor)
         {
             var w = anchor.rect.width;
             var h = anchor.rect.height;
-            var go = stage.Create("DealCheck", canvas);
-            var text = go.AddComponent<TextMeshProUGUI>();
-            text.rectTransform.sizeDelta = new Vector2(w * 1.6f, h * 0.5f);
-            go.transform.position = anchor.position - anchor.up * (h * 2.3f * anchor.lossyScale.y);
-            go.transform.rotation = anchor.rotation;
-            go.transform.localScale = Vector3.one;
+            var size = new Vector2(w * 1.8f, h * 0.42f);
+            var panel = stage.Create("DealCheck", canvas);
+            var rect = panel.AddComponent<RectTransform>();
+            rect.sizeDelta = size;
+            panel.transform.position = anchor.position + anchor.up * (h * 1.6f * anchor.lossyScale.y);    // above the owner's buttons (below the credits button the table's rail hides it)
+            panel.transform.rotation = anchor.rotation;
+            panel.transform.localScale = Vector3.one;
+            var back = panel.AddComponent<UnityEngine.UI.Image>();
+            back.color = new Color(0.05f, 0.12f, 0.08f, 0.9f);                                               // the credits panel's green, so the line reads against any sky
+            back.raycastTarget = false;
+            var text = stage.Create("Text", panel.transform).AddComponent<TextMeshProUGUI>();
+            text.rectTransform.sizeDelta = size * 0.96f;
             text.font = KitText.DefaultFont();
             text.enableAutoSizing = true;
             text.fontSizeMin = 3;
@@ -778,7 +786,8 @@ namespace Blackjack
             text.textWrappingMode = TextWrappingModes.Normal;
             text.raycastTarget = false;
             text.text = "";
-            return go;
+            panel.SetActive(false);                                                                          // shown while there is a line to read
+            return panel;
         }
 
         // ------------------------------------------------------------------ credits

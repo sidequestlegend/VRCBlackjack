@@ -162,6 +162,9 @@
     check(!!turns && t.seats[3].normal.length === 2 && t.dealer.length === 2 && t.dealer[0] === -1, "the deal: two cards to the seat, two to the dealer, the hole card face down",
       `phase ${t.phase}, seat ${JSON.stringify(t.seats[3].normal)}, dealer ${JSON.stringify(t.dealer)}, deal ${t.dealLabel}`);
     await seatCardsAgree(3, "the seat's two cards are on in Unity with the faces in state (matFloat _CardIndex)");
+    // information only (not counted): the card zoom's animator state and whether the table's source played
+    say("INFO", "seat 3 card 0 animator (animstate)", await probe("animstate", "p3_n0"));
+    say("INFO", "table audio source playing (audioplaying)", await probe("audioplaying", "audio"));
     const d0 = await slot("d0");
     const d1 = await slot("d1");
     check(d0.active === "True" && d0.face === -1 && d1.active === "True" && d1.face === t.dealer[1], "the dealer's up card shows its face; the hole card's face is blank in Unity", `d0 ${d0.active}/${d0.face}, d1 ${d1.active}/${d1.face} (state ${t.dealer[1]})`);
@@ -198,8 +201,9 @@
     // alone at the table, this page is both the referee and the only player: the deal is its own, and is shown so
     await until(() => table().dealVerified !== null, 8000, 200);
     check(table().dealStatus === "unverifiable", "a deal with no contributor but the referee is not checkable (the only player dealt alone)", JSON.stringify(table().dealVerified));
-    const line = await probeUntil("text", "dealCheck", (v) => v === table().dealCheck && v !== "");
-    check(/^Deal NOT checkable/.test(line) && line === table().dealCheck, "the table shows every player that this deal could not be checked (Unity text)", line);
+    const line = await probeUntil("text", "dealCheckText", (v) => v === table().dealCheck && v !== "");
+    const backing = await probe("active", "dealCheck");
+    check(/^Deal NOT checkable/.test(line) && line === table().dealCheck && backing === "True", "the table shows every player that this deal could not be checked (Unity text, its backing on)", `${line}; backing ${backing}`);
     await cmd("shot settled 0 1.45 1.6 0 0.8 3 60");
 
     // the credits panel opens and closes for this viewer
@@ -321,7 +325,7 @@
       // this page's old session contributed to round 2's deal and left with its part: the page says it cannot check it
       await until(() => table().dealVerified !== null, 8000, 200);
       const v2 = table().dealVerified;
-      const line2 = await probeUntil("text", "dealCheck", (v) => /^Deal NOT checkable/.test(v));
+      const line2 = await probeUntil("text", "dealCheckText", (v) => /^Deal NOT checkable/.test(v));
       check(table().dealStatus === "unverifiable" && /left before this page arrived/.test(v2 ? v2.reason : "") && /^Deal NOT checkable/.test(line2),
         "round 2: the reloaded page cannot check a deal its old session contributed to, and shows that (not a false alarm)", `${JSON.stringify(v2)}; Unity '${line2}'`);
       await sleep(1500);
@@ -352,7 +356,7 @@
     const hc = holeCheck(pre, debug().dealer());
     check(hc.ok, "the hole card was unreadable on this page before the flip, and the flipped card matches its commitment", hc.detail);
     check(t1.dealStatus === "checked", "the round's deal checks: contributors are the seated players, the draws replay, every hand holds the deal's cards", JSON.stringify(t1.dealVerified) + " " + t1.dealLabel);
-    const line1 = await probeUntil("text", "dealCheck", (v) => /^Deal checked/.test(v));
+    const line1 = await probeUntil("text", "dealCheckText", (v) => /^Deal checked/.test(v));
     check(/^Deal checked/.test(line1), "the table shows every player that the deal was checked (Unity text)", line1);
     // the other player's actions arrived here: its seat's cards (any hits included) are on in this page's Unity
     await seatCardsAgree(3, "round 1: seat 3's cards are on in this page's Unity with the faces in state");

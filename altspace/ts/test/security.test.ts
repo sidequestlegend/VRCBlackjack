@@ -281,7 +281,7 @@ test("the deal: every seated player contributes; one whose runtime never answers
   for (const c of [ann, bob]) {
     assert.equal(deck(w, c).verified?.status, "unverifiable", `${c.name} cannot check the fallback deal`);
     assert.match(deck(w, c).CheckText(), /^Deal NOT checkable/, `${c.name} is shown it`);
-    assert.match(c.graph(SLUG).text.get("dealCheck") ?? "", /^Deal NOT checkable/, `${c.name}'s table shows it`);
+    assert.match(c.graph(SLUG).text.get("dealCheckText") ?? "", /^Deal NOT checkable/, `${c.name}'s table shows it`);
   }
   assert.ok(ann.logged("warn").some((line) => line.includes("contribution never came")), "the referee logs the fallback");
 });
@@ -319,7 +319,8 @@ test("a referee that changes a hand (not the drawLog) is caught by every other c
     const v = deck(w, c).verified!;
     assert.equal(v.status, "mismatch", `${c.name} catches the changed hand`);
     assert.match(v.reason, /seat 2's hand/);
-    assert.match(c.graph(SLUG).text.get("dealCheck") ?? "", /^DEAL CHECK FAILED/, `${c.name}'s table shows it`);
+    assert.match(c.graph(SLUG).text.get("dealCheckText") ?? "", /^DEAL CHECK FAILED/, `${c.name}'s table shows it`);
+    assert.equal(c.graph(SLUG).active.get("dealCheck"), true, `${c.name}: the line's backing is on`);
   }
   assert.ok(w.problems().some((line) => line.startsWith("Bob:") && line.includes("do not match")));
 });
