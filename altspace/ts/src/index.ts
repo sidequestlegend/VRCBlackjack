@@ -80,6 +80,11 @@ function debugHooks(instance: GameInstance): Record<string, unknown> {
         })),
       };
     },
+    /** The dealer's synced fields as this page holds them (for the hole-card check). */
+    dealer: () => {
+      const d = ctrl().Dealer;
+      return { cards: d.cards.slice(), total: d.TotalDeckValue, flipped: d.flipped, holeHash: d.holeHash, holeOpening: d.holeOpening, holeRedrawn: d.holeRedrawn };
+    },
     /** What dealer slot k and seat i's slot k show on this page (a card, -1 the back, -3 off). */
     dealerShowing: (k: number) => c0(() => ctrl().DealerUI.Showing(k)),
     seatShowing: (i: number, k: number) => c0(() => ctrl().Players[i]!.NormalDeck.Showing(k)),

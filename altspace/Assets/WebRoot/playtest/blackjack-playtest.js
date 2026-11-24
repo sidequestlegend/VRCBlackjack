@@ -219,8 +219,30 @@
 
   /** Before the flip: everything this page holds about the table, and what Unity shows on the hole card's slot. */
   async function holeSnapshot() {
-    const t = table();
-    return { dealer0: t.dealer[0], state: JSON.stringify(debug().state()), unity: (await slot("d0")).face };
+    return { dealer: debug().dealer(), state: JSON.stringify(debug().state()), unity: (await slot("d0")).face };
+  }
+
+  /**
+   * The hole card was unreadable on this page before the flip: the dealer's synced cards held -1 and an up card, its
+   * total counted the up card only, no opening was held, Unity's slot face was blank, and the opening published at the
+   * flip (its nonce, the only thing that ties the commitment to a card) appears nowhere in what this page held before.
+   * After the flip the card matches the commitment held before it.
+   */
+  function holeCheck(pre, post) {
+    const d = pre.dealer;
+    const nonce = post.holeOpening ? post.holeOpening.s : "";
+    const parts = [
+      ["state held [-1, up card]", d.cards.length === 2 && d.cards[0] === -1 && d.cards[1] >= 0],
+      ["total counted the up card only", d.total === value(d.cards[1])],
+      ["no opening held", d.holeOpening === null],
+      ["a commitment held", typeof d.holeHash === "string" && d.holeHash.length > 0],
+      ["Unity's slot face blank", pre.unity === -1],
+      ["the opening's nonce absent from the whole state before", nonce.length > 0 && pre.state.indexOf(nonce) < 0],
+      ["the commitment unchanged at the flip", post.holeHash === d.holeHash && post.holeRedrawn === false],
+      ["the card shown matches the commitment", table().holeVerified === true && post.cards[0] >= 0],
+    ];
+    const bad = parts.filter((p) => !p[1]).map((p) => p[0]);
+    return { ok: bad.length === 0, detail: bad.length ? "failed: " + bad.join("; ") : `hole ${post.cards[0]} (value ${value(post.cards[0])}); before: cards ${JSON.stringify(d.cards)}, total ${d.total}, hash ${d.holeHash.slice(0, 12)}..., Unity ${pre.unity}` };
   }
 
   async function playMyHand(i) {
@@ -281,22 +303,12 @@
     if (owner) await press("startGame", "Start Game", () => table().round >= 1);
     await until(() => table().phase === "turns", 60000, 100);
     const pre = await holeSnapshot();
-    check(pre.dealer0 === -1 && pre.unity === -1, "before the flip this page holds the hole card face down, and Unity's slot face is blank", `state ${pre.dealer0}, Unity ${pre.unity}`);
+    check(pre.dealer.cards[0] === -1 && pre.unity === -1, "before the flip this page holds the hole card face down, and Unity's slot face is blank", `state ${JSON.stringify(pre.dealer.cards)}, Unity ${pre.unity}`);
     await playMyHand(mySeat);
     await until(() => table().phase === "settled", 60000, 200);
     const t1 = table();
-    const hole = t1.dealer[0];
-    // the hole card, now known, was in nothing this page held before the flip (the dealer's synced state included)
-    const dealerBefore = (() => {
-      try {
-        const st = JSON.parse(pre.state);
-        return JSON.stringify(st).match(/"cards":\[-1(,\d+)?\]/) !== null;
-      } catch (e) {
-        return false;
-      }
-    })();
-    check(hole >= 0 && t1.holeVerified === true && dealerBefore, "the hole card was unreadable before the flip on this page: state held -1, Unity held no face; after the flip it matches its commitment",
-      `hole ${hole} (value ${value(hole)}), verified ${t1.holeVerified}, dealer state before the flip ${dealerBefore ? "[-1, up card]" : "not found"}`);
+    const hc = holeCheck(pre, debug().dealer());
+    check(hc.ok, "the hole card was unreadable on this page before the flip, and the flipped card matches its commitment", hc.detail);
     check(t1.dealVerified && t1.dealVerified.ok === true, "the round's draws replay from the revealed deal (both seats contributed)", JSON.stringify(t1.dealVerified) + " " + t1.dealLabel);
     await sleep(1500);
     send({ kind: "round1", digest: debug().digest(), view: view() });
