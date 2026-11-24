@@ -64,7 +64,7 @@ test("three players play four rounds with chips: every client agrees, chips foll
     assertAgree(w);
     for (const c of w.clients) {
       assert.equal(ctrl(w, c).round, round);
-      assert.deepEqual(deck(w, c).verified, { ok: true, reason: "" }, `${c.name} replayed round ${round}`);
+      assert.deepEqual(deck(w, c).verified, { ok: true, status: "checked", reason: "" }, `${c.name} replayed round ${round}`);
       assert.equal(dealer(w, c).holeVerified, true);
     }
     for (const [c, i] of players) {
@@ -136,6 +136,8 @@ test("a split: two hands, each dealt a card after 1 s, settled separately for ev
   await untilPhase(w, ann, "settled");
   await w.run(STEP);
   assertAgree(w);
+  // The split card's draw moved with it (DeckManager.Moved): every hand still checks against the deal.
+  for (const viewer of [ann, bob]) assert.deepEqual(deck(w, viewer).verified, { ok: true, status: "checked", reason: "" }, `${viewer.name} checks the split hands`);
   for (const viewer of [ann, bob]) {
     const p = seat(w, viewer, i);
     assert.notEqual(p.result[0], RESULT_NONE);
@@ -238,7 +240,7 @@ test("a late joiner mid-hand sees the cards and totals as they are, and cannot t
   await untilPhase(w, dan, "settled");
   await w.run(STEP);
   assertAgree(w);
-  assert.deepEqual(deck(w, dan).verified, { ok: true, reason: "" }, "the late joiner checks the round's draws too");
+  assert.deepEqual(deck(w, dan).verified, { ok: true, status: "checked", reason: "" }, "the late joiner checks the round's draws too");
   const banners = dan.graph(SLUG).events.filter((e) => e.op === "animTrigger" && e.target === "p0_uiAnim").map((e) => e.args[0]);
   assert.ok(banners.some((b) => b === "Win" || b === "Lose" || b === "Draw"), "the late joiner sees the result banner");
   // Now Dan may sit.
@@ -288,7 +290,7 @@ test("the referee leaves mid-hand: the next referee finishes the round, draws th
     assert.equal(dealer(w, c).holeVerified, true);
     assert.ok(deck(w, c).segment >= 2, "a new segment with a new committed seed");
     assert.ok(deck(w, c).lostSegments >= 1, "the old segment is marked as not checkable");
-    assert.deepEqual(deck(w, c).verified, { ok: true, reason: "" }, "the new segment replays");
+    assert.deepEqual(deck(w, c).verified, { ok: true, status: "checked", reason: "" }, "the new segment replays");
     assert.notEqual(seat(w, c, 1).result[0], RESULT_NONE);
     assert.deepEqual(seat(w, c, 0).result, [RESULT_NONE, RESULT_NONE]);
   }

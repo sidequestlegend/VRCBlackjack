@@ -13,7 +13,7 @@
 
 import { Behaviour, Mathf, type AnimatorRef, type DeserializationResult, type GameObject, type TextRef } from "../portkit/src/index.ts";
 import type { Controller } from "./Controller.ts";
-import { PENDING, type DeckManager } from "./DeckManager.ts";
+import { HandCode, PENDING, type DeckManager } from "./DeckManager.ts";
 import type { InteractableController } from "./InteractableController.ts";
 import { MAX_CARDS, type HandMath, type PlayerDeck } from "./PlayerDeck.ts";
 import type { PlayerUIController } from "./PlayerUIController.ts";
@@ -382,7 +382,9 @@ export class Player extends Behaviour {
     if (!this.CanSplit || this.HasSplit || !this.InTurn()) return;
     this.CanSplit = false;
     this.HasSplit = true;
-    // SyncedSplit: the second card goes to the split row; each hand is scored from its own cards (Q4).
+    // SyncedSplit: the second card goes to the split row; each hand is scored from its own cards (Q4). The deal's
+    // record of where each card went follows it.
+    this.Deck.Moved(HandCode(this.PlayerNum, false), this.NormalDeck.cards, 1, HandCode(this.PlayerNum, true));
     const second = this.NormalDeck.cards.splice(1, 1)[0]!;
     this.NormalDeck.Recount();
     this.SplitDeck.Reset();
@@ -472,7 +474,7 @@ export class Player extends Behaviour {
   /** Referee: SummonCard on one of this seat's hands (PlayerDeck.cs:55-69), then the bust and split checks. */
   DealTo(deck: PlayerDeck): void {
     if (deck.NextDeckPosition > MAX_CARDS - 1) return;
-    const card = this.BlackjackController.DrawCard();
+    const card = this.BlackjackController.DrawCard(HandCode(this.PlayerNum, deck === this.SplitDeck));
     if (card === PENDING) {
       // the deal is not ready (a new referee's deal is gathering contributions): this card comes once it is
       this.BlackjackController.Defer(() => {

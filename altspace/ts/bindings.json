@@ -376,6 +376,10 @@
         "UIHeightAnimator": {
           "$comp": "heightAnim",
           "kind": "Animator"
+        },
+        "DealCheck": {
+          "$comp": "dealCheck",
+          "kind": "TMP"
         }
       },
       "id": "dealerUI",
@@ -11180,6 +11184,13 @@
       "path": "Table/Dealer/Dealer UI Controller/Manual Canvas/Manual Dealer Canvas/Mask/Not Owner/Take Ownership",
       "seat": false,
       "sync": "none"
+    },
+    "dealCheck": {
+      "click": false,
+      "grab": false,
+      "path": "Table/Dealer/Dealer UI Controller/Auto Canvas/DealCheck",
+      "seat": false,
+      "sync": "none"
     }
   },
   "refs": [
@@ -11728,7 +11739,8 @@
     "p6_vizRemove10",
     "p6_vizRemove5",
     "chipController",
-    "audioController"
+    "audioController",
+    "dealCheck"
   ],
   "schema": 1,
   "slug": "blackjack"

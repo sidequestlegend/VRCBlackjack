@@ -62,6 +62,7 @@ namespace Blackjack
         GameObject table;
         readonly List<GameObject> uiButtons = new List<GameObject>();
         TMP_FontAsset labelFont, bannerFont, actionFont;
+        GameObject dealCheck;
 
         Transform F(string path)
         {
@@ -84,6 +85,7 @@ namespace Blackjack
             Materials(stage);
             var slots = CardSlots(stage);
             HeightButtons(stage);
+            dealCheck = DealCheckLine(stage, F("Dealer/Dealer UI Controller/Auto Canvas"), (RectTransform)F("Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Start Game"));
             Bind(stage, system, slots);
             Credits(stage, F("Dealer/Dealer UI Controller/Auto Canvas"), (RectTransform)F("Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Start Game"));
             Sounds(system);
@@ -485,6 +487,7 @@ namespace Blackjack
             Obj("heightDown", MDC + "/Mask/Height Adjustment/Down", click: true);
             Obj("resetTable", DUI + "/Reset Button/Take Ownership", click: true);
             Obj("resetChips", DUI + "/Reset Button/Reset Chips", click: true);
+            ObjG("dealCheck", dealCheck);
             foreach (var pair in slots) BindSlot(stage, objects, pair.Key, pair.Value.slot, pair.Value.face);
 
             var buttons = new (string key, string box, string method, string viz, string icField)[]
@@ -573,6 +576,7 @@ namespace Blackjack
                 ["Slots"] = new JArray(Enumerable.Range(0, Cards).Select(k => (JToken)Ov($"d{k}"))),
                 ["SlotRenderers"] = new JArray(Enumerable.Range(0, Cards).Select(k => (JToken)Cv($"d{k}f", "Renderer"))),
                 ["SlotAnimators"] = new JArray(Enumerable.Range(0, Cards).Select(k => (JToken)Cv($"d{k}", "Animator"))),
+                ["DealCheck"] = Cv("dealCheck", "TMP"),
             };
             stage.Behaviour(dealerUI, extra: dui);
             for (int i = 0; i < Seats; i++)
@@ -706,7 +710,7 @@ namespace Blackjack
             ["Controller"] = new[] { "AudioController", "ChipController", "Dealer", "DealerUI", "Deck", "Distance", "Players" },
             ["CreditsPanel"] = new[] { "panel" },
             ["Dealer"] = new[] { "DealerUI", "Deck", "GameController" },
-            ["DealerUIController"] = new[] { "AutoCanvas", "AutoCanvasAnimator", "BlackjackController", "ChipOff", "ChipOffManual", "ChipOn", "ChipOnManual", "ChipToggle", "ChipToggleManual", "DealerController", "DealerValues", "DealerValuesCanvas", "DeckChanger", "DeckChangerManual", "DeckCount", "DeckCountManual", "DeckSubtractArrow", "DeckSubtractArrowManual", "HelpersChanger", "HelpersChangerManual", "HelpersOff", "HelpersOffManual", "HelpersOn", "HelpersOnManual", "ManualNotOwnerUI", "ManualOwnerSettings", "ManualOwnerUI", "NotOwnerUI", "OwnerSlider", "OwnerUI", "SlotAnimators", "SlotRenderers", "Slots", "TableUIAnimator", "UIHeightAnimator" },
+            ["DealerUIController"] = new[] { "AutoCanvas", "AutoCanvasAnimator", "BlackjackController", "ChipOff", "ChipOffManual", "ChipOn", "ChipOnManual", "ChipToggle", "ChipToggleManual", "DealerController", "DealerValues", "DealerValuesCanvas", "DeckChanger", "DeckChangerManual", "DeckCount", "DeckCountManual", "DeckSubtractArrow", "DeckSubtractArrowManual", "HelpersChanger", "HelpersChangerManual", "HelpersOff", "HelpersOffManual", "HelpersOn", "HelpersOnManual", "ManualNotOwnerUI", "ManualOwnerSettings", "ManualOwnerUI", "NotOwnerUI", "OwnerSlider", "OwnerUI", "DealCheck", "SlotAnimators", "SlotRenderers", "Slots", "TableUIAnimator", "UIHeightAnimator" },
             ["DeckManager"] = new[] { "BlackjackController" },
             ["DisableFixer"] = new[] { "Controller", "Players" },
             ["DistanceOptimizer"] = new[] { "AudioController", "DealerUI", "GameController", "Players", "TurnOff" },
@@ -747,6 +751,34 @@ namespace Blackjack
             if (UiButtons)
                 foreach (var canvas in stage.Root.GetComponentsInChildren<Canvas>(true))
                     if (canvas.isRootCanvas && canvas.GetComponent<UnityEngine.UI.GraphicRaycaster>() == null) canvas.gameObject.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+        }
+
+        // ------------------------------------------------------------------ the deal check
+
+        /// <summary>
+        /// One line under the credits button, on the same dealer canvas, where every player reads this page's check of the
+        /// round's deal (DeckManager.CheckText): checked, not checkable, or failed.
+        /// </summary>
+        GameObject DealCheckLine(KitStage stage, Transform canvas, RectTransform anchor)
+        {
+            var w = anchor.rect.width;
+            var h = anchor.rect.height;
+            var go = stage.Create("DealCheck", canvas);
+            var text = go.AddComponent<TextMeshProUGUI>();
+            text.rectTransform.sizeDelta = new Vector2(w * 1.6f, h * 0.5f);
+            go.transform.position = anchor.position - anchor.up * (h * 2.3f * anchor.lossyScale.y);
+            go.transform.rotation = anchor.rotation;
+            go.transform.localScale = Vector3.one;
+            text.font = KitText.DefaultFont();
+            text.enableAutoSizing = true;
+            text.fontSizeMin = 3;
+            text.fontSizeMax = Mathf.Max(6f, h * 0.22f);
+            text.color = new Color(1f, 0.95f, 0.8f, 1f);
+            text.alignment = TextAlignmentOptions.Center;
+            text.textWrappingMode = TextWrappingModes.Normal;
+            text.raycastTarget = false;
+            text.text = "";
+            return go;
         }
 
         // ------------------------------------------------------------------ credits

@@ -98,7 +98,7 @@ test("the hole card is unreadable to every client, the referee's page included, 
   }
   await untilPhase(w, ann, "settled");
   await w.run(STEP);
-  for (const c of w.clients) assert.deepEqual(deck(w, c).verified, { ok: true, reason: "" });
+  for (const c of w.clients) assert.deepEqual(deck(w, c).verified, { ok: true, status: "checked", reason: "" });
   assertAgree(w);
   assert.deepEqual(w.problems(), []);
 });
@@ -276,6 +276,141 @@ test("the deal: every seated player contributes; one whose runtime never answers
     [bob, 1],
     [cat, 2],
   ]);
-  for (const c of [ann, bob]) assert.deepEqual(deck(w, c).verified, { ok: true, reason: "" }, `${c.name} replays the fallback deal`);
+  // The fallback deal is the referee's alone (a modified referee could do the same at once and pick its seed): it
+  // never verifies, and every player is shown that the round could not be checked.
+  for (const c of [ann, bob]) {
+    assert.equal(deck(w, c).verified?.status, "unverifiable", `${c.name} cannot check the fallback deal`);
+    assert.match(deck(w, c).CheckText(), /^Deal NOT checkable/, `${c.name} is shown it`);
+    assert.match(c.graph(SLUG).text.get("dealCheck") ?? "", /^Deal NOT checkable/, `${c.name}'s table shows it`);
+  }
   assert.ok(ann.logged("warn").some((line) => line.includes("contribution never came")), "the referee logs the fallback");
+});
+
+test("a referee that changes a hand (not the drawLog) is caught by every other client after the round", async () => {
+  const w = newWorld(31);
+  const ann = w.join({ name: "Ann" });
+  const bob = w.join({ name: "Bob" });
+  const cat = w.join({ name: "Cat" });
+  await w.settle();
+  await seatPlayers(w, [
+    [bob, 1],
+    [cat, 2],
+  ]);
+  await startRound(w, ann);
+  await untilPhase(w, ann, "turns");
+  await w.run(STEP);
+  assert.equal(referee(w), ann);
+  // Ann's page is modified: it gives Bob a different second card. Its own drawLog stays as the deal gave it.
+  const log = deck(w, ann).drawLog.slice();
+  const h = hand(w, ann, 1);
+  const was = h.cards[1]!;
+  h.cards[1] = (was + 4) % 52;
+  h.Recount();
+  ctrl(w, ann).Changed();
+  await w.run(STEP);
+  assert.equal(hand(w, bob, 1).cards[1], (was + 4) % 52, "everyone holds the changed hand");
+  assert.deepEqual(deck(w, bob).drawLog, log, "the log of draws is untouched");
+  seatButton(bob, 1, "Stand");
+  seatButton(cat, 2, "Stand");
+  await untilPhase(w, ann, "settled");
+  await until(w, () => [bob, cat].every((c) => deck(w, c).verified !== null), 10000, "the checks");
+  await w.run(STEP);
+  for (const c of [bob, cat]) {
+    const v = deck(w, c).verified!;
+    assert.equal(v.status, "mismatch", `${c.name} catches the changed hand`);
+    assert.match(v.reason, /seat 2's hand/);
+    assert.match(c.graph(SLUG).text.get("dealCheck") ?? "", /^DEAL CHECK FAILED/, `${c.name}'s table shows it`);
+  }
+  assert.ok(w.problems().some((line) => line.startsWith("Bob:") && line.includes("do not match")));
+});
+
+test("a referee that lists other contributors than the seated players is caught", async () => {
+  const w = newWorld(32);
+  const ann = w.join({ name: "Ann" });
+  const bob = w.join({ name: "Bob" });
+  const cat = w.join({ name: "Cat" });
+  const dan = w.join({ name: "Dan" });
+  await w.settle();
+  await seatPlayers(w, [
+    [bob, 1],
+    [cat, 2],
+  ]);
+  const k = ctrl(w, ann);
+  for (const [lists, what] of [
+    [[dan.sid], "an accomplice who is not seated"],
+    [[bob.sid], "one seated player left out"],
+  ] as const) {
+    // Ann's page is modified: the deal's contributors are its choice (with an accomplice it could steer the deal).
+    k.RoundSids = () => lists.slice();
+    await startRound(w, ann);
+    await w.run(STEP);
+    assert.deepEqual(w.instance(bob).secrets.dealContributors(deck(w, bob).dealLabel), lists.slice(), "the list went out as the referee chose");
+    await playRound(w, [
+      [bob, 1],
+      [cat, 2],
+    ]);
+    await until(w, () => [bob, cat, dan].every((c) => deck(w, c).verified !== null), 10000, "the checks");
+    for (const c of [bob, cat, dan]) {
+      const v = deck(w, c).verified!;
+      assert.equal(v.status, "mismatch", `${c.name} catches ${what}`);
+      assert.match(v.reason, /contributors are not the players seated/);
+    }
+  }
+});
+
+test("a deal of the referee alone is shown as not checkable; the check replays with the round's own deck count (finding 6)", async () => {
+  const w = newWorld(33);
+  const ann = w.join({ name: "Ann" });
+  const bob = w.join({ name: "Bob" });
+  await w.settle();
+  await seatPlayers(w, [[ann, 0]]);
+  await startRound(w, ann);
+  await w.run(STEP);
+  assert.match(deck(w, bob).CheckText(), /dealer's page's alone/, "shown during the round");
+  await playRound(w, [[ann, 0]]);
+  await until(w, () => deck(w, bob).verified !== null, 10000, "Bob's check");
+  assert.equal(deck(w, bob).verified!.status, "unverifiable", "the only player was the referee");
+  assert.match(deck(w, bob).verified!.reason, /only player/);
+
+  // With another seated player the round checks; a deck count changed afterwards does not change the replay.
+  await seatPlayers(w, [[bob, 1]]);
+  await startRound(w, ann);
+  await playRound(w, [
+    [ann, 0],
+    [bob, 1],
+  ]);
+  await until(w, () => deck(w, bob).verified !== null, 10000, "Bob's check");
+  assert.equal(deck(w, bob).verified!.status, "checked");
+  const d = deck(w, bob);
+  d.NumberOfDecks = 0; // any count other than the round's: a late check after the owner changed it
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (d as any).checked = "";
+  d.CheckReveal();
+  assert.equal(d.verified!.status, "checked", "the replay uses the deck count recorded with the segment");
+});
+
+test("a page that arrives after a contributor left cannot check that deal and says so; the others check it", async () => {
+  const w = newWorld(34);
+  const ann = w.join({ name: "Ann" });
+  const bob = w.join({ name: "Bob" });
+  const cat = w.join({ name: "Cat" });
+  await w.settle();
+  await seatPlayers(w, [
+    [bob, 1],
+    [cat, 2],
+  ]);
+  await startRound(w, ann);
+  await untilPhase(w, ann, "turns");
+  await w.run(STEP);
+  w.leave(cat); // Cat's contribution was revealed and used; Cat's user state goes with Cat
+  await w.run(STEP);
+  const dan = w.join({ name: "Dan" });
+  await w.settle();
+  await w.run(STEP);
+  await playRound(w, [[bob, 1]]);
+  await until(w, () => [ann, bob, dan].every((c) => deck(w, c).verified !== null), 10000, "the checks");
+  for (const c of [ann, bob]) assert.equal(deck(w, c).verified!.status, "checked", `${c.name} saw Cat's contribution and checks the deal`);
+  assert.equal(deck(w, dan).verified!.status, "unverifiable", "Dan never saw Cat's contribution");
+  assert.match(deck(w, dan).verified!.reason, /left before this page arrived/);
+  assert.deepEqual(w.problems(), []);
 });

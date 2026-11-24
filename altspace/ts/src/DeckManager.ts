@@ -90,29 +90,129 @@ export const NO_CARD = -2;
 /** drawLog entry for the hole card while it is face down. */
 export const HIDDEN = -1;
 
-/** The outcome of replaying a round's draws against the published seed. */
+// Where each draw went (DeckManager.drawTo, beside drawLog), so that every client can hold the hands on the table
+// against the deal: seat i's normal hand is 2i, its split hand 2i+1; the dealer's first card (the hole card) and
+// its other cards have codes of their own; a draw that found no card went nowhere.
+/** drawTo code of seat `seat`'s normal or split hand. */
+export function HandCode(seat: number, split: boolean): number {
+  return seat * 2 + (split ? 1 : 0);
+}
+/** drawTo code of the dealer's cards after the first. */
+export const TO_DEALER = 100;
+/** drawTo code of the dealer's first card (the hole card, dealt face down). */
+export const TO_HOLE = 101;
+/** drawTo code of a draw that found no card. */
+export const TO_NONE = -1;
+
+/**
+ * The outcome of checking a round's deal. `checked`: every card on the table is the deal's; `unverifiable`: the deal
+ * was the referee's alone (no other contributor), so the cards may be its choice; `mismatch`: something does not
+ * match (a forged hand, a contributor list other than the seated players, a seed that is not the committed one).
+ */
+export type DealStatus = "checked" | "unverifiable" | "mismatch";
 export interface Verification {
   ok: boolean;
+  status: DealStatus;
   reason: string;
 }
 
-/** Checks a segment of draws: every logged card is what the deal gives. */
-export function ReplaySegment(draw: Draw, numberOfDecks: number, baseCards: readonly number[], drawLog: readonly number[]): Verification {
+export function Checked(): Verification {
+  return { ok: true, status: "checked", reason: "" };
+}
+function Unverifiable(reason: string): Verification {
+  return { ok: false, status: "unverifiable", reason };
+}
+function Mismatch(reason: string): Verification {
+  return { ok: false, status: "mismatch", reason };
+}
+
+/** The cards a deal gives, draw by draw (-1 for a draw that finds none), after the cards already on the table. */
+export function ReplayCards(draw: Draw, numberOfDecks: number, baseCards: readonly number[], draws: number): number[] {
   const counts = InitializeCounts(numberOfDecks);
   for (const c of baseCards) if (c >= 0) counts[c]!--;
-  for (let k = 0; k < drawLog.length; k++) {
-    const expected = GetUnusedCardIndex(counts, draw.Int(CARD_TYPES, k));
-    const logged = drawLog[k]!;
-    if (logged === HIDDEN) return { ok: false, reason: `draw ${k} was never turned face up` };
-    if ((logged === NO_CARD ? -1 : logged) !== expected) return { ok: false, reason: `draw ${k} is ${logged}, the deal gives ${expected}` };
-    if (expected >= 0) counts[expected]!--;
+  const out: number[] = [];
+  for (let k = 0; k < draws; k++) {
+    const card = GetUnusedCardIndex(counts, draw.Int(CARD_TYPES, k));
+    out.push(card);
+    if (card >= 0) counts[card]!--;
   }
-  return { ok: true, reason: "" };
+  return out;
+}
+
+/** Checks a segment's log of draws: every logged card is what the deal gives. */
+export function ReplaySegment(draw: Draw, numberOfDecks: number, baseCards: readonly number[], drawLog: readonly number[]): Verification {
+  const cards = ReplayCards(draw, numberOfDecks, baseCards, drawLog.length);
+  for (let k = 0; k < drawLog.length; k++) {
+    const logged = drawLog[k]!;
+    if (logged === HIDDEN) return Mismatch(`draw ${k} was never turned face up`);
+    if ((logged === NO_CARD ? -1 : logged) !== cards[k]) return Mismatch(`draw ${k} is ${logged}, the deal gives ${cards[k]}`);
+  }
+  return Checked();
+}
+
+/** The hands on the table as a client holds them: each seat's normal and split hand, and the dealer's cards. */
+export interface TableHands {
+  seats: Array<{ normal: readonly number[]; split: readonly number[] }>;
+  dealer: readonly number[];
+}
+
+/**
+ * Checks the hands on the table against the deal: the cards each hand got in this segment (by `drawTo`, in draw order)
+ * are the ones the deal gives, and what each hand held before the segment began adds up to `baseCards`. So a hand the
+ * referee changed, a card given to another hand than the one it was drawn for, a draw left out or a card nobody drew
+ * all show, whatever the referee wrote in `drawLog`.
+ */
+export function CheckHands(cards: readonly number[], drawTo: readonly number[], baseCards: readonly number[], hands: TableHands): Verification {
+  if (drawTo.length !== cards.length) return Mismatch(`${cards.length} draws but ${drawTo.length} destinations`);
+  const valid = new Set<number>([TO_DEALER, TO_HOLE, TO_NONE]);
+  hands.seats.forEach((_, i) => (valid.add(HandCode(i, false)), valid.add(HandCode(i, true))));
+  for (let k = 0; k < drawTo.length; k++) {
+    if (!valid.has(drawTo[k]!)) return Mismatch(`draw ${k} went to an unknown place (${drawTo[k]})`);
+    if ((drawTo[k] === TO_NONE) !== (cards[k]! < 0)) return Mismatch(`draw ${k}: the deal gives ${cards[k]}, but it went to ${drawTo[k]}`);
+  }
+  const base: number[] = [];
+  const hand = (code: number, held: readonly number[], what: string): string => {
+    const mine: number[] = [];
+    drawTo.forEach((to, k) => {
+      if (to === code) mine.push(cards[k]!);
+    });
+    if (mine.length > held.length) return `${what} holds ${held.length} cards, but ${mine.length} were drawn for it`;
+    const before = held.length - mine.length;
+    for (let j = 0; j < mine.length; j++) {
+      if (held[before + j] !== mine[j]) return `${what}'s card ${before + j + 1} is ${held[before + j]}, the deal gives ${mine[j]}`;
+    }
+    base.push(...held.slice(0, before));
+    return "";
+  };
+  for (let i = 0; i < hands.seats.length; i++) {
+    const seat = hands.seats[i]!;
+    const why = hand(HandCode(i, false), seat.normal, `seat ${i + 1}'s hand`) || hand(HandCode(i, true), seat.split, `seat ${i + 1}'s split hand`);
+    if (why) return Mismatch(why);
+  }
+  const holes = drawTo.filter((to) => to === TO_HOLE).length;
+  if (holes > 1) return Mismatch(`${holes} hole cards were drawn`);
+  let dealerRest = hands.dealer;
+  if (holes === 1) {
+    const k = drawTo.indexOf(TO_HOLE);
+    if (hands.dealer[0] !== cards[k]) return Mismatch(`the dealer's first card is ${hands.dealer[0]}, the deal gives ${cards[k]}`);
+    dealerRest = hands.dealer.slice(1);
+  }
+  const why = hand(TO_DEALER, dealerRest, "the dealer");
+  if (why) return Mismatch(why);
+  if (base.some((c) => c < 0)) return Mismatch("a card on the table is face down");
+  const a = base.slice().sort((x, y) => x - y).join(",");
+  const b = baseCards.filter((c) => c >= 0).slice().sort((x, y) => x - y).join(",");
+  if (a !== b) return Mismatch(`the cards held from before this deal (${a}) are not the ones it began with (${b})`);
+  return Checked();
 }
 
 /** NextCard's answer while the deal is not ready yet (the seated players' contributions are on their way). */
 export const PENDING = -3;
-/** A deal that is not ready after this many seconds is begun again without contributions (a player who never answers). */
+/**
+ * A deal that is not ready after this many seconds is begun again without contributions (a player who never answers).
+ * Such a deal is the referee's alone: every client shows it as not checkable (a modified referee could do the same at
+ * once and pick its seed, so nobody can tell the two apart).
+ */
 export const DEAL_TIMEOUT = 10;
 
 interface SegmentSecret {
@@ -128,7 +228,7 @@ interface SegmentSecret {
 export class DeckManager extends Behaviour {
   /** The referee halves of the deck-count buttons. */
   static override networkCallable = ["AddDeck", "SubtractDeck"];
-  static override synced = ["NumberOfDecks", "round", "segment", "dealLabel", "dealRevealed", "drawLog", "baseCards", "lostSegments", "unfairDeals"];
+  static override synced = ["NumberOfDecks", "round", "segment", "dealLabel", "dealRevealed", "drawLog", "drawTo", "baseCards", "segmentDecks", "lostSegments", "unfairDeals"];
 
   /** [UdonSynced] upstream. Copies of each card type per round, at least 2. */
   NumberOfDecks = 2;
@@ -146,8 +246,12 @@ export class DeckManager extends Behaviour {
   dealRevealed = false;
   /** Added: every card this segment drew, in order (HIDDEN for the hole card while face down, NO_CARD for none). */
   drawLog: number[] = [];
+  /** Added: where each draw of drawLog went (HandCode, TO_DEALER, TO_HOLE, TO_NONE); a split moves its card's entry. */
+  drawTo: number[] = [];
   /** Added: the cards already on the table when this segment began. */
   baseCards: number[] = [];
+  /** Added: NumberOfDecks when this segment began (the count may change after the round, before a late check). */
+  segmentDecks = 2;
   /** Added: segments of this round whose seed was lost with their referee (they cannot be checked). */
   lostSegments = 0;
   /** Added: deals begun again without contributions because a seated player's runtime never answered. */
@@ -163,15 +267,28 @@ export class DeckManager extends Behaviour {
 
   private secret: SegmentSecret | null = null;
   private checked = "";
+  /**
+   * Who this client saw seated in the round when it first saw each deal's label (the label and the seats arrive in
+   * one write). Nobody can take a seat during a round, so the seated players only shrink after that.
+   */
+  private readonly seatedAt = new Map<string, string[]>();
 
   override OnDeserialization(result: DeserializationResult): void {
+    this.NoteSeated();
     this.CheckReveal();
     this.BlackjackController?.Redraw(result.isSnapshot);
   }
 
   override Update(): void {
+    this.NoteSeated();
     // The reveal lives in the referee's user state, which may arrive after the space state that says it was made.
     if (this.dealRevealed && this.checked !== this.dealLabel) this.CheckReveal();
+  }
+
+  private NoteSeated(): void {
+    if (this.dealLabel !== "" && !this.seatedAt.has(this.dealLabel) && this.BlackjackController) {
+      this.seatedAt.set(this.dealLabel, this.BlackjackController.RoundSids());
+    }
   }
 
   /** Upstream InitializeDeck: the counts as a client sees them (the hole card is not counted until it is face up). */
@@ -209,11 +326,7 @@ export class DeckManager extends Behaviour {
 
   // ---- the referee's draws ------------------------------------------------------------------------------------
 
-  /**
-   * Referee: a new round. Its first deal is begun by the Controller's next tick (EnsureSegment), not here: this runs
-   * inside a command, and publishing a user-state record from a command handler makes the kit run the same command
-   * again (TESTS.md, kit gaps).
-   */
+  /** Referee: a new round. The Controller begins its first deal at once (EnsureSegment). */
   StartRound(): void {
     this.round++;
     this.Forget();
@@ -229,6 +342,7 @@ export class DeckManager extends Behaviour {
     this.dealLabel = "";
     this.dealRevealed = false;
     this.drawLog = [];
+    this.drawTo = [];
     this.baseCards = [];
     this.lostSegments = 0;
     this.unfairDeals = 0;
@@ -260,6 +374,8 @@ export class DeckManager extends Behaviour {
     this.segment++;
     this.baseCards = onTable.filter((c) => c >= 0);
     this.drawLog = [];
+    this.drawTo = [];
+    this.segmentDecks = this.NumberOfDecks;
     this.Begin(contributors);
     return true;
   }
@@ -270,6 +386,7 @@ export class DeckManager extends Behaviour {
     const tag = Array.from(this.Random.Bytes(4), (b) => b.toString(16).padStart(2, "0")).join("");
     const label = `bj${this.round}.${this.segment}.${tag}`;
     this.Secrets.beginDeal(label, contributors.slice());
+    this.seatedAt.set(label, this.BlackjackController.RoundSids());
     this.secret = { round: this.round, segment: this.segment, label, begunAt: this.BlackjackController.Now(), hidden: null };
     this.dealLabel = label;
     this.dealRevealed = false;
@@ -278,14 +395,15 @@ export class DeckManager extends Behaviour {
   /**
    * Referee: true when the deal can be drawn from. A deal that some seated player's runtime has not answered for
    * DEAL_TIMEOUT seconds is begun again with no contributors (logged, and counted in `unfairDeals`): the table must
-   * not hang on a modified client that withholds its contribution. "changed" when it wrote state.
+   * not hang on a modified client that withholds its contribution. That deal never verifies: every client shows the
+   * round as not checkable. "changed" when it wrote state.
    */
   Ready(): boolean | "changed" {
     if (!this.HoldsSegment()) return false;
     const s = this.secret!;
     if (this.Secrets.dealDraw(s.label) !== null) return true;
     if (this.drawLog.length === 0 && this.BlackjackController.Now() - s.begunAt > DEAL_TIMEOUT) {
-      this.Debug.LogWarning(`deal ${s.label}: a seated player's contribution never came; dealing from the referee's seed alone`);
+      this.Debug.LogWarning(`deal ${s.label}: a seated player's contribution never came; dealing from the referee's seed alone (not checkable)`);
       this.unfairDeals++;
       this.Begin([]);
       return "changed";
@@ -294,17 +412,18 @@ export class DeckManager extends Behaviour {
   }
 
   /**
-   * Referee: draws one card (upstream GetUnusedCardIndex with the dealt start index). `hidden`: the hole card, which
-   * is logged as HIDDEN and kept on this client with a commitment until it is turned. -1 when no card is left;
-   * PENDING while the deal is not ready (the caller tries again on a later tick).
+   * Referee: draws one card (upstream GetUnusedCardIndex with the dealt start index) for the hand `to` (HandCode,
+   * TO_DEALER, TO_HOLE). The hole card (TO_HOLE) is logged as HIDDEN and kept on this client with a commitment until
+   * it is turned, unless `faceUp` (a hole card drawn at the flip). -1 when no card is left; PENDING while the deal is
+   * not ready (the caller tries again on a later tick).
    */
-  NextCard(onTable: readonly number[], hidden = false): number {
-    // (a new segment is begun by the Controller's tick, never from here: this can run inside a command)
+  NextCard(to: number, faceUp = false): number {
+    // (a new segment is begun by the Controller's tick, never from here)
     if (!this.HoldsSegment()) return PENDING;
     const secret = this.secret!;
     const draw = this.Secrets.dealDraw(secret.label);
     if (!draw) return PENDING;
-    const counts = InitializeCounts(this.NumberOfDecks);
+    const counts = InitializeCounts(this.segmentDecks);
     for (const c of this.baseCards) counts[c]!--;
     this.drawLog.forEach((c, k) => {
       const card = c === HIDDEN && secret.hidden && secret.hidden.k === k ? secret.hidden.card : c;
@@ -314,13 +433,30 @@ export class DeckManager extends Behaviour {
     const card = GetUnusedCardIndex(counts, draw.Int(CARD_TYPES, k));
     if (card < 0) {
       this.drawLog.push(NO_CARD);
+      this.drawTo.push(TO_NONE);
       return -1;
     }
-    if (hidden) {
+    this.drawTo.push(to);
+    if (to === TO_HOLE && !faceUp) {
       secret.hidden = { k, card, commitment: this.Secrets.commit(card) };
       this.drawLog.push(HIDDEN);
     } else this.drawLog.push(card);
     return card;
+  }
+
+  /**
+   * Referee: card `position` of hand `from` (its held cards: `held`) moves to the front of hand `to` (a split). If this
+   * segment drew it, its destination follows it.
+   */
+  Moved(from: number, held: readonly number[], position: number, to: number): void {
+    const mine: number[] = [];
+    this.drawTo.forEach((code, k) => {
+      if (code === from) mine.push(k);
+    });
+    const before = held.length - mine.length;
+    if (position < before) return; // dealt before this segment: it is one of baseCards
+    const k = mine[position - before];
+    if (k !== undefined) this.drawTo[k] = to;
   }
 
   /** Referee: the commitment to the face-down card, for the Dealer's state. */
@@ -357,14 +493,88 @@ export class DeckManager extends Behaviour {
     if (state !== "revealed" && state !== "invalid") return; // not here yet
     this.checked = this.dealLabel;
     this.verified = this.Verify();
-    if (!this.verified.ok) this.Debug.LogError(`round ${this.round}: the dealt cards do not match the revealed deal: ${this.verified.reason}`);
+    if (this.verified.status === "mismatch") this.Debug.LogError(`round ${this.round}: the dealt cards do not match the revealed deal: ${this.verified.reason}`);
+    else if (this.verified.status === "unverifiable") this.Debug.LogWarning(`round ${this.round}: the deal cannot be checked: ${this.verified.reason}`);
   }
 
-  /** Checks the revealed deal of the current segment. */
+  /**
+   * The line every player sees under the dealer's buttons: the outcome of this client's check after the round, and,
+   * during a round, a warning when the deal is the referee's alone.
+   */
+  CheckText(): string {
+    const ctrl = this.BlackjackController;
+    if (!ctrl || this.dealLabel === "") return "";
+    if (ctrl.phase === "settled") {
+      const v = this.verified;
+      if (!v) return this.dealRevealed ? "Checking the deal..." : "";
+      if (v.status === "checked") return this.lostSegments > 0 ? "Deal checked (part of it was lost with a dealer who left)" : "Deal checked: every card came from the shared shuffle";
+      if (v.status === "unverifiable") return `Deal NOT checkable: ${v.reason}`;
+      return `DEAL CHECK FAILED: ${v.reason}`;
+    }
+    const listed = this.Secrets.dealContributors(this.dealLabel);
+    const referee = this.Networking.Master?.sid ?? "";
+    if (listed && !listed.some((sid) => sid !== referee)) return "This deal is the dealer's page's alone: it cannot be checked";
+    return "";
+  }
+
+  /**
+   * The session ids that must have contributed to the deal under `label`, as this client knows them: whoever it saw
+   * seated in the round (when it first saw the label, and now), and listed players who are no longer here (a player
+   * who left counts as absent in the deal; a late joiner never saw them seated). A listed player who is here but not
+   * seated in the round (an accomplice) is not expected, nor is a seated player the referee left out.
+   */
+  ExpectedContributors(label: string): string[] {
+    const present = new Set(this.Networking.GetPlayers().map((p) => p.sid));
+    const want = new Set<string>([...(this.seatedAt.get(label) ?? []), ...this.BlackjackController.RoundSids()]);
+    for (const sid of this.Secrets.dealContributors(label) ?? []) if (!present.has(sid)) want.add(sid);
+    return [...want];
+  }
+
+  /**
+   * Checks the revealed deal of the current segment: the contributor list is the seated players (a list of nobody but
+   * the referee is its own choice: not checkable), the seed is the committed one, the logged draws are the deal's,
+   * and every hand on the table holds exactly the cards the deal gave it.
+   */
   Verify(): Verification {
-    if (!this.dealRevealed) return { ok: false, reason: "no deal revealed" };
-    const draw = this.Secrets.verifyDeal(this.dealLabel);
-    if (!draw) return { ok: false, reason: "the referee's seed does not match its commitment, or a contribution is missing" };
-    return ReplaySegment(draw, this.NumberOfDecks, this.baseCards, this.drawLog);
+    if (!this.dealRevealed) return Mismatch("no deal revealed");
+    const label = this.dealLabel;
+    const listed = this.Secrets.dealContributors(label);
+    if (!listed) return Mismatch("the referee's deal record is missing");
+    const referee = this.Networking.Master?.sid ?? "";
+    if (!listed.some((sid) => sid !== referee)) {
+      const others = this.ExpectedContributors(label).filter((sid) => sid !== referee);
+      return Unverifiable(
+        others.length
+          ? "the dealer's page dealt from its own seed alone (it says a seated player's page never answered)"
+          : "the dealer's page was the only player: nobody else took part in the deal",
+      );
+    }
+    const expected = this.ExpectedContributors(label);
+    const want = expected.slice().sort().join(",");
+    const got = [...new Set(listed)].sort().join(",");
+    if (want !== got) return Mismatch("the deal's contributors are not the players seated in the round");
+    // A contributor who left before this page first saw the deal took its contribution with it: this page computes
+    // the deal with that part absent, which is not the deal that was dealt. Such a page cannot check the round.
+    const present = new Set(this.Networking.GetPlayers().map((p) => p.sid));
+    const sawSeated = this.seatedAt.get(label) ?? [];
+    const missed = listed.filter((sid) => !present.has(sid) && !sawSeated.includes(sid));
+    const result = this.Replay(label, expected);
+    if (result.status === "mismatch" && missed.length > 0) {
+      return Unverifiable("a player who contributed to this deal left before this page arrived: its part is not known here");
+    }
+    return result;
+  }
+
+  private Replay(label: string, expected: string[]): Verification {
+    const draw = this.Secrets.verifyDeal(label, expected);
+    if (!draw) return Mismatch("the referee's seed does not match its commitment, or a contribution is missing");
+    const log = ReplaySegment(draw, this.segmentDecks, this.baseCards, this.drawLog);
+    if (!log.ok) return log;
+    const ctrl = this.BlackjackController;
+    const cards = ReplayCards(draw, this.segmentDecks, this.baseCards, this.drawLog.length);
+    return CheckHands(cards, this.drawTo, this.baseCards, {
+      seats: ctrl.Players.map((p) => ({ normal: p.NormalDeck.cards, split: p.SplitDeck.cards })),
+      dealer: ctrl.Dealer.cards,
+    });
   }
 }

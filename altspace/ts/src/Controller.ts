@@ -204,9 +204,9 @@ export class Controller extends Behaviour {
     return out.filter((c) => c >= 0);
   }
 
-  /** Referee: one card from the round's deal (-1 when none is left, PENDING while the deal is not ready). */
-  DrawCard(): number {
-    return this.Deck.NextCard(this.OnTable());
+  /** Referee: one card from the round's deal for hand `to` (-1 when none is left, PENDING while the deal is not ready). */
+  DrawCard(to: number): number {
+    return this.Deck.NextCard(to);
   }
 
   /** The sessions of the seats in the round: they contribute to the deal (Secrets.beginDeal). */
@@ -214,7 +214,7 @@ export class Controller extends Behaviour {
     const out: string[] = [];
     for (const i of this.roster) {
       const p = this.Players[i];
-      if (p && p.IsActive && p.ownerSid && !out.includes(p.ownerSid)) out.push(p.ownerSid);
+      if (p && p.IsActive && p.inRound && p.ownerSid && !out.includes(p.ownerSid)) out.push(p.ownerSid);
     }
     return out;
   }
@@ -359,10 +359,11 @@ export class Controller extends Behaviour {
     this.Players.forEach((p, i) => {
       if (p.IsActive) this.roster.push(i);
     });
-    // The deal is begun by the next tick (Advance); the seated players' runtimes add their contributions while the
-    // shuffle sound plays, and the schedule waits for them.
+    // The deal is begun here; the seated players' runtimes add their contributions while the shuffle sound plays,
+    // and the schedule waits for them.
     this.deferred = [];
     this.Deck.StartRound();
+    this.Deck.EnsureSegment(this.OnTable(), this.RoundSids());
     this.round = this.Deck.round;
     this.GameActive = true;
     this.phase = "dealing";

@@ -62,6 +62,8 @@ function debugHooks(instance: GameInstance): Record<string, unknown> {
         dealVerified: c.Deck.verified,
         dealLabel: c.Deck.dealLabel,
         unfairDeals: c.Deck.unfairDeals,
+        dealCheck: c.Deck.CheckText(),
+        dealStatus: c.Deck.verified?.status ?? "",
         chips: c.ChipController.CurrentChipCount,
         bet: c.ChipController.GetBet(),
         seats: c.Players.map((p) => ({

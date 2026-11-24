@@ -57,6 +57,15 @@
   const table = () => debug().table();
   const path = (key) => debug().pathOf(key);
   const probe = (what, key, extra) => cmd("probe " + HOLDER + " " + what + " " + path(key).replace(/ /g, "%20") + (extra ? " " + extra : ""));
+  /** Probes run ahead of the relay (portkit README): ask again until the value comes, up to `ms`. */
+  async function probeUntil(what, key, ok, ms) {
+    const end = Date.now() + (ms || 5000);
+    for (;;) {
+      const v = await probe(what, key);
+      if (ok(v) || Date.now() > end) return v;
+      await sleep(200);
+    }
+  }
   const RESULT = ["none", "win", "draw", "lose"];
   const value = (c) => {
     const rank = Math.floor(c / 4);
@@ -186,8 +195,11 @@
     check(delta === (want === 1 ? 15 : want === 3 ? -15 : 0), "the chips change by the bet (1 to 1)", `${startChips} -> ${table().chips} (${delta >= 0 ? "+" : ""}${delta})`);
     const chipsText = await probe("text", "p3_totalChips");
     check(chipsText.indexOf(String(table().chips)) >= 0, "the chip panel shows the new total", chipsText);
+    // alone at the table, this page is both the referee and the only player: the deal is its own, and is shown so
     await until(() => table().dealVerified !== null, 8000, 200);
-    check(table().dealVerified && table().dealVerified.ok === true, "the round's draws replay from the revealed deal", JSON.stringify(table().dealVerified));
+    check(table().dealStatus === "unverifiable", "a deal with no contributor but the referee is not checkable (the only player dealt alone)", JSON.stringify(table().dealVerified));
+    const line = await probeUntil("text", "dealCheck", (v) => v === table().dealCheck && v !== "");
+    check(/^Deal NOT checkable/.test(line) && line === table().dealCheck, "the table shows every player that this deal could not be checked (Unity text)", line);
     await cmd("shot settled 0 1.45 1.6 0 0.8 3 60");
 
     // the credits panel opens and closes for this viewer
@@ -220,11 +232,8 @@
       return false;
     }
   };
-  /** The referee's synced poll time (the controller's nextCheckAt): it names the 2-second epoch a state belongs to. */
-  const epoch = () => {
-    const ctrl = Object.values(debug().state()).find((v) => v && typeof v === "object" && "nextCheckAt" in v);
-    return ctrl ? ctrl.nextCheckAt : null;
-  };
+  /** This page's digest and the version of state it is made of, read together (portkit stamp()). */
+  const stamp = () => debug().stamp();
   /** The table as text: equal on both pages means the same table. */
   const view = () => {
     const t = table();
@@ -300,16 +309,24 @@
       // the owner plays its hand (and the dealer flips) only after hearing "back": this snapshot is from before the flip
       const pre2 = await holeSnapshot();
       check(!pre2.dealer.flipped && pre2.dealer.cards[0] === -1, "the reloaded page joined before the flip", `flipped ${pre2.dealer.flipped}, dealer ${JSON.stringify(pre2.dealer.cards)}`);
-      // tell the owner this page's digest until it has compared one (see sameEpoch): each sample is taken in one go
+      // tell the owner this page's digest until it has compared one (see sameVersion): each sample is one stamp()
       for (let n = 1; n <= 120 && !heard.find((m) => m.kind === "ack"); n++) {
-        send({ kind: "back", n, digest: debug().digest(), epoch: epoch() });
+        const st = stamp();
+        send({ kind: "back", n, digest: st.digest, version: st.version });
         await sleep(250);
       }
       await until(() => table().phase === "settled", 60000, 250);
       const hc2 = holeCheck(pre2, debug().dealer());
       check(hc2.ok, "round 2: the hole card was unreadable on the reloaded page (late join state) before the flip, and the flipped card matches its commitment", hc2.detail);
+      // this page's old session contributed to round 2's deal and left with its part: the page says it cannot check it
+      await until(() => table().dealVerified !== null, 8000, 200);
+      const v2 = table().dealVerified;
+      const line2 = await probeUntil("text", "dealCheck", (v) => /^Deal NOT checkable/.test(v));
+      check(table().dealStatus === "unverifiable" && /left before this page arrived/.test(v2 ? v2.reason : "") && /^Deal NOT checkable/.test(line2),
+        "round 2: the reloaded page cannot check a deal its old session contributed to, and shows that (not a false alarm)", `${JSON.stringify(v2)}; Unity '${line2}'`);
       await sleep(1500);
-      send({ kind: "final", digest: debug().digest(), view: view() });
+      const stf = stamp();
+      send({ kind: "final", digest: stf.digest, version: stf.version, view: view() });
       try {
         sessionStorage.removeItem("bjTestReloaded");
       } catch (e) {
@@ -334,16 +351,20 @@
     const t1 = table();
     const hc = holeCheck(pre, debug().dealer());
     check(hc.ok, "the hole card was unreadable on this page before the flip, and the flipped card matches its commitment", hc.detail);
-    check(t1.dealVerified && t1.dealVerified.ok === true, "the round's draws replay from the revealed deal (both seats contributed)", JSON.stringify(t1.dealVerified) + " " + t1.dealLabel);
+    check(t1.dealStatus === "checked", "the round's deal checks: contributors are the seated players, the draws replay, every hand holds the deal's cards", JSON.stringify(t1.dealVerified) + " " + t1.dealLabel);
+    const line1 = await probeUntil("text", "dealCheck", (v) => /^Deal checked/.test(v));
+    check(/^Deal checked/.test(line1), "the table shows every player that the deal was checked (Unity text)", line1);
     // the other player's actions arrived here: its seat's cards (any hits included) are on in this page's Unity
     await seatCardsAgree(3, "round 1: seat 3's cards are on in this page's Unity with the faces in state");
     await seatCardsAgree(4, "round 1: seat 4's cards are on in this page's Unity with the faces in state");
     const other = owner ? 4 : 3;
     check(t1.seats[other].finished && t1.seats[other].result[0] > 0, "round 1: the other player's hand was played and settled, as this page sees it", JSON.stringify(t1.seats[other]));
     await sleep(1500);
-    send({ kind: "round1", digest: debug().digest(), view: view() });
+    const st1 = stamp();
+    send({ kind: "round1", digest: st1.digest, version: st1.version, view: view() });
     const theirs1 = await until(() => heard.find((m) => m.kind === "round1"), 20000, 200);
-    check(!!theirs1 && theirs1.digest === debug().digest(), "both pages reach the same state digest after round 1", theirs1 ? `${theirs1.digest} / ${debug().digest()}` : "no digest heard");
+    const now1 = stamp();
+    check(!!theirs1 && theirs1.version === now1.version && theirs1.digest === now1.digest, "both pages reach the same state after round 1 (equal version() and digest)", theirs1 ? `${theirs1.digest} / ${now1.digest} at ${theirs1.version} / ${now1.version}` : "no digest heard");
 
     // ---- round 2: the guest reloads mid-hand ----
     await sleep(2000);
@@ -369,20 +390,20 @@
     }
     // the owner: keep telling the guest what the table looks like, then play the hand out
     await until(() => heard.find((m) => m.kind === "reloading"), 20000, 200);
-    // While turns run, the referee moves the synced poll time (nextCheckAt) on every 2 s (POLL_SECONDS, upstream's
-    // GameActiveRefresh cadence), so the whole-state digest changes every 2 s. Digests are compared within one poll
-    // epoch only: a guest sample from another epoch is counted and skipped; the first sample from the owner's
-    // current epoch is compared, and any difference there fails.
+    // While turns run, the referee moves the synced poll time (nextCheckAt) on every 2 s, so the whole-state digest
+    // changes by itself. Digests are compared only at equal version() (portkit README, "Comparing pages"): a guest
+    // sample of another version is counted and skipped; the first sample at the owner's version is compared, and any
+    // difference there fails.
     let skipped = 0;
     let seen = 0;
-    const sameEpoch = await (async () => {
+    const sameVersion = await (async () => {
       for (let i = 0; i < 240; i++) {
         if (i % 2 === 0) send({ kind: "view", view: view() });
         const b = heard.filter((m) => m.kind === "back" && m.n > seen).pop();
         if (b) {
           seen = b.n;
-          const mine = { digest: debug().digest(), epoch: epoch() };       // read together, in one turn of the page
-          if (b.epoch === mine.epoch) return { theirs: b, mine };
+          const mine = stamp();
+          if (b.version === mine.version) return { theirs: b, mine };
           skipped++;
         }
         await sleep(250);
@@ -390,13 +411,16 @@
       return null;
     })();
     send({ kind: "ack" });
-    check(!!sameEpoch && sameEpoch.theirs.digest === sameEpoch.mine.digest, "the reloaded guest's page holds the same state as the owner's (digest, same poll epoch)",
-      sameEpoch ? `${sameEpoch.theirs.digest} / ${sameEpoch.mine.digest} at poll epoch ${sameEpoch.mine.epoch} (guest sample ${sameEpoch.theirs.n}; ${skipped} samples from another epoch skipped)` : `no sample from the owner's epoch (${skipped} skipped)`);
+    check(!!sameVersion && sameVersion.theirs.digest === sameVersion.mine.digest, "the reloaded guest's page holds the same state as the owner's (digest at equal version())",
+      sameVersion ? `${sameVersion.theirs.digest} / ${sameVersion.mine.digest} at version ${sameVersion.mine.version} (guest sample ${sameVersion.theirs.n}; ${skipped} samples of another version skipped)` : `no sample at the owner's version (${skipped} skipped)`);
     await playMyHand(mySeat);
     await until(() => table().phase === "settled", 60000, 200);
+    await until(() => table().dealVerified !== null, 8000, 200);
+    check(table().dealStatus === "checked", "round 2: the owner's page checks the deal (it saw the guest's old session contribute)", JSON.stringify(table().dealVerified));
     await sleep(1500);
     const fin = await until(() => heard.find((m) => m.kind === "final"), 30000, 200);
-    check(!!fin && fin.digest === debug().digest() && fin.view === view(), "both pages agree at the end of round 2", fin ? `${fin.digest} / ${debug().digest()}; ${view()}` : "no word");
+    const nowf = stamp();
+    check(!!fin && fin.version === nowf.version && fin.digest === nowf.digest && fin.view === view(), "both pages agree at the end of round 2 (equal version() and digest)", fin ? `${fin.digest} / ${nowf.digest} at ${fin.version} / ${nowf.version}; ${view()}` : "no word");
   }
 
   window.__bjRun = async function (plan) {

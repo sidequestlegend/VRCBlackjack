@@ -13,7 +13,7 @@
 
 import { Behaviour, type DeserializationResult, type Opening } from "../portkit/src/index.ts";
 import type { Controller } from "./Controller.ts";
-import { HIDDEN, type DeckManager } from "./DeckManager.ts";
+import { HIDDEN, TO_DEALER, TO_HOLE, type DeckManager } from "./DeckManager.ts";
 import type { DealerUIController } from "./DealerUIController.ts";
 import { MAX_CARDS, ScoreCards } from "./PlayerDeck.ts";
 
@@ -70,10 +70,10 @@ export class Dealer extends Behaviour {
   }
 
   /** Referee: StartMatch and StartMatchSecondCard. The first card is the hole card. */
-  SummonCard(onTable: readonly number[]): void {
+  SummonCard(_onTable: readonly number[]): void {
     if (this.NextDeckPosition > MAX_CARDS - 1) return;
     const hole = this.cards.length === 0;
-    const card = this.Deck.NextCard(onTable, hole);
+    const card = this.Deck.NextCard(hole ? TO_HOLE : TO_DEALER);
     if (card < 0) return; // "No free cards left!"
     if (hole) {
       this.cards.push(HIDDEN);
@@ -83,7 +83,7 @@ export class Dealer extends Behaviour {
   }
 
   /** Referee: GlobalFlip. Turns the hole card, or draws it anew if this referee never knew it. */
-  Flip(onTable: readonly number[]): void {
+  Flip(_onTable: readonly number[]): void {
     if (this.flipped) return;
     this.flipped = true;
     if (this.cards.length === 0 || this.cards[0] !== HIDDEN) {
@@ -95,7 +95,7 @@ export class Dealer extends Behaviour {
       this.cards[0] = known.card;
       this.holeOpening = known.opening;
     } else {
-      const card = this.Deck.NextCard(onTable);
+      const card = this.Deck.NextCard(TO_HOLE, true);
       if (card < 0) {
         this.cards.splice(0, 1);
       } else {

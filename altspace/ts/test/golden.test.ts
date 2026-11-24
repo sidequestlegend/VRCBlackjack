@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 import { ChipBank } from "../src/ChipController.ts";
 import { DealSchedule } from "../src/Controller.ts";
 import { DealerShouldDraw } from "../src/Dealer.ts";
-import { AddDeckCount, CardName, CardValue, GetUnusedCardIndex, InitializeCounts, ReplaySegment, SubtractDeckCount } from "../src/DeckManager.ts";
+import { AddDeckCount, CardName, CardValue, CheckHands, GetUnusedCardIndex, HandCode, InitializeCounts, ReplayCards, ReplaySegment, SubtractDeckCount, TO_DEALER, TO_HOLE } from "../src/DeckManager.ts";
 import { ChipChange, RESULT_DRAW, RESULT_LOSE, RESULT_NONE, RESULT_WIN, SettleHand, SplitLiteral } from "../src/Player.ts";
 import { AddCardValue, NewHand, ScoreValues, type HandMath } from "../src/PlayerDeck.ts";
 import { Draw } from "../portkit/src/index.ts";
@@ -270,11 +270,50 @@ test("draws replay from the revealed deal, and a changed card is caught", () => 
     log.push(card);
     counts[card]!--;
   }
-  assert.deepEqual(ReplaySegment(draw, 2, [], log), { ok: true, reason: "" });
+  assert.deepEqual(ReplaySegment(draw, 2, [], log), { ok: true, status: "checked", reason: "" });
   const forged = log.slice();
   forged[5] = (forged[5]! + 1) % 52;
   assert.equal(ReplaySegment(draw, 2, [], forged).ok, false);
   assert.equal(ReplaySegment(new Draw("another seed"), 2, [], log).ok, false);
   // Fresh random cards per draw, as upstream: every type stays possible, with 2 decks a type runs out after 2.
   assert.ok(new Set(log).size > 15);
+});
+
+test("the hands on the table are held against the deal: a changed, swapped, extra or missing card is caught", () => {
+  const draw = new Draw("hands-seed");
+  // seat 0 and seat 1 get a card each, the dealer's hole card, again each seat, the dealer's up card, a hit for seat 1
+  const to = [HandCode(0, false), HandCode(1, false), TO_HOLE, HandCode(0, false), HandCode(1, false), TO_DEALER, HandCode(1, false)];
+  const cards = ReplayCards(draw, 2, [], to.length);
+  const hands = () => ({
+    seats: [
+      { normal: [cards[0]!, cards[3]!], split: [] as number[] },
+      { normal: [cards[1]!, cards[4]!, cards[6]!], split: [] as number[] },
+    ],
+    dealer: [cards[2]!, cards[5]!],
+  });
+  assert.equal(CheckHands(cards, to, [], hands()).status, "checked");
+  const changed = hands();
+  changed.seats[1]!.normal[2] = (cards[6]! + 1) % 52;
+  assert.equal(CheckHands(cards, to, [], changed).status, "mismatch", "a hand's card changed");
+  const swapped = hands();
+  [swapped.seats[0]!.normal[0], swapped.seats[1]!.normal[0]] = [cards[1]!, cards[0]!];
+  if (cards[0] !== cards[1]) assert.equal(CheckHands(cards, to, [], swapped).status, "mismatch", "two seats' cards swapped (same cards on the table)");
+  const toDealer = hands();
+  toDealer.seats[1]!.normal.pop();
+  toDealer.dealer = [...toDealer.dealer, cards[6]!];
+  assert.equal(CheckHands(cards, to, [], toDealer).status, "mismatch", "a seat's card given to the dealer");
+  const extra = hands();
+  extra.seats[0]!.normal.push(7);
+  assert.equal(CheckHands(cards, to, [], extra).status, "mismatch", "a card nobody drew");
+  assert.equal(CheckHands(cards, to.slice(0, 6), [], hands()).status, "mismatch", "a destination left out");
+  // a split: the second card's draw moves to the split hand
+  const split = to.slice();
+  split[3] = HandCode(0, true);
+  const splitHands = hands();
+  splitHands.seats[0] = { normal: [cards[0]!], split: [cards[3]!] };
+  assert.equal(CheckHands(cards, split, [], splitHands).status, "checked");
+  // cards from before the segment (a referee change) come first in their hands and must add up to baseCards
+  const later = ReplayCards(draw, 2, [5, 9], 1);
+  assert.equal(CheckHands(later, [HandCode(0, false)], [5, 9], { seats: [{ normal: [5, later[0]!], split: [] }], dealer: [9] }).status, "checked");
+  assert.equal(CheckHands(later, [HandCode(0, false)], [5, 9], { seats: [{ normal: [6, later[0]!], split: [] }], dealer: [9] }).status, "mismatch", "a card held from before changed");
 });
