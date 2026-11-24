@@ -56,7 +56,7 @@ Shader "AltspaceGames/BlackjackCard"
                 float col = fmod(index, 14.0);
                 float row = floor(index / 14.0);
                 // pixels from the atlas's top left, then to texture coordinates (v counts from the bottom)
-                float2 px = float2(col * 146.0 + 3.0 + i.uv.x * 140.0, row * 256.0 + 3.0 + (1.0 - i.uv.y) * 190.0);
+                float2 px = float2(col * 146.0 + 3.0 + (1.0 - i.uv.x) * 140.0, row * 256.0 + 3.0 + (1.0 - i.uv.y) * 190.0);
                 float2 uv = float2(px.x / 2048.0, 1.0 - px.y / 1024.0);
                 half4 c = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, uv) * _Tint;
                 clip(c.a - _Cutoff);

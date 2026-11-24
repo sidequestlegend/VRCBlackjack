@@ -85,7 +85,7 @@ namespace Blackjack
             var slots = CardSlots(stage);
             HeightButtons(stage);
             Bind(stage, system, slots);
-            Credits(stage, F("Dealer/Dealer UI Controller/Reset Button"));
+            Credits(stage, F("Dealer/Dealer UI Controller/Auto Canvas"), (RectTransform)F("Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner/Start Game"));
             Sounds(system);
             Fonts();
         }
@@ -402,7 +402,7 @@ namespace Blackjack
             text.font = KitText.DefaultFont();
             text.enableAutoSizing = true;
             text.fontSizeMin = 4;
-            text.fontSizeMax = 40;
+            text.fontSizeMax = Mathf.Max(8f, size.y * 0.7f);
             text.color = Color.white;
             text.alignment = TextAlignmentOptions.Center;
             text.text = label;
@@ -751,15 +751,27 @@ namespace Blackjack
 
         // ------------------------------------------------------------------ credits
 
-        void Credits(KitStage stage, Transform canvas)
+        /// <summary>
+        /// The credits button under the dealer's Start Game button, on the dealer canvas the players read (outside its mask,
+        /// so it shows to everyone in range), and the panel it opens over the same place.
+        /// </summary>
+        void Credits(KitStage stage, Transform canvas, RectTransform anchor)
         {
             var font = KitText.DefaultFont();
-            var open = Button(stage, canvas, "CreditsButton", "Credits", new Vector2(0, -60), new Vector2(90, 24));
+            var w = anchor.rect.width;
+            var h = anchor.rect.height;
+            var open = Button(stage, canvas, "CreditsButton", "Credits", Vector2.zero, new Vector2(w * 0.35f, h * 0.6f));
+            open.transform.position = anchor.position - anchor.up * (h * 1.6f * anchor.lossyScale.y);
+            open.transform.rotation = anchor.rotation;
+            open.transform.localScale = Vector3.one;
             ClickCollider(open);
             var panel = stage.Create("CreditsPanel", canvas);
             var panelRect = panel.AddComponent<RectTransform>();
-            panelRect.anchoredPosition3D = new Vector3(0f, 120f, -2f);
             panelRect.sizeDelta = new Vector2(620f, 300f);
+            float k = w * 1.3f / 620f;                                                                       // as wide as 1.3 Start Game buttons
+            panel.transform.rotation = anchor.rotation;
+            panel.transform.localScale = Vector3.one * k;
+            panel.transform.position = anchor.position - anchor.forward * 0.02f;                           // in front, as the canvas is read
             panel.AddComponent<UnityEngine.UI.Image>().color = new Color(0.05f, 0.12f, 0.08f, 0.97f);
             var body = stage.Create("Text", panel.transform).AddComponent<TextMeshProUGUI>();
             body.rectTransform.sizeDelta = new Vector2(600f, 285f);

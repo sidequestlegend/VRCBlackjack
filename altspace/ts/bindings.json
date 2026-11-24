@@ -4917,7 +4917,7 @@
       "object": "creditsPanel"
     }
   ],
-  "hash": "92623f702025318a24bd82209ffd292f1598d200",
+  "hash": "b3d4ca74e481132f555e2917343de28c3ec5a686",
   "objects": {
     "audio": {
       "click": false,
@@ -5050,7 +5050,7 @@
     "creditsButton": {
       "click": true,
       "grab": false,
-      "path": "Table/Dealer/Dealer UI Controller/Reset Button/CreditsButton",
+      "path": "Table/Dealer/Dealer UI Controller/Auto Canvas/CreditsButton",
       "seat": false,
       "sync": "none"
     },
@@ -5058,7 +5058,7 @@
       "active": false,
       "click": true,
       "grab": false,
-      "path": "Table/Dealer/Dealer UI Controller/Reset Button/CreditsPanel",
+      "path": "Table/Dealer/Dealer UI Controller/Auto Canvas/CreditsPanel",
       "seat": false,
       "sync": "none"
     },

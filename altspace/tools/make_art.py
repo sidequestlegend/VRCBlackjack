@@ -9,7 +9,8 @@ upstream files and from Kenney's Boardgame Pack v2 (CC0).
    The card shader (Assets/Kit/Shaders/BlackjackCard.shader) uses the same numbers.
 2. FeltAlbedo.jpg (2048): upstream's green felt (FiyCsf, Apache-2.0 with the repo) with two changes: the line
    "BLACKJACK PAYS 2 TO 1" is painted out (every win pays 1 to 1 here, as upstream's code does), and the CentauriCore
-   logo and handle are painted out (the credit stays on the credits panel and in THIRD-PARTY-NOTICES.md).
+   logo and handle are painted out (the credit stays on the credits panel and in THIRD-PARTY-NOTICES.md); the same
+   areas are painted out of its smoothness map (Table_Surface_Mask.png), where the line also shows as a shine.
 3. <Material>_Mask.png: URP Lit masks packed from upstream's maps: metallic in R, occlusion in G, smoothness in A
    (URP reads metallic and smoothness from _MetallicGlossMap, occlusion from G of _OcclusionMap; both point here).
 """
@@ -55,7 +56,8 @@ def card_atlas(pack: Path) -> None:
     atlas.save(OUT / "CardAtlas.png")
 
 
-def felt() -> None:
+def felt_mask() -> np.ndarray:
+    """Where the felt carries the "2 TO 1" line and the logo (4096 x 4096, 255 there), read from the green albedo."""
     src = next((TEX / "Surfaces" / "Green").glob("*AlbedoTransparency.png"))
     im = cv2.imread(str(src), cv2.IMREAD_COLOR)  # BGR, 4096
     b, g, r = (im[:, :, k].astype(np.int32) for k in range(3))
@@ -68,7 +70,13 @@ def felt() -> None:
     y0, y1, x0, x1 = 0, 260, 3150, 3700
     notfelt = ~((g > r + 25) & (g > b + 5))
     mask[y0:y1, x0:x1][notfelt[y0:y1, x0:x1]] = 255
-    mask = cv2.dilate(mask, np.ones((9, 9), np.uint8))
+    return cv2.dilate(mask, np.ones((9, 9), np.uint8))
+
+
+def felt() -> None:
+    src = next((TEX / "Surfaces" / "Green").glob("*AlbedoTransparency.png"))
+    im = cv2.imread(str(src), cv2.IMREAD_COLOR)  # BGR, 4096
+    mask = felt_mask()
     filled = cv2.inpaint(im, mask, 9, cv2.INPAINT_TELEA)
     # the felt's grain, from a clean patch, laid over the painted-out areas
     patch = im[2600:3000, 2000:2400].astype(np.float32)  # plain felt (the lower middle panel)
@@ -82,8 +90,15 @@ def felt() -> None:
     cv2.imwrite(str(OUT / "FeltAlbedo.jpg"), out, [cv2.IMWRITE_JPEG_QUALITY, 92])
 
 
-def mask(name: str, metallic_smoothness: Path, occlusion: Path, size: int) -> None:
-    ms = Image.open(metallic_smoothness).convert("RGBA").resize((size, size), Image.LANCZOS)
+def mask(name: str, metallic_smoothness: Path, occlusion: Path, size: int, paint_out: np.ndarray | None = None) -> None:
+    ms = Image.open(metallic_smoothness).convert("RGBA")
+    if paint_out is not None:
+        # the felt's smoothness map carries the same line and logo (they shine): painted out the same way
+        arr = np.array(ms)
+        for k in range(4):
+            arr[:, :, k] = cv2.inpaint(np.ascontiguousarray(arr[:, :, k]), paint_out, 9, cv2.INPAINT_TELEA)
+        ms = Image.fromarray(arr, "RGBA")
+    ms = ms.resize((size, size), Image.LANCZOS)
     ao = Image.open(occlusion).convert("L").resize((size, size), Image.LANCZOS)
     r, _, _, a = ms.split()
     Image.merge("RGBA", (r, ao, Image.new("L", (size, size), 0), a)).save(OUT / f"{name}_Mask.png")
@@ -97,10 +112,10 @@ def main() -> None:
     card_atlas(pack)
     felt()
     surf = TEX / "Surfaces"
-    mask("Table_Surface", next(surf.glob("*Table_Surface_MetallicSmoothness.png")), surf / "Table_Surface_AmbientOcclusion.png", 1024)
+    mask("Table_Surface", next(surf.glob("*Table_Surface_MetallicSmoothness.png")), surf / "Table_Surface_AmbientOcclusion.png", 1024, felt_mask())
     for name, size in (("Table_Outer", 512), ("Table_ArmRest", 512), ("Table_Hard_Surface", 512), ("Pockets_Outer", 256), ("Pockets_Bottom_Icon", 256)):
         mask(name, TEX / f"{name}_MetallicSmoothness.png", TEX / f"{name}_AmbientOcclusion.png", size)
-    for f in sorted(OUT.glob("*.*")):
+    for f in sorted(p for p in OUT.glob("*.*") if p.suffix in (".png", ".jpg")):
         print(f"{f.name}: {Image.open(f).size}, {f.stat().st_size:,} bytes")
 
 

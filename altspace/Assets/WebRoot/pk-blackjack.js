@@ -16,7 +16,7 @@
  * The changes are listed in altspace/PORT.md (section 10) and altspace/THIRD-PARTY-NOTICES.md on the
  * altspace branch of the fork. Not affiliated with or endorsed by CentauriCore.
  */
-/* pk-blackjack.js: portkit runtime with the rules of 'blackjack' (protocol pk1, bindings 92623f702025318a24bd82209ffd292f1598d200). Built file: do not edit. */
+/* pk-blackjack.js: portkit runtime with the rules of 'blackjack' (protocol pk1, bindings b3d4ca74e481132f555e2917343de28c3ec5a686). Built file: do not edit. */
 (() => {
   var __defProp = Object.defineProperty;
   var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
@@ -12693,7 +12693,7 @@ ${label}`)));
         object: "creditsPanel"
       }
     ],
-    hash: "92623f702025318a24bd82209ffd292f1598d200",
+    hash: "b3d4ca74e481132f555e2917343de28c3ec5a686",
     objects: {
       audio: {
         click: false,
@@ -12826,7 +12826,7 @@ ${label}`)));
       creditsButton: {
         click: true,
         grab: false,
-        path: "Table/Dealer/Dealer UI Controller/Reset Button/CreditsButton",
+        path: "Table/Dealer/Dealer UI Controller/Auto Canvas/CreditsButton",
         seat: false,
         sync: "none"
       },
@@ -12834,7 +12834,7 @@ ${label}`)));
         active: false,
         click: true,
         grab: false,
-        path: "Table/Dealer/Dealer UI Controller/Reset Button/CreditsPanel",
+        path: "Table/Dealer/Dealer UI Controller/Auto Canvas/CreditsPanel",
         seat: false,
         sync: "none"
       },
