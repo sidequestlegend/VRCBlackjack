@@ -13,7 +13,7 @@
 
 import { Behaviour, Mathf, type AnimatorRef, type DeserializationResult, type GameObject, type TextRef } from "../portkit/src/index.ts";
 import type { Controller } from "./Controller.ts";
-import type { DeckManager } from "./DeckManager.ts";
+import { PENDING, type DeckManager } from "./DeckManager.ts";
 import type { InteractableController } from "./InteractableController.ts";
 import { MAX_CARDS, type HandMath, type PlayerDeck } from "./PlayerDeck.ts";
 import type { PlayerUIController } from "./PlayerUIController.ts";
@@ -57,6 +57,17 @@ export function SplitLiteral(normal: HandMath, split: HandMath, SecondCardValue:
 }
 
 export class Player extends Behaviour {
+  /** The referee halves of the seat's buttons: the only names a command (or network event) may run here. */
+  static override networkCallable = [
+    "TakeControl",
+    "ReleaseControl",
+    "AutoNormalHitMe",
+    "AutoSplitHitMe",
+    "ManualNormalHitMe",
+    "ManualSplitHitMe",
+    "Stand",
+    "Split",
+  ];
   static override synced = [
     "IsActive",
     "HasFinishedTurn",
@@ -462,6 +473,13 @@ export class Player extends Behaviour {
   DealTo(deck: PlayerDeck): void {
     if (deck.NextDeckPosition > MAX_CARDS - 1) return;
     const card = this.BlackjackController.DrawCard();
+    if (card === PENDING) {
+      // the deal is not ready (a new referee's deal is gathering contributions): this card comes once it is
+      this.BlackjackController.Defer(() => {
+        if (this.IsActive && this.inRound && !this.HasFinishedTurn && !deck.IsBust) this.DealTo(deck);
+      });
+      return;
+    }
     if (card < 0) return;
     const busted = deck.AddCard(card);
     this.CheckIfCanSplit();

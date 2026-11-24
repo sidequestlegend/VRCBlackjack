@@ -51,14 +51,22 @@ test("the hole card is unreadable to every client, the referee's page included, 
 
   const ref = referee(w);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const secret = (deck(w, ref) as any).secret as { seed: string; commitment: { reveal(): { s: string } }; hidden: { k: number; card: number; commitment: { reveal(): { s: string } } } };
+  const secret = (deck(w, ref) as any).secret as { label: string; hidden: { k: number; card: number; commitment: { reveal(): { s: string } } } };
   assert.ok(secret && secret.hidden, "the referee holds the hole card privately");
   const holeNonce = secret.hidden.commitment.reveal().s;
-  const seedNonce = secret.commitment.reveal().s;
-  const hole = { k: secret.hidden.k, card: secret.hidden.card }; // the flip clears secret.hidden
-  for (const needle of [secret.seed, holeNonce, seedNonce]) {
-    assert.ok(!wire.some((text) => text.includes(needle)), "neither the seed nor either opening has gone out");
+  // the referee's own seed of the dealt draw, held by its runtime until the round ends
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dealSeed = (w.instance(ref).secrets as any).dealSeed as { label: string; seed: string };
+  assert.equal(dealSeed.label, secret.label, "the round's cards come from a dealt draw");
+  for (const needle of [dealSeed.seed, holeNonce]) {
+    assert.ok(!wire.some((text) => text.includes(needle)), "neither the referee's seed nor the hole card's opening has gone out");
   }
+  // the seated players contributed: the deal is not the referee's alone
+  for (const c of [bob, cat]) {
+    const contribution = w.room.userStateOf(c.sid);
+    assert.ok(JSON.stringify(contribution).includes(secret.label), `${c.name}'s runtime contributed to the deal`);
+  }
+  const hole = { k: secret.hidden.k, card: secret.hidden.card }; // the flip clears secret.hidden
   for (const c of w.clients) {
     const d = dealer(w, c);
     assert.equal(d.cards.length, 2);
@@ -67,13 +75,13 @@ test("the hole card is unreadable to every client, the referee's page included, 
     assert.equal(d.holeOpening, null);
     assert.ok(d.holeHash.length > 0, "the hole card is committed to");
     assert.equal(deck(w, c).drawLog[hole.k], HIDDEN);
-    assert.equal(deck(w, c).seedOpening, null);
+    assert.equal(deck(w, c).dealRevealed, false);
     assert.equal(c.graph(SLUG).floats.has("d0/_CardIndex"), false, `${c.name}'s page never sent the hole card's face`);
   }
   // The room's whole state, as anyone can read it, holds the commitment and not the card.
   const everything = JSON.stringify(w.room.stateSnapshot()) + JSON.stringify(w.clients.map((c) => w.room.userStateOf(c.sid)));
   assert.ok(everything.includes(dealer(w, ann).holeHash));
-  assert.ok(!everything.includes(holeNonce) && !everything.includes(secret.seed));
+  assert.ok(!everything.includes(holeNonce) && !everything.includes(dealSeed.seed));
 
   for (const [c, i] of [
     [bob, 1],

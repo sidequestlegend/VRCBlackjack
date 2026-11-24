@@ -51,6 +51,17 @@ export const START_DELAY = 0.25;
 export const POLL_SECONDS = 2;
 
 export class Controller extends Behaviour {
+  /** The referee halves of the dealer-side buttons: the only names a command (or network event) may run here. */
+  static override networkCallable = [
+    "TakeOwnership",
+    "ToggleManualPlay",
+    "ActivateHelpers",
+    "DeactivateHelpers",
+    "ActivateChips",
+    "DeactivateChips",
+    "GlobalStartMatch",
+    "ForceGlobalReset",
+  ];
   static override synced = [
     "UsingChips",
     "GameActive",
@@ -114,6 +125,8 @@ export class Controller extends Behaviour {
   Distance: DistanceOptimizer | null = null;
 
   private started = false;
+  /** Referee: cards asked for while the deal was not ready (a hit just after a change of referee). */
+  private deferred: Array<() => void> = [];
   private seen = { round: -1, phase: "" as string, resets: -1 };
   private lastResetAt = -Infinity;
   /** Where the dealer-side panels sit (the slider of DealerUIController, as two buttons: C12). Local, as upstream. */
@@ -191,9 +204,24 @@ export class Controller extends Behaviour {
     return out.filter((c) => c >= 0);
   }
 
-  /** Referee: one card from the round's committed seed (-1 when none is left). */
+  /** Referee: one card from the round's deal (-1 when none is left, PENDING while the deal is not ready). */
   DrawCard(): number {
     return this.Deck.NextCard(this.OnTable());
+  }
+
+  /** The sessions of the seats in the round: they contribute to the deal (Secrets.beginDeal). */
+  RoundSids(): string[] {
+    const out: string[] = [];
+    for (const i of this.roster) {
+      const p = this.Players[i];
+      if (p && p.IsActive && p.ownerSid && !out.includes(p.ownerSid)) out.push(p.ownerSid);
+    }
+    return out;
+  }
+
+  /** Referee: a card that could not be dealt yet (the deal was not ready), dealt by Advance once it is. */
+  Defer(deal: () => void): void {
+    this.deferred.push(deal);
   }
 
   /** Referee: the snippet's attributes become the table's first state (PORT.md 8.1). */
@@ -327,12 +355,15 @@ export class Controller extends Behaviour {
     // ResetEverything (Controller.cs:111-119).
     this.Dealer.ResetEverything();
     for (const player of this.Players) player.ResetPlayer();
-    this.Deck.StartRound();
-    this.round = this.Deck.round;
     this.roster = [];
     this.Players.forEach((p, i) => {
       if (p.IsActive) this.roster.push(i);
     });
+    // The deal is begun by the next tick (Advance); the seated players' runtimes add their contributions while the
+    // shuffle sound plays, and the schedule waits for them.
+    this.deferred = [];
+    this.Deck.StartRound();
+    this.round = this.Deck.round;
     this.GameActive = true;
     this.phase = "dealing";
     this.t0 = this.Now() + START_DELAY;
@@ -386,6 +417,7 @@ export class Controller extends Behaviour {
     for (const player of this.Players) player.ForceResetPlayer();
     this.Dealer.ResetEverything();
     this.Deck.Clear();
+    this.deferred = [];
     this.resets++;
   }
 
@@ -437,9 +469,26 @@ export class Controller extends Behaviour {
   Advance(): void {
     const now = this.Now();
     let changed = false;
+    // Cards come from the round's dealt draw. A new referee (the old deal is void) begins one of its own; while the
+    // seated players' contributions are on their way nothing is dealt, and the schedule waits.
+    let ready = false;
+    if (this.phase === "dealing" || this.phase === "turns" || this.phase === "dealer") {
+      if (this.Deck.EnsureSegment(this.OnTable(), this.RoundSids())) changed = true;
+      const answer = this.Deck.Ready();
+      if (answer === "changed") changed = true;
+      ready = answer === true;
+    }
+    if (ready && this.deferred.length) {
+      const waiting = this.deferred.splice(0);
+      for (const deal of waiting) deal();
+      changed = true;
+    }
     if (this.phase === "dealing") {
       const steps = DealSchedule(this.roster.length);
-      while (this.phase === "dealing" && this.step < steps.length && now >= this.t0 + steps[this.step]!.at) {
+      const next = steps[this.step];
+      // Not ready: the next step moves along with the clock, so the cards come at upstream's pace once it is.
+      if (!ready && next && now > this.t0 + next.at) this.t0 = now - next.at;
+      while (ready && this.phase === "dealing" && this.step < steps.length && now >= this.t0 + steps[this.step]!.at) {
         this.RunStep(steps[this.step]!);
         this.step++;
         changed = true;
@@ -461,7 +510,8 @@ export class Controller extends Behaviour {
         this.GameActiveRefresh(now);
       }
     }
-    while (this.phase === "dealer" && now >= this.dealerNext) {
+    if (this.phase === "dealer" && !ready && now > this.dealerNext) this.dealerNext = now;
+    while (ready && this.phase === "dealer" && now >= this.dealerNext) {
       changed = true;
       this.DealerPlay();
     }

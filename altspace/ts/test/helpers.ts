@@ -74,7 +74,6 @@ export function assertAgree(w: TestWorld, inst = "0"): void {
 
 /** A table with players seated by clicking Join, ready to start (run long enough for every command to land). */
 export async function seatPlayers(w: TestWorld, who: Array<[FakeClient, number]>, inst = "0"): Promise<void> {
-  await w.run(200); // a tick, so the seats' buttons know they are live
   for (const [c, i] of who) seatButton(c, i, "Join", inst);
   await w.run(STEP * 2);
   for (const [c, i] of who) assert.equal(seat(w, c, i, inst).ownerName, c.name, `${c.name} holds seat ${i}`);

@@ -260,7 +260,7 @@ test("V9 DealerPlay: stands on every 17 (soft 17 too), draws every 0.5 s after a
   assert.equal(DealerShouldDraw(soft17.localDeckValue, soft17.IsBust), false, "soft 17 stands");
 });
 
-test("draws replay from the published seed, and a changed card is caught", () => {
+test("draws replay from the revealed deal, and a changed card is caught", () => {
   const seed = "test-seed";
   const counts = InitializeCounts(2);
   const log: number[] = [];
@@ -270,11 +270,11 @@ test("draws replay from the published seed, and a changed card is caught", () =>
     log.push(card);
     counts[card]!--;
   }
-  assert.deepEqual(ReplaySegment(seed, 2, [], log), { ok: true, reason: "" });
+  assert.deepEqual(ReplaySegment(draw, 2, [], log), { ok: true, reason: "" });
   const forged = log.slice();
   forged[5] = (forged[5]! + 1) % 52;
-  assert.equal(ReplaySegment(seed, 2, [], forged).ok, false);
-  assert.equal(ReplaySegment("another seed", 2, [], log).ok, false);
+  assert.equal(ReplaySegment(draw, 2, [], forged).ok, false);
+  assert.equal(ReplaySegment(new Draw("another seed"), 2, [], log).ok, false);
   // Fresh random cards per draw, as upstream: every type stays possible, with 2 decks a type runs out after 2.
   assert.ok(new Set(log).size > 15);
 });

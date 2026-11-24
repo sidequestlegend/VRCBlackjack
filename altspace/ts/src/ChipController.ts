@@ -4,8 +4,8 @@
 // Chips are each player's own and local, as upstream: never synced, never saved (upstream starts every world load
 // at StartingChips, so this port saves nothing either), and nobody else sees a balance or a bet. Upstream has one
 // ChipController per world serving every table; a snippet's instances share a page, so here every table's
-// ChipController behaviour uses one ChipBank per page (keyed by the local session: the runtime has no object that
-// all instances of a page share, see PORT.md "Runtime gaps").
+// ChipController behaviour uses one ChipBank per page, kept in the runtime's page-wide `Shared` object and keyed by
+// each table's instance key (upstream's TableIndex).
 
 import { Behaviour, type AudioClipRef, type AudioSourceRef } from "../portkit/src/index.ts";
 
@@ -75,8 +75,8 @@ export class ChipBank<T = unknown> {
   }
 }
 
-/** One bank per page: every table on the page plays from the same chips (upstream: one per world). */
-const BANKS = new Map<string, ChipBank<ChipController>>();
+/** Where the page's bank lives in the runtime's page-wide `Shared` object. */
+const BANK_KEY = "chipBank";
 
 /** Roughly the length of the chip clips, for upstream's `if (!Audio.isPlaying)` checks. */
 const CLIP_SECONDS = 0.35;
@@ -90,19 +90,18 @@ export class ChipController extends Behaviour {
   AddToBetClip: AudioClipRef | null = null;
 
   private playingUntil = -Infinity;
-  private cached: ChipBank<ChipController> | null = null;
+  private cached: ChipBank<string> | null = null;
 
-  /** The page's bank, made by the first table that asks, with that table's starting chips. */
-  get Bank(): ChipBank<ChipController> {
+  /** The page's bank (one for every table on the page), made by the first table that asks, with its starting chips. */
+  get Bank(): ChipBank<string> {
     if (this.cached) return this.cached;
-    const key = this.Networking.LocalPlayer.sid;
-    let bank = BANKS.get(key);
+    let bank = this.Shared[BANK_KEY] as ChipBank<string> | undefined;
     if (!bank) {
       const setting = Number(this.Settings.get("starting-chips"));
-      bank = new ChipBank<ChipController>(Number.isFinite(setting) && setting > 0 ? Math.floor(setting) : this.StartingChips);
-      BANKS.set(key, bank);
+      bank = new ChipBank<string>(Number.isFinite(setting) && setting > 0 ? Math.floor(setting) : this.StartingChips);
+      this.Shared[BANK_KEY] = bank;
     }
-    if (!bank.CurrentBet.has(this)) bank.CurrentBet.set(this, 0);
+    if (!bank.CurrentBet.has(this.InstanceKey)) bank.CurrentBet.set(this.InstanceKey, 0);
     this.cached = bank;
     return bank;
   }
@@ -113,10 +112,10 @@ export class ChipController extends Behaviour {
 
   /** This table's bet (upstream CurrentBet[TableIndex]). */
   GetBet(): number {
-    return this.Bank.Bet(this);
+    return this.Bank.Bet(this.InstanceKey);
   }
 
-  private wire(): ChipBank<ChipController> {
+  private wire(): ChipBank<string> {
     const bank = this.Bank;
     bank.isPlaying = () => this.Time.time < this.playingUntil;
     bank.play = (clip) => {
@@ -140,19 +139,19 @@ export class ChipController extends Behaviour {
     return this.Bank.CanAddToBet(value);
   }
   AddToBet(value: number): boolean {
-    return this.wire().AddToBet(this, value);
+    return this.wire().AddToBet(this.InstanceKey, value);
   }
   TakeFromBet(value: number): void {
-    this.wire().TakeFromBet(this, value);
+    this.wire().TakeFromBet(this.InstanceKey, value);
   }
   ResetBet(): void {
-    this.Bank.ResetBet(this);
+    this.Bank.ResetBet(this.InstanceKey);
   }
   NotEnoughChips(): void {
     this.wire().NotEnoughChips();
   }
 
   override OnDestroy(): void {
-    this.cached?.CurrentBet.delete(this);
+    this.cached?.CurrentBet.delete(this.InstanceKey);
   }
 }

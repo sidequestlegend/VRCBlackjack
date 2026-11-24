@@ -8,8 +8,8 @@
 //   - `TotalDeckValue` counts the face-up cards only until the flip;
 //   - DealerPlay's chain of delayed self-calls (`:61-94`) is a step the Controller runs against the shared clock, so a
 //     new referee carries on from state.
-// A referee that took over before the flip does not know the hole card: it draws a new one at the flip from a new,
-// committed seed (`holeRedrawn`), so nobody ever learns the discarded card.
+// A referee that took over before the flip does not know the hole card: it draws a new one at the flip from a
+// deal of its own (`holeRedrawn`), so nobody ever learns the discarded card.
 
 import { Behaviour, type DeserializationResult, type Opening } from "../portkit/src/index.ts";
 import type { Controller } from "./Controller.ts";

@@ -3,13 +3,15 @@
 //
 // Upstream keeps per-client counts of each card type, reset at every round start and lowered by 1,166 generated
 // network events. Here the referee is the only one who draws, the counts follow from the cards on the table, and
-// the "random" start index of every draw comes from a seed the referee committed to when the round began
-// (Draw from the runtime). After the round the seed is published and every client replays the round's draws.
+// the "random" start index of every draw comes from the runtime's dealt draw (Secrets.beginDeal): the referee commits
+// to a seed, every seated player's runtime commits to a contribution and reveals it, and the deal is the hash of all
+// of them, so the referee cannot grind seeds and no player can steer a card. After the round the referee reveals its
+// seed and every client recomputes the deal and replays the round's draws.
 //
 // The probe that turns a start index into a card (GetUnusedCardIndex) is upstream's, unchanged, and so is the
 // fact that every draw is a fresh pick over card types (no shoe order).
 
-import { Behaviour, Draw, type Commitment, type DeserializationResult, type Opening } from "../portkit/src/index.ts";
+import { Behaviour, type Commitment, type DeserializationResult, type Draw, type Opening } from "../portkit/src/index.ts";
 import type { Controller } from "./Controller.ts";
 
 export const CARD_TYPES = 52;
@@ -94,54 +96,67 @@ export interface Verification {
   reason: string;
 }
 
-/** Checks a segment of draws: the seed matches its commitment and every logged card is what the seed gives. */
-export function ReplaySegment(seed: string, numberOfDecks: number, baseCards: readonly number[], drawLog: readonly number[]): Verification {
+/** Checks a segment of draws: every logged card is what the deal gives. */
+export function ReplaySegment(draw: Draw, numberOfDecks: number, baseCards: readonly number[], drawLog: readonly number[]): Verification {
   const counts = InitializeCounts(numberOfDecks);
   for (const c of baseCards) if (c >= 0) counts[c]!--;
-  const draw = new Draw(seed);
   for (let k = 0; k < drawLog.length; k++) {
     const expected = GetUnusedCardIndex(counts, draw.Int(CARD_TYPES, k));
     const logged = drawLog[k]!;
     if (logged === HIDDEN) return { ok: false, reason: `draw ${k} was never turned face up` };
-    if ((logged === NO_CARD ? -1 : logged) !== expected) return { ok: false, reason: `draw ${k} is ${logged}, the seed gives ${expected}` };
+    if ((logged === NO_CARD ? -1 : logged) !== expected) return { ok: false, reason: `draw ${k} is ${logged}, the deal gives ${expected}` };
     if (expected >= 0) counts[expected]!--;
   }
   return { ok: true, reason: "" };
 }
 
+/** NextCard's answer while the deal is not ready yet (the seated players' contributions are on their way). */
+export const PENDING = -3;
+/** A deal that is not ready after this many seconds is begun again without contributions (a player who never answers). */
+export const DEAL_TIMEOUT = 10;
+
 interface SegmentSecret {
   round: number;
   segment: number;
-  seed: string;
-  commitment: Commitment;
+  label: string;
+  /** Shared-clock second the deal was begun (for DEAL_TIMEOUT). */
+  begunAt: number;
   /** The hole card while it is face down: its draw number, the card, and the commitment published for it. */
   hidden: { k: number; card: number; commitment: Commitment } | null;
 }
 
 export class DeckManager extends Behaviour {
-  static override synced = ["NumberOfDecks", "round", "segment", "seedHash", "seedOpening", "drawLog", "baseCards", "lostSegments"];
+  /** The referee halves of the deck-count buttons. */
+  static override networkCallable = ["AddDeck", "SubtractDeck"];
+  static override synced = ["NumberOfDecks", "round", "segment", "dealLabel", "dealRevealed", "drawLog", "baseCards", "lostSegments", "unfairDeals"];
 
   /** [UdonSynced] upstream. Copies of each card type per round, at least 2. */
   NumberOfDecks = 2;
   /** Added: the round these draws belong to. */
   round = 0;
-  /** Added: 1 for the round's first referee; a new referee mid-round starts the next one with a new seed. */
+  /** Added: 1 for the round's first referee; a new referee mid-round starts the next one with a deal of its own. */
   segment = 0;
-  /** Added: the commitment to this segment's seed (Secrets.commit). */
-  seedHash = "";
-  /** Added: the seed and its nonce, published when the round ends. Null until then. */
-  seedOpening: Opening | null = null;
+  /**
+   * Added: the label of this segment's dealt draw (Secrets.beginDeal): the referee committed to a seed, every seated
+   * player's runtime added a committed contribution, and the cards come from all of them, so the referee cannot grind
+   * seeds and no player can steer a card.
+   */
+  dealLabel = "";
+  /** Added: the referee has published its seed (revealDeal), at the end of the round. */
+  dealRevealed = false;
   /** Added: every card this segment drew, in order (HIDDEN for the hole card while face down, NO_CARD for none). */
   drawLog: number[] = [];
   /** Added: the cards already on the table when this segment began. */
   baseCards: number[] = [];
   /** Added: segments of this round whose seed was lost with their referee (they cannot be checked). */
   lostSegments = 0;
+  /** Added: deals begun again without contributions because a seated player's runtime never answered. */
+  unfairDeals = 0;
 
   // From bindings.json.
   BlackjackController!: Controller;
 
-  /** This client's check of the last published seed: null before one was published. */
+  /** This client's check of the last revealed deal: null before one was revealed and checked. */
   verified: Verification | null = null;
   /** Upstream's per-client counts, kept for the deck-count display and tests. Derived, never synced. */
   NumOfEachCardLeft: number[] = InitializeCounts(2);
@@ -152,6 +167,11 @@ export class DeckManager extends Behaviour {
   override OnDeserialization(result: DeserializationResult): void {
     this.CheckReveal();
     this.BlackjackController?.Redraw(result.isSnapshot);
+  }
+
+  override Update(): void {
+    // The reveal lives in the referee's user state, which may arrive after the space state that says it was made.
+    if (this.dealRevealed && this.checked !== this.dealLabel) this.CheckReveal();
   }
 
   /** Upstream InitializeDeck: the counts as a client sees them (the hole card is not counted until it is face up). */
@@ -189,57 +209,101 @@ export class DeckManager extends Behaviour {
 
   // ---- the referee's draws ------------------------------------------------------------------------------------
 
-  /** Referee: a new round. The first segment is opened by the first draw. */
+  /**
+   * Referee: a new round. Its first deal is begun by the Controller's next tick (EnsureSegment), not here: this runs
+   * inside a command, and publishing a user-state record from a command handler makes the kit run the same command
+   * again (TESTS.md, kit gaps).
+   */
   StartRound(): void {
     this.round++;
-    this.segment = 0;
-    this.seedHash = "";
-    this.seedOpening = null;
-    this.drawLog = [];
-    this.baseCards = [];
-    this.lostSegments = 0;
-    this.secret = null;
-    this.verified = null;
+    this.Forget();
   }
 
   /** Referee: clears everything (a table reset). */
   Clear(): void {
-    this.StartRound();
-    this.round--;
+    this.Forget();
   }
 
-  /** True when this client holds the seed of the segment in state. */
-  private HoldsSegment(): boolean {
+  private Forget(): void {
+    this.segment = 0;
+    this.dealLabel = "";
+    this.dealRevealed = false;
+    this.drawLog = [];
+    this.baseCards = [];
+    this.lostSegments = 0;
+    this.unfairDeals = 0;
+    this.secret = null;
+    this.verified = null;
+  }
+
+  /** True when this client is the referee that began the segment in state, and its deal still stands. */
+  HoldsSegment(): boolean {
     const s = this.secret;
-    return s !== null && s.round === this.round && s.segment === this.segment && s.commitment.hash === this.seedHash;
+    return (
+      s !== null &&
+      s.round === this.round &&
+      s.segment === this.segment &&
+      s.label === this.dealLabel &&
+      this.Networking.IsReferee &&
+      this.Secrets.dealState(s.label) !== "none"
+    );
   }
 
   /**
-   * Referee: makes sure this client can draw. A referee that took over mid-round does not know the old seed, so it
-   * opens a new segment with a seed of its own, counting from the cards on the table (`onTable`).
+   * Referee: makes sure this client has a deal to draw from. A referee that took over mid-round does not know the
+   * old seed (a change of referee voids the deal), so it begins a new segment with a deal of its own, counting from
+   * the cards on the table (`onTable`). Returns true when it changed state.
    */
-  EnsureSegment(onTable: readonly number[]): void {
-    if (this.HoldsSegment()) return;
-    if (this.segment > 0 && this.seedHash !== "") this.lostSegments++;
+  EnsureSegment(onTable: readonly number[], contributors: readonly string[]): boolean {
+    if (this.HoldsSegment()) return false;
+    if (this.segment > 0 && this.dealLabel !== "") this.lostSegments++;
     this.segment++;
     this.baseCards = onTable.filter((c) => c >= 0);
     this.drawLog = [];
-    // A seed of 32 random bytes: the runtime's commitment nonces come from crypto.getRandomValues, and game code may
-    // not reach crypto itself (portkit lint). Two nonces, base64.
-    const seed = this.Secrets.commit(0).reveal().s + this.Secrets.commit(1).reveal().s;
-    const commitment = this.Secrets.commit(seed);
-    this.secret = { round: this.round, segment: this.segment, seed, commitment, hidden: null };
-    this.seedHash = commitment.hash;
-    this.seedOpening = null;
+    this.Begin(contributors);
+    return true;
+  }
+
+  private Begin(contributors: readonly string[]): void {
+    // A label of its own for every deal: the round and segment, and random bytes so that a reset's reused round
+    // number never meets an earlier deal of the same name.
+    const tag = Array.from(this.Random.Bytes(4), (b) => b.toString(16).padStart(2, "0")).join("");
+    const label = `bj${this.round}.${this.segment}.${tag}`;
+    this.Secrets.beginDeal(label, contributors.slice());
+    this.secret = { round: this.round, segment: this.segment, label, begunAt: this.BlackjackController.Now(), hidden: null };
+    this.dealLabel = label;
+    this.dealRevealed = false;
   }
 
   /**
-   * Referee: draws one card (upstream GetUnusedCardIndex with the seeded start index). `hidden`: the hole card, which
-   * is logged as HIDDEN and kept on this client with a commitment until it is turned. -1 when no card is left.
+   * Referee: true when the deal can be drawn from. A deal that some seated player's runtime has not answered for
+   * DEAL_TIMEOUT seconds is begun again with no contributors (logged, and counted in `unfairDeals`): the table must
+   * not hang on a modified client that withholds its contribution. "changed" when it wrote state.
+   */
+  Ready(): boolean | "changed" {
+    if (!this.HoldsSegment()) return false;
+    const s = this.secret!;
+    if (this.Secrets.dealDraw(s.label) !== null) return true;
+    if (this.drawLog.length === 0 && this.BlackjackController.Now() - s.begunAt > DEAL_TIMEOUT) {
+      this.Debug.LogWarning(`deal ${s.label}: a seated player's contribution never came; dealing from the referee's seed alone`);
+      this.unfairDeals++;
+      this.Begin([]);
+      return "changed";
+    }
+    return false;
+  }
+
+  /**
+   * Referee: draws one card (upstream GetUnusedCardIndex with the dealt start index). `hidden`: the hole card, which
+   * is logged as HIDDEN and kept on this client with a commitment until it is turned. -1 when no card is left;
+   * PENDING while the deal is not ready (the caller tries again on a later tick).
    */
   NextCard(onTable: readonly number[], hidden = false): number {
-    this.EnsureSegment(onTable);
+    // (a new segment is begun by the Controller's tick, never from here: this can run inside a command)
+    if (!this.HoldsSegment()) return PENDING;
     const secret = this.secret!;
+    const draw = this.Secrets.dealDraw(secret.label);
+    if (!draw) return PENDING;
     const counts = InitializeCounts(this.NumberOfDecks);
     for (const c of this.baseCards) counts[c]!--;
     this.drawLog.forEach((c, k) => {
@@ -247,7 +311,7 @@ export class DeckManager extends Behaviour {
       if (card >= 0) counts[card]!--;
     });
     const k = this.drawLog.length;
-    const card = GetUnusedCardIndex(counts, new Draw(secret.seed).Int(CARD_TYPES, k));
+    const card = GetUnusedCardIndex(counts, draw.Int(CARD_TYPES, k));
     if (card < 0) {
       this.drawLog.push(NO_CARD);
       return -1;
@@ -277,29 +341,30 @@ export class DeckManager extends Behaviour {
     return { card: hidden.card, opening: hidden.commitment.reveal() };
   }
 
-  /** Referee, at the end of the round: publishes the seed so everyone can check the draws. */
+  /** Referee, at the end of the round: publishes its seed so that everyone can check the draws. */
   RevealSeed(): void {
-    if (this.HoldsSegment()) this.seedOpening = this.secret!.commitment.reveal();
-    else if (this.seedHash !== "") this.lostSegments++;
+    if (this.HoldsSegment()) {
+      this.Secrets.revealDeal(this.dealLabel);
+      this.dealRevealed = true;
+    } else if (this.dealLabel !== "") this.lostSegments++;
     this.CheckReveal();
   }
 
-  /** Every client: checks a newly published seed against its commitment and replays the segment. */
+  /** Every client: once the referee's seed is out, recomputes the deal from what it saw and replays the segment. */
   CheckReveal(): void {
-    if (!this.seedOpening) return;
-    const key = `${this.round}/${this.segment}/${this.seedHash}`;
-    if (key === this.checked) return;
-    this.checked = key;
+    if (!this.dealRevealed || this.dealLabel === "" || this.checked === this.dealLabel) return;
+    const state = this.Secrets.dealState(this.dealLabel);
+    if (state !== "revealed" && state !== "invalid") return; // not here yet
+    this.checked = this.dealLabel;
     this.verified = this.Verify();
-    if (!this.verified.ok) this.Debug.LogError(`round ${this.round}: the dealt cards do not match the published seed: ${this.verified.reason}`);
+    if (!this.verified.ok) this.Debug.LogError(`round ${this.round}: the dealt cards do not match the revealed deal: ${this.verified.reason}`);
   }
 
-  /** Checks the published seed of the current segment. */
+  /** Checks the revealed deal of the current segment. */
   Verify(): Verification {
-    if (!this.seedOpening) return { ok: false, reason: "no seed published" };
-    if (!this.Secrets.verify(this.seedHash, this.seedOpening)) return { ok: false, reason: "the seed does not match its commitment" };
-    const seed = this.Secrets.valueOf<string>(this.seedOpening);
-    if (typeof seed !== "string") return { ok: false, reason: "the seed is not text" };
-    return ReplaySegment(seed, this.NumberOfDecks, this.baseCards, this.drawLog);
+    if (!this.dealRevealed) return { ok: false, reason: "no deal revealed" };
+    const draw = this.Secrets.verifyDeal(this.dealLabel);
+    if (!draw) return { ok: false, reason: "the referee's seed does not match its commitment, or a contribution is missing" };
+    return ReplaySegment(draw, this.NumberOfDecks, this.baseCards, this.drawLog);
   }
 }

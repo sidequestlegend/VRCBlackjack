@@ -163,7 +163,7 @@ test("what one table costs the room: one sync group, a few leaves, small writes,
     return cls ? { synced: (cls.synced ?? []).length, perPlayer: cls.perPlayer === true } : null;
   });
   assert.equal(budget.slots, 1, "all synced behaviours share the group 'table'");
-  assert.equal(budget.spaceLeaves, 5);
+  assert.equal(budget.spaceLeaves, 3, "the group leaf and the runtime's own (the command acknowledgements and draw numbers are in the referee's user state now)");
   assert.ok(budget.userLeavesPerPlayer <= 6);
 
   const writes: number[] = [];
