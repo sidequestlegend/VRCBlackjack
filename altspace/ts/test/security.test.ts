@@ -252,3 +252,30 @@ test("without allow-change, even the table owner cannot change chips, helpers or
   await w.run(STEP);
   assert.equal(ctrl(w, ann).ManualPlay, true, "manual play needs no allow-change (Controller.cs:47-51)");
 });
+
+test("the deal: every seated player contributes; one whose runtime never answers cannot hang the table", async () => {
+  const w = newWorld(27);
+  const ann = w.join({ name: "Ann" });
+  const bob = w.join({ name: "Bob" });
+  const cat = w.join({ name: "Cat" });
+  await w.settle();
+  await seatPlayers(w, [
+    [bob, 1],
+    [cat, 2],
+  ]);
+  // Cat's page withholds its contribution (a modified client): its runtime never answers a deal
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (w.instance(cat).secrets as any).reviewDeal = () => {};
+  await startRound(w, ann);
+  await w.run(5000);
+  assert.equal(ctrl(w, ann).phase, "dealing", "no card is dealt while a listed contribution is missing");
+  assert.equal(seat(w, ann, 1).NormalDeck.cards.length, 0);
+  await untilPhase(w, ann, "turns", "0", 30000);
+  for (const c of w.clients) assert.equal(deck(w, c).unfairDeals, 1, `${c.name} sees the deal begun again without contributions`);
+  await playRound(w, [
+    [bob, 1],
+    [cat, 2],
+  ]);
+  for (const c of [ann, bob]) assert.deepEqual(deck(w, c).verified, { ok: true, reason: "" }, `${c.name} replays the fallback deal`);
+  assert.ok(ann.logged("warn").some((line) => line.includes("contribution never came")), "the referee logs the fallback");
+});
