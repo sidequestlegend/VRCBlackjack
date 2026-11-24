@@ -165,6 +165,7 @@
     "Table/Dealer/Dealer UI Controller/Auto Canvas": "autoCanvas",
     "Table/Dealer/Dealer UI Controller/Auto Canvas/CreditsButton": "creditsButton",
     "Table/Dealer/Dealer UI Controller/Auto Canvas/CreditsPanel": "creditsPanel",
+    "Table/Dealer/Dealer UI Controller/Auto Canvas/DealCheck": "dealCheck",
     "Table/Dealer/Dealer UI Controller/Auto Canvas/Mask/Idle": "autoIdle",
     "Table/Dealer/Dealer UI Controller/Auto Canvas/Mask/Idle/Take Ownership": "takeOwnership",
     "Table/Dealer/Dealer UI Controller/Auto Canvas/Mask/Owner": "autoOwner",

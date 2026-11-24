@@ -1,7 +1,11 @@
 # Third-party notices: blackjack for Altspace
 
-Written 2026-11-24 with the port. A copy of this file, followed by the font and Kenney licence texts, travels in
-every kit bundle (`Assets/Kit/THIRD-PARTY-NOTICES.md`, made by `altspace/tools/make_notices.py`). Nothing has been
+Written 2026-11-24 with the port, revised 2026-11-25. A copy of this file, followed by the full licence texts of the
+fonts, of Kenney's packs and of the portkit runtime, travels in every kit bundle (`Assets/Kit/THIRD-PARTY-NOTICES.md`,
+made by `altspace/tools/make_notices.py`). The same licence texts also travel as files of their own:
+`Assets/Kit/Licenses/` (Apache-2.0-VRCBlackjack.txt, Cinzel-OFL.txt, CinzelDecorative-OFL.txt, Limelight-OFL.txt,
+Kenney-Boardgame-Pack-License.txt, Kenney-Casino-Audio-License.txt, Kenney-Interface-Sounds-License.txt,
+portkit-MIT.txt), and TextMesh Pro's `LiberationSans - OFL.txt`, which the kit adds itself. Nothing has been
 released.
 
 ## What this covers
@@ -22,7 +26,7 @@ What is distributed, and where the obligations are met:
 |---|---|---|---|
 | The fork (source) | `LICENSE` at the root, unchanged | this file; `altspace/PORT.md` sections "Status" and 10 | upstream files untouched on the `altspace` branch; notices repeated below |
 | `altspace/ts/src/*.ts` (translated source) | `LICENSE`; the notice in `src/notice.ts` | every file's header: "Translated from Scripts/<file>.cs ... changed for the Altspace port" | `src/notice.ts` holds upstream's copyright notice; each file's header names it |
-| `pk-blackjack.js` (built script, object form) | a link in its banner (`script-header.txt`), and this file in the fork | the banner says it was translated and changed, and where the changes are listed | the banner carries "Copyright 2022 CentauriCore" and the licence notice |
+| `pk-blackjack.js` (built script, object form) | a link in its banner (`script-header.txt`), and this file in the fork | the banner says it was translated and changed, and where the changes are listed | the banner carries "Copyright 2022 CentauriCore" and the licence notice, then portkit's MIT notice in full (added by the kit's build) |
 | The kit bundles (object form) | this file with the full licence text, as a text asset in each bundle | "Changes made" below, in the same text asset | the in-world credits panel (copyright line, credits, licence, where the changes are listed) and the same text asset |
 | In the world | the credits panel at the back of the table names the licence and its address | it says the port was changed and how | it carries "Copyright 2022 CentauriCore" and every credit |
 
@@ -120,13 +124,14 @@ System.prefab`, changed as follows:
 
 | Material | Author | Licence | Source | Replaces |
 |---|---|---|---|---|
-| Card faces and back (`Assets/Kit/Textures/CardAtlas.png`, made from `PNG/Cards/*.png`) | Kenney (www.kenney.nl), Boardgame Pack v2 | CC0 1.0 (the pack's `license.txt`, copied to `Assets/Kit/Textures/Kenney-Boardgame-Pack-License.txt`) | https://kenney.nl/assets/boardgame-pack (downloaded 2026-11-24) | `Meshes/DeckOfCards/DeckOfCardsMarked.png` and `DeckOfCards.fbx` (no credit) |
-| Cinzel (`Assets/Kit/Fonts/Cinzel.ttf`) | The Cinzel Project Authors (Natanael Gama) | SIL Open Font License 1.1 (`Cinzel-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/cinzel | Arcane Nine (labels) |
-| Cinzel Decorative Bold (`Assets/Kit/Fonts/CinzelDecorative-Bold.ttf`) | Natanael Gama, Reserved Font Name "Cinzel" | SIL OFL 1.1 (`CinzelDecorative-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/cinzeldecorative | Roman Gradient (Bust, Win, Draw, Lost) |
-| Limelight (`Assets/Kit/Fonts/Limelight-Regular.ttf`) | Sorkin Type Co, Reserved Font Name "Limelight" | SIL OFL 1.1 (`Limelight-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/limelight | Riesling (Hit Me, Stand, Split) |
-| Sounds (`Assets/Kit/Audio/card-*.ogg`, `chip*.ogg`: 24 files) | Kenney (www.kenney.nl), Casino Audio 1.1 | CC0 1.0 (`Assets/Kit/Audio/Kenney-Casino-Audio-License.txt`) | https://kenney.nl/assets/casino-audio (downloaded 2026-11-24) | upstream's deal, flip, shuffle, split and chip clips (`Audio/Cards`, `Audio/Chips`) |
-| Sounds (`Assets/Kit/Audio/click_*`, `confirmation_*`, `error_*`, `question_001`, `tick_001`, `drop_002`: 9 files) | Kenney (www.kenney.nl), Interface Sounds | CC0 1.0 (`Assets/Kit/Audio/Kenney-Interface-Sounds-License.txt`) | https://kenney.nl/assets/interface-sounds (downloaded 2026-11-24) | upstream's UI, bleep, win, lose, draw, bust and new-round clips (`Audio/Additional Sounds`, `Random UI_*`) |
-| Liberation Sans (TextMesh Pro's default asset) | Red Hat | SIL OFL 1.1 | TextMesh Pro essentials | upstream's copy of the same font |
+| Card faces and back (`Assets/Kit/Textures/CardAtlas.png`, made from `PNG/Cards/*.png`) | Kenney (www.kenney.nl), Boardgame Pack v2 | CC0 1.0 (the pack's `license.txt`, copied to `Assets/Kit/Licenses/Kenney-Boardgame-Pack-License.txt`) | https://kenney.nl/assets/boardgame-pack (downloaded 2026-11-24) | `Meshes/DeckOfCards/DeckOfCardsMarked.png` and `DeckOfCards.fbx` (no credit) |
+| Cinzel (`Assets/Kit/Fonts/Cinzel.ttf`) | "Copyright 2020 The Cinzel Project Authors (https://github.com/NDISCOVER/Cinzel)" | SIL Open Font License 1.1 (`Licenses/Cinzel-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/cinzel | Arcane Nine (labels) |
+| Cinzel Decorative Bold (`Assets/Kit/Fonts/CinzelDecorative-Bold.ttf`) | "Copyright (c) 2012 Natanael Gama (info@ndiscovered.com), with Reserved Font Name 'Cinzel'" | SIL OFL 1.1 (`Licenses/CinzelDecorative-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/cinzeldecorative | Roman Gradient (Bust, Win, Draw, Lost) |
+| Limelight (`Assets/Kit/Fonts/Limelight-Regular.ttf`) | "Copyright (c) 2011 by Sorkin Type Co (www.sorkintype.com), with Reserved Font Name "Limelight"" | SIL OFL 1.1 (`Licenses/Limelight-OFL.txt`) | https://github.com/google/fonts/tree/main/ofl/limelight | Riesling (Hit Me, Stand, Split) |
+| Sounds (`Assets/Kit/Audio/card-*.ogg`, `chip*.ogg`: 22 files) | Kenney (www.kenney.nl), Casino Audio 1.1 | CC0 1.0 (`Assets/Kit/Licenses/Kenney-Casino-Audio-License.txt`) | https://kenney.nl/assets/casino-audio (downloaded 2026-11-24) | upstream's deal, flip, shuffle, split and chip clips (`Audio/Cards`, `Audio/Chips`) |
+| Sounds (`Assets/Kit/Audio/click_*`, `confirmation_*`, `error_*`, `question_001`, `tick_001`, `drop_002`: 9 files) | Kenney (www.kenney.nl), Interface Sounds | CC0 1.0 (`Assets/Kit/Licenses/Kenney-Interface-Sounds-License.txt`) | https://kenney.nl/assets/interface-sounds (downloaded 2026-11-24) | upstream's UI, bleep, win, lose, draw, bust and new-round clips (`Audio/Additional Sounds`, `Random UI_*`) |
+| Liberation Sans (TextMesh Pro's default asset) | "Digitized data copyright (c) 2010 Google Corporation with Reserved Font Arimo, Tinos and Cousine. Copyright (c) 2012 Red Hat, Inc. with Reserved Font Name Liberation." | SIL OFL 1.1 (TextMesh Pro's `LiberationSans - OFL.txt`, below and in the bundle) | TextMesh Pro essentials | upstream's copy of the same font |
+| portkit runtime (in `pk-blackjack.js` only, not in the bundles) | "Copyright (c) 2026 the portkit authors" | MIT (`Licenses/portkit-MIT.txt`, below, and in the script's banner) | the AltspaceGames port kit (not published separately) | (platform code upstream did not need) |
 
 The font assets in the bundle hold static atlases baked from these fonts (a modified version under the OFL; the
 reserved names are not used for them).
@@ -639,6 +644,57 @@ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
 ```
 
+## Liberation Sans: SIL Open Font License 1.1 (TextMesh Pro's copy)
+
+```
+Digitized data copyright (c) 2010 Google Corporation
+	with Reserved Font Arimo, Tinos and Cousine.
+Copyright (c) 2012 Red Hat, Inc.
+	with Reserved Font Name Liberation.
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at: http://scripts.sil.org/OFL
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide development of collaborative font projects, to support the font creation efforts of academic and linguistic communities, and to provide a free and open framework in which fonts may be shared and improved in partnership with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and redistributed freely as long as they are not sold by themselves. The fonts, including any derivative works, can be bundled, embedded, redistributed and/or sold with any software provided that any reserved names are not used by derivative works. The fonts and derivatives, however, cannot be released under any other type of license. The requirement for fonts to remain under this license does not apply to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright Holder(s) under this license and clearly marked as such. This may include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting, or substituting -- in part or in whole -- any of the components of the Original Version, by changing formats or by porting the Font Software to a new environment.
+
+"Author" refers to any designer, engineer, programmer, technical writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining a copy of the Font Software, to use, study, copy, merge, embed, modify, redistribute, and sell modified and unmodified copies of the Font Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components, in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled, redistributed and/or sold with any software, provided that each copy contains the above copyright notice and this license. These can be included either as stand-alone text files, human-readable headers or in the appropriate machine-readable metadata fields within text or binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font Name(s) unless explicit written permission is granted by the corresponding Copyright Holder. This restriction only applies to the primary font name as presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font Software shall not be used to promote, endorse or advertise any Modified Version, except to acknowledge the contribution(s) of the Copyright Holder(s) and the Author(s) or with their explicit written permission.
+
+5) The Font Software, modified or unmodified, in part or in whole, must be distributed entirely under this license, and must not be distributed under any other license. The requirement for fonts to remain under this license does not apply to any document created using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE.
+```
+
 ## Kenney, Boardgame Pack v2 (card art): licence
 
 ```
@@ -706,4 +762,30 @@ Interface Sounds (1.0)
 
 	Follow on Twitter for updates:
 	http://twitter.com/KenneyNL
+```
+
+## portkit runtime (in the script pk-blackjack.js): MIT License
+
+```
+MIT License
+
+Copyright (c) 2026 the portkit authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```

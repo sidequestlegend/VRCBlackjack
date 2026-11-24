@@ -6,7 +6,10 @@
 // the "random" start index of every draw comes from the runtime's dealt draw (Secrets.beginDeal): the referee commits
 // to a seed, every seated player's runtime commits to a contribution and reveals it, and the deal is the hash of all
 // of them, so the referee cannot grind seeds and no player can steer a card. After the round the referee reveals its
-// seed and every client recomputes the deal and replays the round's draws.
+// seed and every client checks the round (Verify): the deal's contributors must be the players seated in the round,
+// the seed must be the committed one, and every hand on the table must hold exactly the cards the deal gave it
+// (`drawTo` records where each draw went). A deal with no contributor but the referee (the fallback when a seated
+// player's page never answers, or a referee playing alone) cannot be checked, and every client shows that.
 //
 // The probe that turns a start index into a card (GetUnusedCardIndex) is upstream's, unchanged, and so is the
 // fact that every draw is a fresh pick over card types (no shoe order).
@@ -506,7 +509,7 @@ export class DeckManager extends Behaviour {
     if (!ctrl || this.dealLabel === "") return "";
     if (ctrl.phase === "settled") {
       const v = this.verified;
-      if (!v) return this.dealRevealed ? "Checking the deal..." : "";
+      if (!v) return this.dealRevealed ? "Checking the deal..." : "Waiting for the dealer's page to reveal the deal";
       if (v.status === "checked") return this.lostSegments > 0 ? "Deal checked (part of it was lost with a dealer who left)" : "Deal checked: every card came from the shared shuffle";
       if (v.status === "unverifiable") return `Deal NOT checkable: ${v.reason}`;
       return `DEAL CHECK FAILED: ${v.reason}`;

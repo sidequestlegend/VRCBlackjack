@@ -150,12 +150,29 @@ the analysis the port was built from, with section 10's questions now answered (
   each tick against `GetServerTimeInSeconds`, so a new referee carries on from state with nothing done twice.
 - **Fair draws (C2), as re-synced.** Fresh random cards per draw, as upstream (no shoe): draw k of a segment starts
   upstream's probe at `deal.Int(52, k)`, where the deal is the kit's dealt draw (`Secrets.beginDeal(label, seated
-  sessions)`): the referee commits to a seed, each seated player's runtime commits to a contribution and reveals it, and
-  the deal is SHA-256 of all of them, so the referee cannot grind seeds. The deal schedule waits until the deal is
-  ready. At the end of the round the referee reveals its seed (`revealDeal`); every client recomputes the deal from what
-  it saw (`verifyDeal`) and replays the round's draws (`DeckManager.Verify`), logging an error on any mismatch. A
-  referee that takes over mid-round does not know the seed: it begins segment 2 with a deal of its own, and the lost
-  segment is counted in `lostSegments`.
+  sessions)`, begun by Start Game's command): the referee commits to a seed, each seated player's runtime commits to a
+  contribution and reveals it, and the deal is SHA-256 of all of them, so the referee cannot grind seeds. The deal
+  schedule waits until the deal is ready. The referee logs every draw (`drawLog`), where it went (`drawTo`: a seat's
+  normal or split hand, the dealer's hole card or other cards; a split moves its card's entry) and the deck count of
+  the segment (`segmentDecks`). At the end of the round the referee reveals its seed (`revealDeal`), and every client
+  checks the round (`DeckManager.Verify`, rewritten 2026-11-25 after the review):
+  1. the contributor list (`dealContributors`) must be the players this client saw seated in the round, plus listed
+     players who have since left; `verifyDeal(label, expected)` gets exactly that list, so a referee that lists an
+     accomplice or leaves a seated player out is caught;
+  2. the seed must match its commitment, and the deal is recomputed from the contributions this client saw;
+  3. the logged draws must be the deal's, and **every hand on the table** must hold exactly the cards the deal gave it,
+     in order, with what each hand held from before the segment adding up to `baseCards` (`CheckHands`). So a hand the
+     referee changed, a card given to another hand, a card nobody drew or a draw left out shows, whatever the referee
+     wrote in `drawLog`.
+
+  The outcome is `checked`, `unverifiable` or `mismatch` (`DeckManager.verified.status`), logged (an error on a
+  mismatch, a warning when not checkable) and shown to everyone in range on a line under the credits button (the
+  `dealCheck` text). A deal with no contributor but the referee is **not checkable**: the 10 s fallback for a seated
+  player whose page never answers (a modified referee could fake that at once and pick its seed, and nobody can tell
+  the two apart), and a referee alone at the table. During such a round the line says so too. A page that arrived
+  after a contributor left never saw that contribution: it says it cannot check that deal rather than raising a false
+  alarm. A referee that takes over mid-round does not know the seed: it begins segment 2 with a deal of its own, and
+  the lost segment is counted in `lostSegments` (only the current segment is checked).
 - **The hole card (C3).** The referee draws it from the committed seed, keeps it on its own client with its own
   commitment (`Dealer.holeHash`), and shows `-1` in state; the dealer's public total counts the up card only. At
   the flip it publishes the card and the opening, and every client checks it (`Dealer.holeVerified`). A referee
@@ -277,7 +294,7 @@ section 10.2 says.
 | Q7 | **Fixed**: everyone sees the split and both results | split scenario |
 | Q8 | **Fixed**: a timeout ends the turn in state, for everyone | timer scenario |
 | Q9 | **Fixed**: the referee deals no card to a bust or finished hand | ported |
-| Q10 | Kept: leaving mid-round avoids settlement (F61) | leave scenario |
+| Q10 | Kept: leaving mid-round avoids settlement (F61). That includes leaving once the loss is certain: after the dealer's flip shows a stronger hand, or after one's own hand went bust (the seat is freed, its result stays "none", and the holder's chips, which live on its own page, never pay the bet). Upstream is the same (`Player.cs:549-552`: a freed seat is not settled) | leave scenario |
 | Q11 | **Fixed**: no seat is taken during a round | late-joiner scenario |
 | Q12 | **Fixed**: a reset frees every seat | reset and owner-leaves scenarios |
 | Q13 | **Fixed**: the hole card is in no channel before the flip | hole-card scenario |
@@ -301,7 +318,7 @@ section 10.2 says.
 | D5 | "5 frames" is 0.25 s (a frame is one 50 ms tick) | runtime tick |
 | D6 | The chips toggle is shown whenever settings may change (upstream: only if chips were on when that client started) | C18; upstream's rule differed per client |
 | D7 | A referee that takes over before the flip draws a new hole card | it cannot know the old one, and nobody may learn it |
-| D8 | Draws come from a seed the referee commits to and reveals; the referee draws every card (C2) | one writer; checkable after the round |
+| D8 | Draws come from a dealt draw (the referee's committed seed and every seated player's contribution); the referee draws every card (C2) | one writer; after the round every client checks the contributor list against the players seated in the round, the seed against its commitment, and every hand on the table against the deal, and shows the outcome on the table. A deal with no contributor but the referee (the 10 s fallback, or a referee alone at the table) is shown as not checkable |
 | D9 | The flip sound and the hole card's deal sound play for everyone in range (C19) | sounds follow state |
 | D10 | Settings come from snippet attributes, applied once by the first referee (C20) | no inspector in someone else's world |
 
@@ -311,7 +328,7 @@ section 10.2 says.
 |---|---|---|
 | G1 | No object shared by every instance on a page | `this.Shared` holds the page's one chip bank, keyed by `this.InstanceKey`; the module-level map is gone |
 | G2 | No strong random value for game code | `this.Random.Bytes` (deal labels); the nonce-seed hack is gone |
-| G3 | The referee could grind seeds for the deck | the deck uses the kit's **dealt draws** (`beginDeal` / `dealDraw` / `revealDeal` / `verifyDeal`): the referee commits to a seed, every seated player's runtime commits to a contribution and reveals it, and the cards come from all of them. The deal schedule waits for it (the shuffle sound covers it); a new referee mid-round begins a deal of its own (segment 2); a deal some seated player's runtime never answers is begun again after 10 s from the referee's seed alone, logged and counted in `DeckManager.unfairDeals` (so a modified client cannot hang the table, but it can make that round's deal the referee's alone: stated) |
+| G3 | The referee could grind seeds for the deck | the deck uses the kit's **dealt draws** (`beginDeal` / `dealDraw` / `revealDeal` / `verifyDeal(label, expected)`): the referee commits to a seed, every seated player's runtime commits to a contribution and reveals it, and the cards come from all of them. The deal schedule waits for it (the shuffle sound covers it); a new referee mid-round begins a deal of its own (segment 2); a deal some seated player's runtime never answers is begun again after 10 s from the referee's seed alone, logged and counted in `DeckManager.unfairDeals` (so a modified client cannot hang the table, but it can make that round's deal the referee's alone). Since portkit `9b7c447` such a deal never verifies: every client shows the round as **not checkable** |
 | G4 | `Behaviour.Player` clashed with upstream's field | kept as `Seat` (the kit's convention allows either) |
 | G5 | Game code could not read its instance key | `this.InstanceKey` keys the bet |
 | G6 | Commands from one sender run one at a time | intended; nothing to change |
@@ -319,8 +336,10 @@ section 10.2 says.
 
 Every class whose methods are reached by a command declares `static networkCallable` (Controller 8 names, Player 8,
 DeckManager 2). Found while re-syncing (kit gap, reported): publishing a user-state record from inside a command
-handler (here `Secrets.beginDeal`) makes the kit's command runner run the same command again, recursively; the deal is
-therefore begun from the Controller's tick, never from a command.
+handler (here `Secrets.beginDeal`) made the kit's command runner run the same command again, recursively; the deal was
+therefore begun from the Controller's tick. Fixed in portkit `30881dd`; since the re-sync to `812f285`
+(2026-11-25) the deal begins in Start Game's command again (the tick still begins a new segment after a change of
+referee).
 
 ### Tests (`npm test`: typecheck, lint, then the Node tests)
 
@@ -1445,7 +1464,7 @@ buttons by raising the same events a click does; PASS and FAIL lines go to the c
 | # | Change | Reason |
 |---|---|---|
 | C1 | The table is state held by a referee; events carry only requests | late joiners and reconnects see the real table (F77, F78, Q3, Q11, Q20); the platform has no host and no private channel |
-| C2 | The referee draws every card from a committed seed; holders no longer draw their own | one writer removes the race on counts; draws can be checked after the round; upstream lets each client pick its own cards |
+| C2 | The referee draws every card from a dealt draw (its committed seed and the seated players' contributions); holders no longer draw their own | one writer removes the race on counts; every hand can be checked against the deal after the round (see "Trust" in the status section for what that does and does not catch); upstream lets each client pick its own cards |
 | C3 | The hole card's identity and value stay out of every channel until the flip | Q13; every channel is readable by all |
 | C4 | 1,166 generated event handlers become two arrays in state | no need for one event name per card and position |
 | C5 | Cards are 165 pooled slots, not instantiated prefabs | no op creates kit prefabs at run time |
@@ -1463,7 +1482,7 @@ buttons by raising the same events a click does; PASS and FAIL lines go to the c
 | C20 | Settings come from snippet attributes | the custom inspector cannot run in someone else's world |
 | C21 | Seats are tied to the session id and freed when that session leaves | same as upstream's player id; a reload gives the seat up |
 | C22 | Textures reduced to the budget of section 6.3 | Quest memory |
-| Q-fixes | Q9, Q14, Q16, Q19, Q21 fixed without asking; Q1, Q4, Q5 proposed, pending K3 | section 2 |
+| Q-fixes | Q9, Q14, Q16, Q19, Q21 fixed without asking; Q1, Q4, Q5 fixed as approved by Shane (K3) | section 2 |
 
 ### 10.2 Left out, and why
 

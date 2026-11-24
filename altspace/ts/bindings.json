@@ -176,6 +176,10 @@
         "ChipToggleManual": {
           "$obj": "mchipToggle"
         },
+        "DealCheck": {
+          "$comp": "dealCheck",
+          "kind": "TMP"
+        },
         "DealerController": {
           "$beh": "dealer"
         },
@@ -376,10 +380,6 @@
         "UIHeightAnimator": {
           "$comp": "heightAnim",
           "kind": "Animator"
-        },
-        "DealCheck": {
-          "$comp": "dealCheck",
-          "kind": "TMP"
         }
       },
       "id": "dealerUI",
@@ -4921,7 +4921,7 @@
       "object": "creditsPanel"
     }
   ],
-  "hash": "b3d4ca74e481132f555e2917343de28c3ec5a686",
+  "hash": "72ee3641c9e761c4a5294b106f0a7792c55dbab7",
   "objects": {
     "audio": {
       "click": false,
@@ -5228,6 +5228,13 @@
       "click": false,
       "grab": false,
       "path": "Table/Dealer/Card Positions/10/Card/Viz/Card",
+      "seat": false,
+      "sync": "none"
+    },
+    "dealCheck": {
+      "click": false,
+      "grab": false,
+      "path": "Table/Dealer/Dealer UI Controller/Auto Canvas/DealCheck",
       "seat": false,
       "sync": "none"
     },
@@ -11184,13 +11191,6 @@
       "path": "Table/Dealer/Dealer UI Controller/Manual Canvas/Manual Dealer Canvas/Mask/Not Owner/Take Ownership",
       "seat": false,
       "sync": "none"
-    },
-    "dealCheck": {
-      "click": false,
-      "grab": false,
-      "path": "Table/Dealer/Dealer UI Controller/Auto Canvas/DealCheck",
-      "seat": false,
-      "sync": "none"
     }
   },
   "refs": [
@@ -11226,6 +11226,7 @@
     "mhelpersOffBtn",
     "mchipsOnBtn",
     "mchipsOffBtn",
+    "dealCheck",
     "d0",
     "d0f",
     "d1",
@@ -11739,8 +11740,7 @@
     "p6_vizRemove10",
     "p6_vizRemove5",
     "chipController",
-    "audioController",
-    "dealCheck"
+    "audioController"
   ],
   "schema": 1,
   "slug": "blackjack"
