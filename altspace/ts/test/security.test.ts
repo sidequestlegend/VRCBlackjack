@@ -76,7 +76,7 @@ test("the hole card is unreadable to every client, the referee's page included, 
     assert.ok(d.holeHash.length > 0, "the hole card is committed to");
     assert.equal(deck(w, c).drawLog[hole.k], HIDDEN);
     assert.equal(deck(w, c).dealRevealed, false);
-    const sent = c.graph(SLUG).floats.get("d0/_CardIndex");
+    const sent = c.graph(SLUG).floats.get("d0f/_CardIndex");
     assert.ok(sent === undefined || sent === "-1", `${c.name}'s page never sent the hole card's face (the slot's face is blank: ${sent})`);
   }
   // The room's whole state, as anyone can read it, holds the commitment and not the card.
@@ -94,7 +94,7 @@ test("the hole card is unreadable to every client, the referee's page included, 
   for (const c of w.clients) {
     assert.equal(dealer(w, c).cards[0], hole.card, `${c.name} sees the committed card at the flip`);
     assert.equal(dealer(w, c).holeVerified, true, `${c.name} checked it against the commitment`);
-    assert.equal(c.graph(SLUG).floats.get("d0/_CardIndex"), String(hole.card));
+    assert.equal(c.graph(SLUG).floats.get("d0f/_CardIndex"), String(hole.card));
   }
   await untilPhase(w, ann, "settled");
   await w.run(STEP);

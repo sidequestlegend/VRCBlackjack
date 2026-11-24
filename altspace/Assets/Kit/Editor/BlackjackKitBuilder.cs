@@ -39,9 +39,9 @@ namespace Blackjack
 
         /// <summary>
         /// The seat and table buttons as uGUI `uiButton` events through the relay graph instead of collider clicks: only for
-        /// measuring the relay graph both ways (PORT.md, "clicks"). Set BLACKJACK_UIBUTTONS=1 in the editor's environment.
+        /// measuring the relay graph both ways (PORT.md, "clicks"). Set BLACKJACK_UIBUTTONS=1 in the editor's environment, or create Library/PortKit/blackjack_uibuttons.
         /// </summary>
-        static bool UiButtons => Environment.GetEnvironmentVariable("BLACKJACK_UIBUTTONS") == "1";
+        static bool UiButtons => Environment.GetEnvironmentVariable("BLACKJACK_UIBUTTONS") == "1" || File.Exists("Library/PortKit/blackjack_uibuttons");
 
         public override string Slug => "blackjack";
         public override string Title => "Blackjack Table";
@@ -414,9 +414,10 @@ namespace Blackjack
         void Bind(KitStage stage, GameObject system, Dictionary<string, (GameObject slot, GameObject face)> slots)
         {
             var objects = new Dictionary<string, GameObject>();
-            GameObject Obj(string key, string path, bool click = false, bool refd = true)
+            GameObject Obj(string key, string path, bool click = false, bool refd = true) => ObjG(key, path == null ? table : F(path).gameObject, click, refd);
+            GameObject ObjG(string key, GameObject go, bool click = false, bool refd = true)
             {
-                var go = path == null ? table : F(path).gameObject;
+                if (go == null) throw new Exception($"no object for '{key}' (an upstream field left empty)");
                 stage.Object(go, key: key, click: click ? true : (bool?)null);
                 if (click)
                 {
@@ -464,8 +465,9 @@ namespace Blackjack
                 Obj(prefix + "helpersChanger", b + "/Helpers");
                 Obj(prefix + "chipToggle", b + "/Use Chips");
                 Obj(prefix + "deckChanger", b + "/Deck Count");
-                Obj(prefix + "deckCount", b + "/Deck Count/Count/Text");
-                Obj(prefix + "deckSubArrow", b + "/Deck Count/Subtract/Arrow");
+                var duiStandIn = F(DUI).GetComponent<CentauriCore.Blackjack.DealerUIController>();
+                ObjG(prefix + "deckCount", (prefix == "" ? duiStandIn.DeckCount : duiStandIn.DeckCountManual).gameObject);
+                ObjG(prefix + "deckSubArrow", prefix == "" ? duiStandIn.DeckSubtractArrow : duiStandIn.DeckSubtractArrowManual);
                 foreach (var (key, name) in new[] { ("helpersOnBtn", "Helpers/Use Helpers On"), ("helpersOffBtn", "Helpers/Use Helpers Off"), ("chipsOnBtn", "Use Chips/Use Chips On"), ("chipsOffBtn", "Use Chips/Use Chips Off") })
                 {
                     stage.Ref(Obj(prefix + key, $"{b}/{name}", click: true));                               // shown and hidden too
@@ -493,10 +495,10 @@ namespace Blackjack
                 ("HitSplit", "Hit Split", "_AutoSplitHitMe", "Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT SPLIT", "HitSplit"),
                 ("HitNormal", "Hit Normal", "_AutoNormalHitMe", "Player UI/Player UI Canvas/Player UI/Player/Buttons/HIT NORMAL", "HitNormal"),
                 ("Leave", "Leave Game", "ReleaseControl", "Player UI/Owner UI/Player UI Canvas (1)/LEAVE", "LeaveGame"),
-                ("Add10", "Add 10", "_Add10ToBet", "Chip Panel/Add 10", "Add10"),
-                ("Add5", "Add 5", "_Add5ToBet", "Chip Panel/Add 5", "Add5"),
-                ("Remove10", "Remove 10", "_Remove10FromBet", "Chip Panel/Remove 10", "Remove10"),
-                ("Remove5", "Remove 5", "_Remove5FromBet", "Chip Panel/Remove 5", "Remove5"),
+                ("Add10", "Add 10", "_Add10ToBet", "Chip Panel/Player UI Canvas/Chips Animator/Mask/Buttons/Add 10", "Add10"),
+                ("Add5", "Add 5", "_Add5ToBet", "Chip Panel/Player UI Canvas/Chips Animator/Mask/Buttons/Add 5", "Add5"),
+                ("Remove10", "Remove 10", "_Remove10FromBet", "Chip Panel/Player UI Canvas/Chips Animator/Mask/Buttons/Remove 10", "Remove10"),
+                ("Remove5", "Remove 5", "_Remove5FromBet", "Chip Panel/Player UI Canvas/Chips Animator/Mask/Buttons/Remove 5", "Remove5"),
             };
             for (int i = 0; i < Seats; i++)
             {
@@ -510,21 +512,23 @@ namespace Blackjack
                 Obj(p + "_ownerUI", b + "/Player UI/Owner UI");
                 Obj(p + "_notOwnerUI", b + "/Player UI/Not Owner UI/Player Idle");
                 Obj(p + "_nameObj", b + "/Player UI/Not Owner UI/Player Name");
-                Obj(p + "_nameText", b + "/Player UI/Not Owner UI/Player Name/Text");
+                var pl = F(b).GetComponent<CentauriCore.Blackjack.Player>();
+                var pui = F(b + "/Player UI").GetComponent<CentauriCore.Blackjack.PlayerUIController>();
+                ObjG(p + "_nameText", pui.PlayerOwner.gameObject);
                 Obj(p + "_normalHelper", ui + "/Player/Normal Adjustment/HELPER");
                 Obj(p + "_splitHelper", ui + "/Player/Split Adjustment/HELPER");
-                Obj(p + "_timer", ui + "/Player/Timer");
+                ObjG(p + "_timer", F(b).GetComponent<CentauriCore.Blackjack.Player>().Timer.gameObject);
                 Obj(p + "_dealerCanvas", dp);
                 Obj(p + "_dealerMask", dp + "/Mask");
-                Obj(p + "_dealerName", dp + "/Mask/PLAYER NAME");
-                Obj(p + "_normalCount", dp + "/Mask/Normal/COUNT");
-                Obj(p + "_splitCount", dp + "/Mask/Split/COUNT");
-                Obj(p + "_dHitNormal", dp + "/Mask/Normal/HIT", click: true);
-                Obj(p + "_dHitSplit", dp + "/Mask/Split/HIT", click: true);
-                Obj(p + "_dStand", dp + "/Mask/Stand", click: true);
-                Obj(p + "_chips", b + "/Chip Panel");
-                Obj(p + "_currentBet", b + "/Chip Panel/Current Bet");
-                Obj(p + "_totalChips", b + "/Chip Panel/Total Chips");
+                ObjG(p + "_dealerName", pl.PlayerName.gameObject);
+                ObjG(p + "_normalCount", F(b + "/Normal Deck").GetComponent<CentauriCore.Blackjack.PlayerDeck>().DealerValueDisplay.gameObject);
+                ObjG(p + "_splitCount", F(b + "/Split Deck").GetComponent<CentauriCore.Blackjack.PlayerDeck>().DealerValueDisplay.gameObject);
+                Obj(p + "_dHitNormal", dp + "/Mask/Game Active/Normal Mask/Normal/HIT", click: true);
+                Obj(p + "_dHitSplit", dp + "/Mask/Game Active/Split Mask/Split/HIT", click: true);
+                Obj(p + "_dStand", dp + "/Mask/Game Active/Stand", click: true);
+                ObjG(p + "_chips", pl.BetPanel);
+                ObjG(p + "_currentBet", pl.CurrentBet.gameObject);
+                ObjG(p + "_totalChips", pl.TotalChips.gameObject);
                 foreach (var bt in buttons) Obj($"{p}_viz{bt.key}", $"{b}/{bt.viz}");
                 foreach (var bt in buttons) Obj($"{p}_b{bt.key}", $"{b}/Interactable Controller/{bt.box}", click: true);
                 // Q14: seat 0's dealer panel follows the height control like the other six
@@ -694,8 +698,34 @@ namespace Blackjack
             actionFont = KitText.StaticFontAsset(Load<Font>($"{FontFolder}/Limelight-Regular.ttf"), "HITMESTANDPLhitmestandpl!0123456789 ", $"{FontFolder}/Limelight SDF.asset", 72, 512);
         }
 
+        static readonly Dictionary<string, string[]> KeptFields = new Dictionary<string, string[]>
+        {
+            ["AudioController"] = new[] { "Audio", "Bust", "DealerWantToHit", "DrawCard", "DrawMatch", "FlipCard", "LoseMatch", "ReleaseControl", "SplitDeck", "Stand", "StartActivePlay", "StartMatch", "TakeControl", "UIInteract", "WinMatch" },
+            ["BlackjackWorldController"] = new[] { "BlackjackTables", "ChipController" },
+            ["ChipController"] = new[] { "AddToBetClip", "Audio", "NotEnoughChipsClip", "StartingChips", "UseChipSystem" },
+            ["Controller"] = new[] { "AudioController", "ChipController", "Dealer", "DealerUI", "Deck", "Distance", "Players" },
+            ["CreditsPanel"] = new[] { "panel" },
+            ["Dealer"] = new[] { "DealerUI", "Deck", "GameController" },
+            ["DealerUIController"] = new[] { "AutoCanvas", "AutoCanvasAnimator", "BlackjackController", "ChipOff", "ChipOffManual", "ChipOn", "ChipOnManual", "ChipToggle", "ChipToggleManual", "DealerController", "DealerValues", "DealerValuesCanvas", "DeckChanger", "DeckChangerManual", "DeckCount", "DeckCountManual", "DeckSubtractArrow", "DeckSubtractArrowManual", "HelpersChanger", "HelpersChangerManual", "HelpersOff", "HelpersOffManual", "HelpersOn", "HelpersOnManual", "ManualNotOwnerUI", "ManualOwnerSettings", "ManualOwnerUI", "NotOwnerUI", "OwnerSlider", "OwnerUI", "SlotAnimators", "SlotRenderers", "Slots", "TableUIAnimator", "UIHeightAnimator" },
+            ["DeckManager"] = new[] { "BlackjackController" },
+            ["DisableFixer"] = new[] { "Controller", "Players" },
+            ["DistanceOptimizer"] = new[] { "AudioController", "DealerUI", "GameController", "Players", "TurnOff" },
+            ["Interactable"] = new[] { "Event", "PressName", "PressViz", "TargetBehaviour" },
+            ["InteractableController"] = new[] { "Add10", "Add5", "Controller", "HitNormal", "HitSplit", "JoinGame", "LeaveGame", "Remove10", "Remove5", "Seat", "Split", "Stand" },
+            ["Player"] = new[] { "BetPanel", "BlackjackController", "ChipAnimator", "CurrentBet", "Deck", "Interactables", "NormalDeck", "PlayerName", "PlayerNum", "PlayerUI", "SplitDeck", "Timer", "TotalChips" },
+            ["PlayerDeck"] = new[] { "DealerValueDisplay", "PlayerController", "SlotAnimators", "SlotRenderers", "Slots", "isSplitDeck" },
+            ["PlayerUIController"] = new[] { "DealerUI", "DealerUIAnimator", "NormalHelper", "NotOwnerUI", "OwnerUI", "PlayerController", "PlayerName", "PlayerOwner", "PlayerUIAnimator", "SplitHelper" },
+        };
+
         protected override void Finishing(KitStage stage)
         {
+            // Only the fields the TypeScript reads (the stand-ins also carry upstream's run-time fields, such as
+            // NextDeckPosition, which the port derives from state)
+            int dropped = 0;
+            foreach (var b in stage.Bindings.Behaviours)
+                if (KeptFields.TryGetValue(b.Type, out var keep))
+                    foreach (var name in b.Fields.Properties().Select(q => q.Name).Where(n => !keep.Contains(n)).ToList()) { b.Fields.Remove(name); dropped++; }
+            stage.Report.AppendLine($"   blackjack: {dropped} upstream fields the port does not read left out of bindings.json");
             KitText.ToTextMeshPro(stage.Root, report: stage.Report);
             int swapped = 0;
             var fallback = KitText.DefaultFont();

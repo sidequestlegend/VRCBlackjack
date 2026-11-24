@@ -149,7 +149,7 @@ test("a split: two hands, each dealt a card after 1 s, settled separately for ev
   assert.equal(ctrl(w, c).ChipController.CurrentChipCount - chipsBefore, expected);
   // The split row is drawn from state on the other client.
   assert.equal(other.graph(SLUG).active.get(`p${i}_s0`), true);
-  assert.equal(other.graph(SLUG).floats.get(`p${i}_s0/_CardIndex`), String(pair[1]));
+  assert.equal(other.graph(SLUG).floats.get(`p${i}_s0f/_CardIndex`), String(pair[1]));
   assert.deepEqual(w.problems(), []);
 });
 
@@ -211,7 +211,7 @@ test("a late joiner mid-hand sees the cards and totals as they are, and cannot t
     const h = hand(w, dan, i);
     h.cards.forEach((card, k) => {
       assert.equal(g.active.get(`p${i}_n${k}`), true, `seat ${i} card ${k} shown`);
-      assert.equal(g.floats.get(`p${i}_n${k}/_CardIndex`), String(card), `seat ${i} card ${k} face`);
+      assert.equal(g.floats.get(`p${i}_n${k}f/_CardIndex`), String(card), `seat ${i} card ${k} face`);
       assert.equal(h.Showing(k), card);
     });
     assert.equal(g.text.get(`p${i}_normalHelper`), String(h.TotalDeckValue), "the helper total (F64)");
@@ -221,8 +221,8 @@ test("a late joiner mid-hand sees the cards and totals as they are, and cannot t
   // The dealer: the hole card's back and the up card's face.
   assert.equal(dealerUI(w, dan).Showing(0), HIDDEN);
   assert.equal(g.active.get("d0"), true);
-  assert.ok([undefined, "-1"].includes(g.floats.get("d0/_CardIndex")), "no face is ever sent for the hole card (its face is blank)");
-  assert.equal(g.floats.get("d1/_CardIndex"), String(dealer(w, dan).cards[1]));
+  assert.ok([undefined, "-1"].includes(g.floats.get("d0f/_CardIndex")), "no face is ever sent for the hole card (its face is blank)");
+  assert.equal(g.floats.get("d1f/_CardIndex"), String(dealer(w, dan).cards[1]));
   assert.equal(dealerUI(w, dan).Showing(2), SLOT_OFF);
 
   // Q11: no seat mid-round.
