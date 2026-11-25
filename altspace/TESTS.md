@@ -21,6 +21,14 @@ Player 2 and waits until `PortKit/Multiplayer/Report` says it launched (the game
 Player 2 is a Multiplayer Play Mode clone (`Library/VP/mppmf0d15246`, its log `Logs/Editor.log-mppmf0d15246.txt`).
 It shares the main project's Library (`-library-redirect ../..`), so it does not import anything of its own.
 
+## Page script on portkit 552622c, 2026-11-25 evening
+
+Re-synced `ts/portkit` and the package to portkit `552622c`. That commit includes `425bd55`: the page loads kit
+items one at a time, because overlapping loads lost relay graphs and Variables in the app. It also includes
+`0880bf5`: a referee claimant starts only once its claim has stood for 1.5 s, which fixes the equal-term double
+claim, and user-state flushes go one at a time. The bundles are unchanged from the rebuild below. `npm test`:
+**38 of 38** (0 failed). `npm run build`: 703520 bytes. Export Artifacts -> `dist/`: 14 files (9 licence texts), footprint 3.95 x 1.7 x 2.19 m, bindings dacc020a362cd24696a285d71de32c2c617533fe.
+
 ## Canvas colliders, 2026-11-25 evening (portkit 476075d)
 
 In world 9d7311 the SDK's `BSKitItem` gave every world-space canvas without a BoxCollider a solid one when the kit
