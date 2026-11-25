@@ -19,7 +19,7 @@ local: script and bundles from the test server http://localhost:43300
 [main] CMD b7 click 0.000 0.853 1.909
 [main] REPLY b7 ok screen 643,421 of 1285x842
 [main] INFO click Join Game (p3_bJoin): ok screen 643,421 of 1285x842 at 0.000 0.853 1.909
-[main] PASS this player takes seat 3: {"active":true,"name":"Main Editor","sid":"rsess_6d3102bb-157d-494b-aa8e-5127ea68c7dd","mine":true,"myTurn":false,"finished":true,"normal":[],"split":[],"normalTotal":0,"bust":false,"canSplit":false,"result":[0,0]}
+[main] PASS this player takes seat 3: {"active":true,"name":"Main Editor","sid":"rsess_497ad57f-b95b-4284-8b98-2658e23e5694","mine":true,"myTurn":false,"finished":true,"normal":[],"split":[],"normalTotal":0,"bust":false,"canSplit":false,"result":[0,0]}
 [main] PASS both players are seated, on both pages: -,-,-,Main Editor,Player 2,-,-
 [main] CMD b8 probe pk1:blackjack:0 pos Table/Dealer/Dealer%20UI%20Controller/Auto%20Canvas/Mask/Owner/Start%20Game
 [main] REPLY b8 0.000 1.133 4.068
@@ -34,70 +34,74 @@ local: script and bundles from the test server http://localhost:43300
 [main] REPLY b12 True
 [main] CMD b13 probe pk1:blackjack:0 matfloat Table/Dealer/Card%20Positions/1/Card/Viz/Card _CardIndex
 [main] REPLY b13 -1.000
-[main] PASS before the flip this page holds the hole card face down, and Unity's slot face is blank: state [-1,48], Unity -1
-[main] CMD b14 probe pk1:blackjack:0 pos Table/Players/Players/Player%203/Interactable%20Controller/Stand
-[main] REPLY b14 0.250 0.859 2.245
-[main] CMD b15 look 0.250 0.859 2.245
+[main] PASS before the flip this page holds the hole card face down, and Unity's slot face is blank: state [-1,2], Unity -1
+[main] CMD b14 probe pk1:blackjack:0 pos Table/Players/Players/Player%203/Interactable%20Controller/Hit%20Normal
+[main] REPLY b14 -0.225 0.875 2.295
+[main] CMD b15 look -0.225 0.875 2.295
 [main] REPLY b15 ok camera at 0.00,1.60,0.00
 [main] CMD b16 wait 5
 [main] REPLY b16 ok
-[main] CMD b17 click 0.250 0.859 2.245
+[main] CMD b17 click -0.225 0.875 2.295
 [main] REPLY b17 ok screen 643,421 of 1285x842
-[main] INFO click STAND (p3_bStand): ok screen 643,421 of 1285x842 at 0.250 0.859 2.245
-[main] PASS the hole card was unreadable on this page before the flip, and the flipped card matches its commitment: hole 49 (value 11); before: cards [-1,48], total 11, hash WdaNCJokWIXK..., Unity -1
-[main] PASS the round's deal checks: contributors are the seated players, the draws replay, every hand holds the deal's cards: {"ok":true,"status":"checked","reason":""} bj1.1.c14ebfde
+[main] INFO click HIT (p3_bHitNormal): ok screen 643,421 of 1285x842 at -0.225 0.875 2.295
+[main] PASS the hole card was unreadable on this page before the flip, and the flipped card matches its commitment: hole 14 (value 5); before: cards [-1,2], total 2, hash 94YjeQxG68-O..., Unity -1
+[main] PASS the round's deal checks: contributors are the seated players, the draws replay, every hand holds the deal's cards: {"ok":true,"status":"checked","reason":""} bj1.1.979e3951
 [main] CMD b18 probe pk1:blackjack:0 text Table/Dealer/Dealer%20UI%20Controller/Auto%20Canvas/DealCheck/Text
 [main] REPLY b18 Deal checked: every card came from the shared shuffle
 [main] PASS the table shows every player that the deal was checked (Unity text): Deal checked: every card came from the shared shuffle
 [main] CMD b19 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/1/Card
 [main] REPLY b19 True
 [main] CMD b20 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/1/Card/Viz/Card _CardIndex
-[main] REPLY b20 44.000
+[main] REPLY b20 33.000
 [main] CMD b21 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/2/Card
 [main] REPLY b21 True
 [main] CMD b22 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/2/Card/Viz/Card _CardIndex
-[main] REPLY b22 35.000
+[main] REPLY b22 1.000
 [main] CMD b23 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/3/Card
-[main] REPLY b23 False
-[main] PASS round 1: seat 3's cards are on in this page's Unity with the faces in state: state [44,35]; Unity True/44 True/35; next slot active False
-[main] CMD b24 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/1/Card
-[main] REPLY b24 True
-[main] CMD b25 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/1/Card/Viz/Card _CardIndex
-[main] REPLY b25 1.000
-[main] CMD b26 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/2/Card
+[main] REPLY b23 True
+[main] CMD b24 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/3/Card/Viz/Card _CardIndex
+[main] REPLY b24 47.000
+[main] CMD b25 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/4/Card
+[main] REPLY b25 False
+[main] PASS round 1: seat 3's cards are on in this page's Unity with the faces in state: state [33,1,47]; Unity True/33 True/1 True/47; next slot active False
+[main] CMD b26 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/1/Card
 [main] REPLY b26 True
-[main] CMD b27 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/2/Card/Viz/Card _CardIndex
-[main] REPLY b27 30.000
-[main] CMD b28 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/3/Card
+[main] CMD b27 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/1/Card/Viz/Card _CardIndex
+[main] REPLY b27 35.000
+[main] CMD b28 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/2/Card
 [main] REPLY b28 True
-[main] CMD b29 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/3/Card/Viz/Card _CardIndex
-[main] REPLY b29 9.000
-[main] CMD b30 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/4/Card
-[main] REPLY b30 False
-[main] PASS round 1: seat 4's cards are on in this page's Unity with the faces in state: state [1,30,9]; Unity True/1 True/30 True/9; next slot active False
-[main] PASS round 1: the other player's hand was played and settled, as this page sees it: {"active":true,"name":"Player 2","sid":"rsess_420c273f-9298-44f4-be5c-8d6c795f160d","mine":false,"myTurn":false,"finished":true,"normal":[1,30,9],"split":[],"normalTotal":15,"bust":false,"canSplit":false,"result":[3,0]}
-[main] PASS both pages reach the same state after round 1 (equal version() and digest): e84cd100 / e84cd100 at 21:10741dc0 / 21:10741dc0
-[main] CMD b31 probe pk1:blackjack:0 pos Table/Dealer/Dealer%20UI%20Controller/Auto%20Canvas/Mask/Owner/Start%20Game
-[main] REPLY b31 0.000 1.133 4.068
-[main] CMD b32 look 0.000 1.133 4.068
-[main] REPLY b32 ok camera at 0.00,1.60,0.00
-[main] CMD b33 wait 5
-[main] REPLY b33 ok
-[main] CMD b34 click 0.000 1.133 4.068
-[main] REPLY b34 ok screen 643,421 of 1285x842
+[main] CMD b29 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/2/Card/Viz/Card _CardIndex
+[main] REPLY b29 1.000
+[main] CMD b30 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/3/Card
+[main] REPLY b30 True
+[main] CMD b31 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/3/Card/Viz/Card _CardIndex
+[main] REPLY b31 40.000
+[main] CMD b32 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/4/Card
+[main] REPLY b32 False
+[main] PASS round 1: seat 4's cards are on in this page's Unity with the faces in state: state [35,1,40]; Unity True/35 True/1 True/40; next slot active False
+[main] PASS round 1: the other player's hand was played and settled, as this page sees it: {"active":true,"name":"Player 2","sid":"rsess_0d32affa-4a06-4b48-9589-448228b60d07","mine":false,"myTurn":false,"finished":true,"normal":[35,1,40],"split":[],"normalTotal":22,"bust":true,"canSplit":false,"result":[3,0]}
+[main] PASS both pages reach the same state after round 1 (equal version() and digest): 81aa9d9c / 81aa9d9c at 17:35ee8ef1 / 17:35ee8ef1
+[main] CMD b33 probe pk1:blackjack:0 pos Table/Dealer/Dealer%20UI%20Controller/Auto%20Canvas/Mask/Owner/Start%20Game
+[main] REPLY b33 0.000 1.133 4.068
+[main] CMD b34 look 0.000 1.133 4.068
+[main] REPLY b34 ok camera at 0.00,1.60,0.00
+[main] CMD b35 wait 5
+[main] REPLY b35 ok
+[main] CMD b36 click 0.000 1.133 4.068
+[main] REPLY b36 ok screen 643,421 of 1285x842
 [main] INFO click Start Game (startGame): ok screen 643,421 of 1285x842 at 0.000 1.133 4.068
-[main] PASS the reloaded guest's page holds the same state as the owner's (digest at equal version()): 9854f31e / 9854f31e at version 35:e383b2df (guest sample 1; 0 samples of another version skipped)
-[main] CMD b35 probe pk1:blackjack:0 pos Table/Players/Players/Player%203/Interactable%20Controller/Hit%20Normal
-[main] REPLY b35 -0.225 0.875 2.295
-[main] CMD b36 look -0.225 0.875 2.295
-[main] REPLY b36 ok camera at 0.00,1.60,0.00
-[main] CMD b37 wait 5
-[main] REPLY b37 ok
-[main] CMD b38 click -0.225 0.875 2.295
-[main] REPLY b38 ok screen 643,421 of 1285x842
-[main] INFO click HIT (p3_bHitNormal): ok screen 643,421 of 1285x842 at -0.225 0.875 2.295
+[main] PASS the reloaded guest's page holds the same state as the owner's (digest at equal version()): 838da3b0 / 838da3b0 at version 31:00ff346d (guest sample 2; 1 samples of another version skipped)
+[main] CMD b37 probe pk1:blackjack:0 pos Table/Players/Players/Player%203/Interactable%20Controller/Stand
+[main] REPLY b37 0.250 0.859 2.245
+[main] CMD b38 look 0.250 0.859 2.245
+[main] REPLY b38 ok camera at 0.00,1.60,0.00
+[main] CMD b39 wait 5
+[main] REPLY b39 ok
+[main] CMD b40 click 0.250 0.859 2.245
+[main] REPLY b40 ok screen 643,421 of 1285x842
+[main] INFO click STAND (p3_bStand): ok screen 643,421 of 1285x842 at 0.250 0.859 2.245
 [main] PASS round 2: the owner's page checks the deal (it saw the guest's old session contribute): {"ok":true,"status":"checked","reason":""}
-[main] PASS both pages agree at the end of round 2 (equal version() and digest): fed12ac2 / fed12ac2 at 41:6bb4ae7a / 41:6bb4ae7a; settled r2 dealer 15,8,0,0,42=23 | - | - | - | Main Editor:12,30,46=24 30 | - | - | -
+[main] PASS both pages agree at the end of round 2 (equal version() and digest): 496332f8 / 496332f8 at 34:a24d1804 / 34:a24d1804; settled r2 dealer 37,38=20 | - | - | - | Main Editor:15,33=15 30 | - | - | -
 [main] INFO page result 16 passed, 0 failed
 [main] DONE
 [vp-mppmf0d15246] INFO vp-mppmf0d15246 in Play, page port 43200
@@ -120,111 +124,96 @@ local: script and bundles from the test server http://localhost:43300
 [vp-mppmf0d15246] CMD b7 click -0.760 0.853 2.056
 [vp-mppmf0d15246] REPLY b7 ok screen 1280,351 of 2560x702
 [vp-mppmf0d15246] INFO click Join Game (p4_bJoin): ok screen 1280,351 of 2560x702 at -0.760 0.853 2.056
-[vp-mppmf0d15246] PASS this player takes seat 4: {"active":true,"name":"Player 2","sid":"rsess_420c273f-9298-44f4-be5c-8d6c795f160d","mine":true,"myTurn":false,"finished":true,"normal":[],"split":[],"normalTotal":0,"bust":false,"canSplit":false,"result":[0,0]}
+[vp-mppmf0d15246] PASS this player takes seat 4: {"active":true,"name":"Player 2","sid":"rsess_0d32affa-4a06-4b48-9589-448228b60d07","mine":true,"myTurn":false,"finished":true,"normal":[],"split":[],"normalTotal":0,"bust":false,"canSplit":false,"result":[0,0]}
 [vp-mppmf0d15246] PASS both players are seated, on both pages: -,-,-,Main Editor,Player 2,-,-
 [vp-mppmf0d15246] CMD b8 probe pk1:blackjack:0 active Table/Dealer/Card%20Positions/1/Card
 [vp-mppmf0d15246] REPLY b8 True
 [vp-mppmf0d15246] CMD b9 probe pk1:blackjack:0 matfloat Table/Dealer/Card%20Positions/1/Card/Viz/Card _CardIndex
 [vp-mppmf0d15246] REPLY b9 -1.000
-[vp-mppmf0d15246] PASS before the flip this page holds the hole card face down, and Unity's slot face is blank: state [-1,48], Unity -1
+[vp-mppmf0d15246] PASS before the flip this page holds the hole card face down, and Unity's slot face is blank: state [-1,2], Unity -1
 [vp-mppmf0d15246] CMD b10 probe pk1:blackjack:0 pos Table/Players/Players/Player%204/Interactable%20Controller/Hit%20Normal
-[vp-mppmf0d15246] REPLY b10 -0.782 0.875 2.591
-[vp-mppmf0d15246] CMD b11 look -0.782 0.875 2.591
+[vp-mppmf0d15246] REPLY b10 -0.820 0.875 2.499
+[vp-mppmf0d15246] CMD b11 look -0.820 0.875 2.499
 [vp-mppmf0d15246] REPLY b11 ok camera at 0.00,1.60,0.00
 [vp-mppmf0d15246] CMD b12 wait 5
 [vp-mppmf0d15246] REPLY b12 ok
-[vp-mppmf0d15246] CMD b13 click -0.782 0.875 2.591
+[vp-mppmf0d15246] CMD b13 click -0.820 0.875 2.499
 [vp-mppmf0d15246] REPLY b13 ok screen 1280,351 of 2560x702
-[vp-mppmf0d15246] INFO click HIT (p4_bHitNormal): ok screen 1280,351 of 2560x702 at -0.782 0.875 2.591
-[vp-mppmf0d15246] INFO HIT: not yet after try 1
-[vp-mppmf0d15246] CMD b14 probe pk1:blackjack:0 pos Table/Players/Players/Player%204/Interactable%20Controller/Hit%20Normal
-[vp-mppmf0d15246] REPLY b14 -0.820 0.875 2.499
-[vp-mppmf0d15246] CMD b15 look -0.820 0.875 2.499
-[vp-mppmf0d15246] REPLY b15 ok camera at 0.00,1.60,0.00
-[vp-mppmf0d15246] CMD b16 wait 5
-[vp-mppmf0d15246] REPLY b16 ok
-[vp-mppmf0d15246] CMD b17 click -0.820 0.875 2.499
-[vp-mppmf0d15246] REPLY b17 ok screen 1280,351 of 2560x702
 [vp-mppmf0d15246] INFO click HIT (p4_bHitNormal): ok screen 1280,351 of 2560x702 at -0.820 0.875 2.499
-[vp-mppmf0d15246] CMD b18 probe pk1:blackjack:0 pos Table/Players/Players/Player%204/Interactable%20Controller/Stand
-[vp-mppmf0d15246] REPLY b18 -0.400 0.859 2.271
-[vp-mppmf0d15246] CMD b19 look -0.400 0.859 2.271
-[vp-mppmf0d15246] REPLY b19 ok camera at 0.00,1.60,0.00
-[vp-mppmf0d15246] CMD b20 wait 5
-[vp-mppmf0d15246] REPLY b20 ok
-[vp-mppmf0d15246] CMD b21 click -0.400 0.859 2.271
-[vp-mppmf0d15246] REPLY b21 ok screen 1280,351 of 2560x702
-[vp-mppmf0d15246] INFO click STAND (p4_bStand): ok screen 1280,351 of 2560x702 at -0.400 0.859 2.271
-[vp-mppmf0d15246] PASS the hole card was unreadable on this page before the flip, and the flipped card matches its commitment: hole 49 (value 11); before: cards [-1,48], total 11, hash WdaNCJokWIXK..., Unity -1
-[vp-mppmf0d15246] PASS the round's deal checks: contributors are the seated players, the draws replay, every hand holds the deal's cards: {"ok":true,"status":"checked","reason":""} bj1.1.c14ebfde
-[vp-mppmf0d15246] CMD b22 probe pk1:blackjack:0 text Table/Dealer/Dealer%20UI%20Controller/Auto%20Canvas/DealCheck/Text
-[vp-mppmf0d15246] REPLY b22 Deal checked: every card came from the shared shuffle
+[vp-mppmf0d15246] PASS the hole card was unreadable on this page before the flip, and the flipped card matches its commitment: hole 14 (value 5); before: cards [-1,2], total 2, hash 94YjeQxG68-O..., Unity -1
+[vp-mppmf0d15246] PASS the round's deal checks: contributors are the seated players, the draws replay, every hand holds the deal's cards: {"ok":true,"status":"checked","reason":""} bj1.1.979e3951
+[vp-mppmf0d15246] CMD b14 probe pk1:blackjack:0 text Table/Dealer/Dealer%20UI%20Controller/Auto%20Canvas/DealCheck/Text
+[vp-mppmf0d15246] REPLY b14 Deal checked: every card came from the shared shuffle
 [vp-mppmf0d15246] PASS the table shows every player that the deal was checked (Unity text): Deal checked: every card came from the shared shuffle
-[vp-mppmf0d15246] CMD b23 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/1/Card
-[vp-mppmf0d15246] REPLY b23 True
-[vp-mppmf0d15246] CMD b24 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/1/Card/Viz/Card _CardIndex
-[vp-mppmf0d15246] REPLY b24 44.000
-[vp-mppmf0d15246] CMD b25 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/2/Card
-[vp-mppmf0d15246] REPLY b25 True
-[vp-mppmf0d15246] CMD b26 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/2/Card/Viz/Card _CardIndex
-[vp-mppmf0d15246] REPLY b26 35.000
-[vp-mppmf0d15246] CMD b27 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/3/Card
-[vp-mppmf0d15246] REPLY b27 False
-[vp-mppmf0d15246] PASS round 1: seat 3's cards are on in this page's Unity with the faces in state: state [44,35]; Unity True/44 True/35; next slot active False
-[vp-mppmf0d15246] CMD b28 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/1/Card
-[vp-mppmf0d15246] REPLY b28 True
-[vp-mppmf0d15246] CMD b29 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/1/Card/Viz/Card _CardIndex
-[vp-mppmf0d15246] REPLY b29 1.000
-[vp-mppmf0d15246] CMD b30 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/2/Card
-[vp-mppmf0d15246] REPLY b30 True
-[vp-mppmf0d15246] CMD b31 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/2/Card/Viz/Card _CardIndex
-[vp-mppmf0d15246] REPLY b31 30.000
-[vp-mppmf0d15246] CMD b32 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/3/Card
-[vp-mppmf0d15246] REPLY b32 True
-[vp-mppmf0d15246] CMD b33 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/3/Card/Viz/Card _CardIndex
-[vp-mppmf0d15246] REPLY b33 9.000
-[vp-mppmf0d15246] CMD b34 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/4/Card
-[vp-mppmf0d15246] REPLY b34 False
-[vp-mppmf0d15246] PASS round 1: seat 4's cards are on in this page's Unity with the faces in state: state [1,30,9]; Unity True/1 True/30 True/9; next slot active False
-[vp-mppmf0d15246] PASS round 1: the other player's hand was played and settled, as this page sees it: {"active":true,"name":"Main Editor","sid":"rsess_6d3102bb-157d-494b-aa8e-5127ea68c7dd","mine":false,"myTurn":false,"finished":true,"normal":[44,35],"split":[],"normalTotal":20,"bust":false,"canSplit":false,"result":[1,0]}
-[vp-mppmf0d15246] PASS both pages reach the same state after round 1 (equal version() and digest): e84cd100 / e84cd100 at 21:10741dc0 / 21:10741dc0
+[vp-mppmf0d15246] CMD b15 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/1/Card
+[vp-mppmf0d15246] REPLY b15 True
+[vp-mppmf0d15246] CMD b16 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/1/Card/Viz/Card _CardIndex
+[vp-mppmf0d15246] REPLY b16 33.000
+[vp-mppmf0d15246] CMD b17 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/2/Card
+[vp-mppmf0d15246] REPLY b17 True
+[vp-mppmf0d15246] CMD b18 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/2/Card/Viz/Card _CardIndex
+[vp-mppmf0d15246] REPLY b18 1.000
+[vp-mppmf0d15246] CMD b19 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/3/Card
+[vp-mppmf0d15246] REPLY b19 True
+[vp-mppmf0d15246] CMD b20 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/3/Card/Viz/Card _CardIndex
+[vp-mppmf0d15246] REPLY b20 47.000
+[vp-mppmf0d15246] CMD b21 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/4/Card
+[vp-mppmf0d15246] REPLY b21 False
+[vp-mppmf0d15246] PASS round 1: seat 3's cards are on in this page's Unity with the faces in state: state [33,1,47]; Unity True/33 True/1 True/47; next slot active False
+[vp-mppmf0d15246] CMD b22 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/1/Card
+[vp-mppmf0d15246] REPLY b22 True
+[vp-mppmf0d15246] CMD b23 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/1/Card/Viz/Card _CardIndex
+[vp-mppmf0d15246] REPLY b23 35.000
+[vp-mppmf0d15246] CMD b24 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/2/Card
+[vp-mppmf0d15246] REPLY b24 True
+[vp-mppmf0d15246] CMD b25 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/2/Card/Viz/Card _CardIndex
+[vp-mppmf0d15246] REPLY b25 1.000
+[vp-mppmf0d15246] CMD b26 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/3/Card
+[vp-mppmf0d15246] REPLY b26 True
+[vp-mppmf0d15246] CMD b27 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/3/Card/Viz/Card _CardIndex
+[vp-mppmf0d15246] REPLY b27 40.000
+[vp-mppmf0d15246] CMD b28 probe pk1:blackjack:0 active Table/Players/Players/Player%204/Card%20Position%20Animator/Positions/4/Card
+[vp-mppmf0d15246] REPLY b28 False
+[vp-mppmf0d15246] PASS round 1: seat 4's cards are on in this page's Unity with the faces in state: state [35,1,40]; Unity True/35 True/1 True/40; next slot active False
+[vp-mppmf0d15246] PASS round 1: the other player's hand was played and settled, as this page sees it: {"active":true,"name":"Main Editor","sid":"rsess_497ad57f-b95b-4284-8b98-2658e23e5694","mine":false,"myTurn":false,"finished":true,"normal":[33,1,47],"split":[],"normalTotal":22,"bust":true,"canSplit":false,"result":[3,0]}
+[vp-mppmf0d15246] PASS both pages reach the same state after round 1 (equal version() and digest): 81aa9d9c / 81aa9d9c at 17:35ee8ef1 / 17:35ee8ef1
 [vp-mppmf0d15246] INFO the guest reloads its page mid-hand
 [vp-mppmf0d15246] PASS the kit loads from a hand-written bs-snippet and the instance starts:
 [vp-mppmf0d15246] CMD b1 probe pk1:blackjack:0 exists Table
 [vp-mppmf0d15246] REPLY b1 True
 [vp-mppmf0d15246] CMD b2 probe pk1:blackjack:0 active Table/Dealer/Card%20Positions/1/Card
 [vp-mppmf0d15246] REPLY b2 True
-[vp-mppmf0d15246] PASS the kit is in the scene after the reload, the dealer's first slot as the state says: table True, dealer slot 0 active True, dealer [-1,8]
+[vp-mppmf0d15246] PASS the kit is in the scene after the reload, the dealer's first slot as the state says: table True, dealer slot 0 active True, dealer [-1,38]
 [vp-mppmf0d15246] PASS two players in the room: ["Main Editor","Player 2"]
 [vp-mppmf0d15246] INFO guest is Player 2 (back after a reload), others Main Editor
-[vp-mppmf0d15246] PASS after reloading mid-hand the guest sees the same table (late join): turns r2 dealer -1,8=4 | - | - | - | Main Editor:12,30=14 00 | - | - | - / turns r2 dealer -1,8=4 | - | - | - | Main Editor:12,30=14 00 | - | - | -
+[vp-mppmf0d15246] PASS after reloading mid-hand the guest sees the same table (late join): turns r2 dealer -1,38=10 | - | - | - | Main Editor:15,33=15 00 | - | - | - / turns r2 dealer -1,38=10 | - | - | - | Main Editor:15,33=15 00 | - | - | -
 [vp-mppmf0d15246] CMD b3 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/1/Card
 [vp-mppmf0d15246] REPLY b3 True
 [vp-mppmf0d15246] CMD b4 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/1/Card/Viz/Card _CardIndex
-[vp-mppmf0d15246] REPLY b4 12.000
+[vp-mppmf0d15246] REPLY b4 15.000
 [vp-mppmf0d15246] CMD b5 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/2/Card
 [vp-mppmf0d15246] REPLY b5 True
 [vp-mppmf0d15246] CMD b6 probe pk1:blackjack:0 matfloat Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/2/Card/Viz/Card _CardIndex
-[vp-mppmf0d15246] REPLY b6 30.000
+[vp-mppmf0d15246] REPLY b6 33.000
 [vp-mppmf0d15246] CMD b7 probe pk1:blackjack:0 active Table/Players/Players/Player%203/Card%20Position%20Animator/Positions/3/Card
 [vp-mppmf0d15246] REPLY b7 False
-[vp-mppmf0d15246] PASS the reloaded page shows the other seat's cards in Unity with their faces: state [12,30]; Unity True/12 True/30; next slot active False
+[vp-mppmf0d15246] PASS the reloaded page shows the other seat's cards in Unity with their faces: state [15,33]; Unity True/15 True/33; next slot active False
 [vp-mppmf0d15246] CMD b8 probe pk1:blackjack:0 active Table/Dealer/Card%20Positions/2/Card
 [vp-mppmf0d15246] REPLY b8 True
 [vp-mppmf0d15246] CMD b9 probe pk1:blackjack:0 matfloat Table/Dealer/Card%20Positions/2/Card/Viz/Card _CardIndex
-[vp-mppmf0d15246] REPLY b9 8.000
+[vp-mppmf0d15246] REPLY b9 38.000
 [vp-mppmf0d15246] CMD b10 probe pk1:blackjack:0 active Table/Dealer/Card%20Positions/1/Card
 [vp-mppmf0d15246] REPLY b10 True
 [vp-mppmf0d15246] CMD b11 probe pk1:blackjack:0 matfloat Table/Dealer/Card%20Positions/1/Card/Viz/Card _CardIndex
 [vp-mppmf0d15246] REPLY b11 -1.000
-[vp-mppmf0d15246] PASS the reloaded page shows the dealer's cards as they are (hole card still blank unless flipped): d1 True/8, dealer [-1,8]
-[vp-mppmf0d15246] PASS the guest's old seat was freed when its session left (C21, F72): {"active":false,"name":"","sid":"","mine":false,"myTurn":false,"finished":true,"normal":[41,35],"split":[],"normalTotal":20,"bust":false,"canSplit":false,"result":[0,0]}
+[vp-mppmf0d15246] PASS the reloaded page shows the dealer's cards as they are (hole card still blank unless flipped): d1 True/38, dealer [-1,38]
+[vp-mppmf0d15246] PASS the guest's old seat was freed when its session left (C21, F72): {"active":false,"name":"","sid":"","mine":false,"myTurn":false,"finished":true,"normal":[15,29],"split":[],"normalTotal":14,"bust":false,"canSplit":false,"result":[0,0]}
 [vp-mppmf0d15246] CMD b12 probe pk1:blackjack:0 active Table/Dealer/Card%20Positions/1/Card
 [vp-mppmf0d15246] REPLY b12 True
 [vp-mppmf0d15246] CMD b13 probe pk1:blackjack:0 matfloat Table/Dealer/Card%20Positions/1/Card/Viz/Card _CardIndex
 [vp-mppmf0d15246] REPLY b13 -1.000
-[vp-mppmf0d15246] PASS the reloaded page joined before the flip: flipped false, dealer [-1,8]
-[vp-mppmf0d15246] PASS round 2: the hole card was unreadable on the reloaded page (late join state) before the flip, and the flipped card matches its commitment: hole 15 (value 5); before: cards [-1,8], total 4, hash PkMM_gTdpPgl..., Unity -1
+[vp-mppmf0d15246] PASS the reloaded page joined before the flip: flipped false, dealer [-1,38]
+[vp-mppmf0d15246] PASS round 2: the hole card was unreadable on the reloaded page (late join state) before the flip, and the flipped card matches its commitment: hole 37 (value 10); before: cards [-1,38], total 10, hash kua-6yb91teH..., Unity -1
 [vp-mppmf0d15246] CMD b14 probe pk1:blackjack:0 text Table/Dealer/Dealer%20UI%20Controller/Auto%20Canvas/DealCheck/Text
 [vp-mppmf0d15246] REPLY b14 Deal NOT checkable here: a contributor left before this page came
 [vp-mppmf0d15246] PASS round 2: the reloaded page cannot check a deal its old session contributed to, and shows that (not a false alarm): {"ok":false,"status":"unverifiable","reason":"a player who contributed to this deal left before this page arrived: its part is not known here"}; Unity 'Deal NOT checkable here: a contributor left before this page came'

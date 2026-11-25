@@ -21,6 +21,21 @@ Player 2 and waits until `PortKit/Multiplayer/Report` says it launched (the game
 Player 2 is a Multiplayer Play Mode clone (`Library/VP/mppmf0d15246`, its log `Logs/Editor.log-mppmf0d15246.txt`).
 It shares the main project's Library (`-library-redirect ../..`), so it does not import anything of its own.
 
+## Canvas colliders, 2026-11-25 evening (portkit 476075d)
+
+In world 9d7311 the SDK's `BSKitItem` gave every world-space canvas without a BoxCollider a solid one when the kit
+loaded: rect x scale, on the canvas's layer. rp-toolkit's head-label canvas then pushed its wearer about (measured in
+the hub's Play mode, portkit GAPS.md "Fourth pass"). Re-synced to portkit `476075d`, whose builder gives every
+world-space canvas a trigger box of its own first, and whose `PortKit/Kit/Check` fails a canvas that would end up
+solid. Rebuilt:
+
+- Build Prefabs: 8 trigger boxes added to world-space canvases, 40 canvas boxes made triggers.
+- rung 0/1: `npm test` **38 of 38** (0 failed). `npm run build`: 701970 bytes.
+- rung 2: Check all PASS (bindings `dacc020a`, the new "canvas colliders" line, both bundles). Android 7152 KiB, Windows 8823 KiB.
+- rung 3 (`playtest/single.json`, blackjack-single): **22 passed, 0 failed**, 0 console error lines (`playtest/evidence_single.txt`).
+- rung 4 (`playtest/multi.json`, blackjack-multi): **39 passed, 0 failed**, 0 console error lines (`playtest/evidence_multi.txt`).
+- `dist/` exported: 14 files (9 licence texts), footprint 3.95 x 1.7 x 2.19 m, bindings dacc020a362cd24696a285d71de32c2c617533fe.
+
 ## Third pass: re-sync to portkit `c971100` (2026-11-25)
 
 `portkit/tools/sync.sh blackjack` (unity and ts), then:
