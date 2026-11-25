@@ -39,7 +39,7 @@ licence texts (`dist/licenses/blackjack/`, nine files); the footprint counts the
 | Rung | Result |
 |---|---|
 | 0/1 static and Node | `npm test`: typecheck and lint clean, 38 of 38 (16 golden-vector and rule tests, 22 scenarios, among them the forged-hand and forged-contributor tests) |
-| 2 `PortKit/Kit/Check` | 0 disallowed graph nodes; 869 bindings resolve (hash `dacc020a...` since `c971100`); Android 7,149 KiB and Windows 8,813 KiB, both PASS, notices and licence texts inside |
+| 2 `PortKit/Kit/Check` | 0 disallowed graph nodes; 869 bindings resolve (hash `dacc020a...` since `c971100`); Android 7,153 KiB and Windows 8,823 KiB since `c971100` (7,149 and 8,813 before), both PASS, notices and licence texts inside |
 | 3 Play mode, one player | 22 of 22, twice in a row (third pass: 21 of 21 in a bust round, then 22 of 22), 0 console errors: seat, bet, deal, hit, stand, the flip, result, chips, the deal shown as not checkable (one player who is also the referee) on the table, and the credits panel, through the desktop player's mouse |
 | 4 two Local Multiplayer players | 39 of 39, twice in a row (again in the third pass), 0 console errors: both seated, a full round checked the new way on both pages and shown on the table, the hole card unreadable on both pages before the flip, a guest reload mid-hand in round 2 (same table, same digest at equal `version()`, hole card unreadable on the reloaded page too, the reloaded page saying it cannot check that deal), digests and views equal at the end |
 

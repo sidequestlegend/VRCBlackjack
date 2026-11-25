@@ -56,8 +56,8 @@ Bundles and artifacts (`Take Photos`, `Export Artifacts`; `dist/`, not committed
 
 | File | Before (bytes) | After (bytes) | sha1 after |
 |---|---|---|---|
-| `android/blackjack` | 7,320,545 | 7,324,341 (7,149 KiB) | `03f1d39b6095a474aa43491a2baa977a13f3f896` |
-| `windows/blackjack` | 9,024,863 | 9,034,677 (8,813 KiB) | `c15cb0b45f9399774d7bb39df8daf07f72f8d28a` |
+| `android/blackjack` | 7,320,545 | 7,324,341 (7,153 KiB) | `03f1d39b6095a474aa43491a2baa977a13f3f896` |
+| `windows/blackjack` | 9,024,863 | 9,034,677 (8,823 KiB) | `c15cb0b45f9399774d7bb39df8daf07f72f8d28a` |
 | `pk-blackjack.js` | 687,326 | 700,703 | `a7b0370f89820fbe7a113ddb69b688aecd79a78f` (same as `Assets/WebRoot`) |
 | `blackjack.jpg` | 60,457 | 55,302 | `8924c41e35309cf0a9bfc68f82cbcd6afc289d1f` |
 | `blackjack.snippet.html` | 523 | 523 | `61f1d6f51afebba3d74b784eefd14efa94bd0c72` (box gizmo `4.0 0.2 2.3`) |
