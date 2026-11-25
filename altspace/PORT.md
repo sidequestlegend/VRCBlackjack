@@ -23,14 +23,25 @@ risks and questions.
 
 Rungs 0 to 4 pass in the Unity editor; `altspace/TESTS.md` has the evidence and how to run each again. Re-run on
 2026-11-25 after the re-sync to portkit `812f285` and the fixes for the independent review (`REVIEW-FINDINGS.md`,
-blackjack: the deal check, licences, notices, docs).
+blackjack: the deal check, licences, notices, docs), and again after the re-sync to portkit **`c971100`** (third
+pass, below).
+
+**Third pass (portkit `c971100`).** `DeckManager` checks the deal with the kit's `checkDeal` (`verifyDeal` now returns
+null for a deal a page cannot check): `solo` and `unknown` are shown as not checkable, `failed` as a failed check,
+and `pending` is checked again later. Removed workaround: the game's guess that a mismatch involving a contributor
+this page never saw meant "cannot check" (the kit now says `unknown` itself; Node test 32 and the rung-4 reload
+check pass on it). `stage.StartOff` on `Dealer Camera/Dealer Card Canvas`: the photo no longer shows its empty
+dark-green box. Newly verified: the reloaded page's "cannot check" in Play mode comes from the kit; `dist/` carries the
+licence texts (`dist/licenses/blackjack/`, nine files); the footprint counts the world-space uGUI (3.95 x 1.70 x
+2.19 m). Results: 38 of 38 in Node, rung 2 PASS (bindings `dacc020a...`), rung 3 21 of 21 (a bust round) then 22 of 22, rung 4 39 of
+39 twice, 0 console errors. Bundles: Android 7,324,341 bytes, Windows 9,034,677 (were 7,320,545 and 9,024,863).
 
 | Rung | Result |
 |---|---|
 | 0/1 static and Node | `npm test`: typecheck and lint clean, 38 of 38 (16 golden-vector and rule tests, 22 scenarios, among them the forged-hand and forged-contributor tests) |
-| 2 `PortKit/Kit/Check` | 0 disallowed graph nodes; 869 bindings resolve (hash `7a402ba3...`); Android 7,149 KiB and Windows 8,813 KiB, both PASS, notices and licence texts inside |
-| 3 Play mode, one player | 22 of 22, twice in a row, 0 console errors: seat, bet, deal, hit, stand, the flip, result, chips, the deal shown as not checkable (one player who is also the referee) on the table, and the credits panel, through the desktop player's mouse |
-| 4 two Local Multiplayer players | 39 of 39, twice in a row, 0 console errors: both seated, a full round checked the new way on both pages and shown on the table, the hole card unreadable on both pages before the flip, a guest reload mid-hand in round 2 (same table, same digest at equal `version()`, hole card unreadable on the reloaded page too, the reloaded page saying it cannot check that deal), digests and views equal at the end |
+| 2 `PortKit/Kit/Check` | 0 disallowed graph nodes; 869 bindings resolve (hash `dacc020a...` since `c971100`); Android 7,149 KiB and Windows 8,813 KiB, both PASS, notices and licence texts inside |
+| 3 Play mode, one player | 22 of 22, twice in a row (third pass: 21 of 21 in a bust round, then 22 of 22), 0 console errors: seat, bet, deal, hit, stand, the flip, result, chips, the deal shown as not checkable (one player who is also the referee) on the table, and the credits panel, through the desktop player's mouse |
+| 4 two Local Multiplayer players | 39 of 39, twice in a row (again in the third pass), 0 console errors: both seated, a full round checked the new way on both pages and shown on the table, the hole card unreadable on both pages before the flip, a guest reload mid-hand in round 2 (same table, same digest at equal `version()`, hole card unreadable on the reloaded page too, the reloaded page saying it cannot check that deal), digests and views equal at the end |
 
 Artifacts: `PortKit/Kit/Take Photos` and `PortKit/Kit/Export Artifacts` wrote `altspace/dist/` (not committed): both
 bundles, `pk-blackjack.js`, `blackjack.jpg`, `blackjack.snippet.html` and `manifest.json` (both checks PASS). The
@@ -181,9 +192,12 @@ the analysis the port was built from, with section 10's questions now answered (
   the segment (`segmentDecks`). At the end of the round the referee reveals its seed (`revealDeal`), and every client
   checks the round (`DeckManager.Verify`, rewritten 2026-11-25 after the review):
   1. the contributor list (`dealContributors`) must be the players this client saw seated in the round, plus listed
-     players who have since left; `verifyDeal(label, expected)` gets exactly that list, so a referee that lists an
+     players who have since left; `checkDeal(label, expected)` gets exactly that list, so a referee that lists an
      accomplice or leaves a seated player out is caught;
-  2. the seed must match its commitment, and the deal is recomputed from the contributions this client saw;
+  2. the runtime's `checkDeal(label, expected)` (since the re-sync to portkit `c971100`): the seed must match its
+     commitment, and the deal is recomputed from the contributions this client saw. Its `failed` is a mismatch; its
+     `solo` and `unknown` are **not checkable** here, never a failed check; `pending` (a contribution not here yet)
+     is checked again on the next update;
   3. the logged draws must be the deal's, and **every hand on the table** must hold exactly the cards the deal gave it,
      in order, with what each hand held from before the segment adding up to `baseCards` (`CheckHands`). So a hand the
      referee changed, a card given to another hand, a card nobody drew or a draw left out shows, whatever the referee
@@ -195,7 +209,8 @@ the analysis the port was built from, with section 10's questions now answered (
   player whose page never answers (a modified referee could fake that at once and pick its seed, and nobody can tell
   the two apart), and a referee alone at the table. During such a round the line says so too. A page that arrived
   after a contributor left never saw that contribution: it says it cannot check that deal rather than raising a false
-  alarm. A referee that takes over mid-round does not know the seed: it begins segment 2 with a deal of its own, and
+  alarm. Since portkit `c971100` the runtime says so itself (`checkDeal` is `unknown` there); the game's own guess
+  (a mismatch with a listed player this page never saw turned into "not checkable") is gone. A referee that takes over mid-round does not know the seed: it begins segment 2 with a deal of its own, and
   the lost segment is counted in `lostSegments` (only the current segment is checked).
 - **The hole card (C3).** The referee draws it from the committed seed, keeps it on its own client with its own
   commitment (`Dealer.holeHash`), and shows `-1` in state; the dealer's public total counts the up card only. At
@@ -352,7 +367,7 @@ section 10.2 says.
 |---|---|---|
 | G1 | No object shared by every instance on a page | `this.Shared` holds the page's one chip bank, keyed by `this.InstanceKey`; the module-level map is gone |
 | G2 | No strong random value for game code | `this.Random.Bytes` (deal labels); the nonce-seed hack is gone |
-| G3 | The referee could grind seeds for the deck | the deck uses the kit's **dealt draws** (`beginDeal` / `dealDraw` / `revealDeal` / `verifyDeal(label, expected)`): the referee commits to a seed, every seated player's runtime commits to a contribution and reveals it, and the cards come from all of them. The deal schedule waits for it (the shuffle sound covers it); a new referee mid-round begins a deal of its own (segment 2); a deal some seated player's runtime never answers is begun again after 10 s from the referee's seed alone, logged and counted in `DeckManager.unfairDeals` (so a modified client cannot hang the table, but it can make that round's deal the referee's alone). Since portkit `9b7c447` such a deal never verifies: every client shows the round as **not checkable** |
+| G3 | The referee could grind seeds for the deck | the deck uses the kit's **dealt draws** (`beginDeal` / `dealDraw` / `revealDeal` / `checkDeal(label, expected)`): the referee commits to a seed, every seated player's runtime commits to a contribution and reveals it, and the cards come from all of them. The deal schedule waits for it (the shuffle sound covers it); a new referee mid-round begins a deal of its own (segment 2); a deal some seated player's runtime never answers is begun again after 10 s from the referee's seed alone, logged and counted in `DeckManager.unfairDeals` (so a modified client cannot hang the table, but it can make that round's deal the referee's alone). Since portkit `9b7c447` such a deal never verifies: every client shows the round as **not checkable** |
 | G4 | `Behaviour.Player` clashed with upstream's field | kept as `Seat` (the kit's convention allows either) |
 | G5 | Game code could not read its instance key | `this.InstanceKey` keys the bet |
 | G6 | Commands from one sender run one at a time | intended; nothing to change |

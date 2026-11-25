@@ -460,7 +460,9 @@ namespace Blackjack
             Obj("manualSettings", MANUAL + "/Settings");
             Obj("resetButton", DUI + "/Reset Button");
             Obj("dealerCamera", "Dealer Camera");
-            Obj("dealerValuesCanvas", "Dealer Camera/Dealer Card Canvas");
+            // On in the prefab, switched off by DealerUIController as the game starts: bound as starting off, so that the
+            // photo and the footprint leave out its empty dark-green panel (portkit KitStage.StartOff).
+            stage.StartOff(Obj("dealerValuesCanvas", "Dealer Camera/Dealer Card Canvas"));
             Obj("dealerValues", "Dealer Camera/Dealer Card Canvas/Dealer Values");
             foreach (var (prefix, b) in new[] { ("", AUTO + "/Mask/Owner/Game Settings"), ("m", MANUAL + "/Settings") })
             {

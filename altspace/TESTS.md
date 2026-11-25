@@ -1,7 +1,8 @@
 # blackjack: test evidence
 
 Everything here ran on 2026-11-24 and 2026-11-25 on Windows, Unity 6000.3.21f1, Creator SDK 4.0.29, in the Unity
-editor. The results below are from the second pass of 2026-11-25: re-synced to portkit `812f285`
+editor. The latest results are the third pass (2026-11-25, next section): re-synced to portkit `c971100`. The rung
+sections after it are from the second pass of 2026-11-25: re-synced to portkit `812f285`
 (`portkit/tools/sync.sh blackjack`) and with the review's findings fixed (`REVIEW-FINDINGS.md`, blackjack). Nothing ran
 in the Altspace app, on a Quest, or with controllers (rung 5: not run; worlds stay Private).
 
@@ -19,6 +20,53 @@ portkit/tools/playtest.sh altspace altspace/playtest/multi.json blackjack      r
 Player 2 and waits until `PortKit/Multiplayer/Report` says it launched (the game's own wait and slot loop are gone).
 Player 2 is a Multiplayer Play Mode clone (`Library/VP/mppmf0d15246`, its log `Logs/Editor.log-mppmf0d15246.txt`).
 It shares the main project's Library (`-library-redirect ../..`), so it does not import anything of its own.
+
+## Third pass: re-sync to portkit `c971100` (2026-11-25)
+
+`portkit/tools/sync.sh blackjack` (unity and ts), then:
+
+- **Breaking change taken:** the kit's `verifyDeal` now returns null for a deal this page cannot check. `DeckManager`
+  calls `Secrets.checkDeal(label, expected)` instead: `ok` replays the deal as before, `solo` and `unknown` are
+  `unverifiable` (not checkable, never a failed check), `failed` is a `mismatch`, and `pending` (a contribution not
+  here yet) leaves the round unchecked until the next update.
+- **Workaround dropped:** the game's guess that a mismatch involving a listed player this page never saw seated meant
+  "cannot check". Test 32 (Cat contributes and leaves, Dan joins) is kept unchanged and now passes on the kit's
+  `unknown`.
+- **Kit option used:** `stage.StartOff` on `Table/Dealer Camera/Dealer Card Canvas` (bound as `dealerValuesCanvas`),
+  so the photo and the footprint leave out its empty dark-green panel. bindings.json now has `"active": false` on it
+  (hash `dacc020a...`); the photo log says 195 bound objects off (194 before).
+
+| Rung | Result |
+|---|---|
+| 0 | typecheck and lint clean (`lint: src, portkit/src clean`) |
+| 1 | `npm test`: **38 of 38** (no test changed) |
+| 2 | `PortKit/Kit/Check`: PASS graphs (0 nodes the app will not run); PASS bindings, 869 objects resolve, hash `dacc020a362cd24696a285d71de32c2c617533fe`; PASS android and windows bundles (objects 2170/7972, graph blobs 5, 364 KiB) |
+| 3 | **21 of 21, then 22 of 22, 0 console error lines each** (run 1 was a bust round, which has no STAND check). Both say the solo deal is not checkable, on the table too |
+| 4 | **39 of 39, twice in a row, 0 console error lines** (main 16, Player 2 23). Round 1 `checked` on both pages; round 2: the owner `checked`, and the reloaded page `unverifiable` ("a player who contributed to this deal left before this page arrived"), now from the kit's `unknown`, with `Deal NOT checkable here: a contributor left before this page came` on the table; digests equal at equal `version()` after round 1, at the reload and at the end |
+
+Evidence: `playtest/evidence_single.txt` (rung 3 run 2) with `evidence_single_deal.jpg` and
+`evidence_single_settled.jpg`, and `playtest/evidence_multi.txt` (rung 4 run 2).
+
+The rebuilt kit (`Logs/portkit_kits.txt`): 1,874 objects, 869 bound (115 clickable, 0 synced, 0 grabbable, so the
+new grabbable click events do not apply), 548 refs, 115 behaviours, 44 events. The relay graph: 620 units, 245
+control and 613 value connections, 52 distinct members, all on the allow list of 29,061 (565, 231, 555 and 49 before);
+its ops now include `pkHead`.
+
+Bundles and artifacts (`Take Photos`, `Export Artifacts`; `dist/`, not committed):
+
+| File | Before (bytes) | After (bytes) | sha1 after |
+|---|---|---|---|
+| `android/blackjack` | 7,320,545 | 7,324,341 (7,149 KiB) | `03f1d39b6095a474aa43491a2baa977a13f3f896` |
+| `windows/blackjack` | 9,024,863 | 9,034,677 (8,813 KiB) | `c15cb0b45f9399774d7bb39df8daf07f72f8d28a` |
+| `pk-blackjack.js` | 687,326 | 700,703 | `a7b0370f89820fbe7a113ddb69b688aecd79a78f` (same as `Assets/WebRoot`) |
+| `blackjack.jpg` | 60,457 | 55,302 | `8924c41e35309cf0a9bfc68f82cbcd6afc289d1f` |
+| `blackjack.snippet.html` | 523 | 523 | `61f1d6f51afebba3d74b784eefd14efa94bd0c72` (box gizmo `4.0 0.2 2.3`) |
+
+New in `dist/`: `licenses/blackjack/` with the nine licence texts the bundles carry (Apache-2.0-VRCBlackjack,
+Cinzel, Cinzel Decorative, Limelight and Liberation Sans OFL, the three Kenney licences, portkit MIT), each with its
+sha1 in `manifest.json`. The footprint is now 3.95 x 1.70 x 2.19 m (3.95 x 0.92 x 2.07 before): the kit now counts
+world-space uGUI (the seat panels and the dealer's canvases). The photo no longer shows the empty dark-green box
+above the table; it is framed on the taller footprint, so the table is a little smaller in it.
 
 ## Rung 0: static
 
